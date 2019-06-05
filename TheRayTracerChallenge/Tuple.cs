@@ -54,5 +54,10 @@ namespace TheRayTracerChallenge
         {
             return new Tuple(t1.x - t2.x, t1.y - t2.y, t1.z - t2.z, t1.w - t2.w);
         }
+
+        public static Tuple operator-(Tuple t)
+        {
+            return new Tuple(-t.x, -t.y, -t.z, -t.w);
+        }
     }
 }

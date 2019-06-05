@@ -73,5 +73,22 @@ namespace TheRayTracerChallenge.Tests
             var diff = v1 - v2;
             Assert.AreEqual(Tuple.Vector(-2, -4, -6), diff);
         }
+
+        [Test]
+        public void Subracting_a_vector_from_the_zero_vector()
+        {
+            var zero = Tuple.Vector(0, 0, 0);
+            var v = Tuple.Vector(1, -2, 3);
+            var diff = zero - v;
+            Assert.AreEqual(Tuple.Vector(-1, 2, -3), diff);
+        }
+
+        [Test]
+        public void Negating_a_tuple()
+        {
+            var t = new Tuple(1, -2, 3, -4);
+            var negated = -t;
+            Assert.AreEqual(new Tuple(-1, 2, -3, 4), negated);
+        }
     }
 }
