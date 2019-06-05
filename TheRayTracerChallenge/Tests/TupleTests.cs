@@ -90,5 +90,29 @@ namespace TheRayTracerChallenge.Tests
             var negated = -t;
             Assert.AreEqual(new Tuple(-1, 2, -3, 4), negated);
         }
+
+        [Test]
+        public void Multiplying_a_tuple_with_a_scalar()
+        {
+            var t = new Tuple(1, -2, 3, -4);
+            var scaled = t * 3.5;
+            Assert.AreEqual(new Tuple(3.5, -7, 10.5, -14), scaled);
+        }
+
+        [Test]
+        public void Multiplying_a_tuple_with_a_fraction()
+        {
+            var t = new Tuple(1, -2, 3, -4);
+            var scaled = t * 0.5;
+            Assert.AreEqual(new Tuple(0.5, -1, 1.5, -2), scaled);
+        }
+
+        [Test]
+        public void Dividing_a_tuple_with_a_scalar()
+        {
+            var t = new Tuple(1, -2, 3, -4);
+            var scaled = t / 2;
+            Assert.AreEqual(new Tuple(0.5, -1, 1.5, -2), scaled);
+        }
     }
 }
