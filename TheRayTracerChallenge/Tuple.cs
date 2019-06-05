@@ -44,5 +44,15 @@ namespace TheRayTracerChallenge
         {
             return HashCode.Combine(x, y, z, w);
         }
+
+        public static Tuple operator+(Tuple t1, Tuple t2)
+        {
+            return new Tuple(t1.x + t2.x, t1.y + t2.y, t1.z + t2.z, t1.w + t2.w);
+        }
+
+        public static Tuple operator-(Tuple t1, Tuple t2)
+        {
+            return new Tuple(t1.x - t2.x, t1.y - t2.y, t1.z - t2.z, t1.w - t2.w);
+        }
     }
 }

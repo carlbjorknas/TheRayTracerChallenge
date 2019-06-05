@@ -35,7 +35,43 @@ namespace TheRayTracerChallenge.Tests
         public void Vector_creates_tuples_with_w_equal_to_0()
         {
             var t = Tuple.Vector(4, -4, 3);
-            Assert.AreEqual(t, new Tuple(4, -4, 3, 0));
+            Assert.AreEqual(new Tuple(4, -4, 3, 0), t);
+        }
+
+        [Test]
+        public void Adding_two_tuples()
+        {
+            var t1 = new Tuple(3, -2, 5, 1);
+            var t2 = new Tuple(-2, 3, 1, 0);
+            var sum = t1 + t2;
+            Assert.AreEqual(new Tuple(1, 1, 6, 1), sum);
+        }
+
+        [Test]
+        public void Subtracting_two_points()
+        {
+            var p1 = Tuple.Point(3, 2, 1);
+            var p2 = Tuple.Point(5, 6, 7);
+            var diff = p1 - p2;
+            Assert.AreEqual(Tuple.Vector(-2, -4, -6), diff);
+        }
+
+        [Test]
+        public void Subtracting_a_vector_from_a_point()
+        {
+            var p = Tuple.Point(3, 2, 1);
+            var v = Tuple.Vector(5, 6, 7);
+            var diff = p - v;
+            Assert.AreEqual(Tuple.Point(-2, -4, -6), diff);
+        }
+
+        [Test]
+        public void Subtraction_two_vectors()
+        {
+            var v1 = Tuple.Vector(3, 2, 1);
+            var v2 = Tuple.Vector(5, 6, 7);
+            var diff = v1 - v2;
+            Assert.AreEqual(Tuple.Vector(-2, -4, -6), diff);
         }
     }
 }
