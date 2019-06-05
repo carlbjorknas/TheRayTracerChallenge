@@ -37,14 +37,21 @@ namespace TheRayTracerChallenge
                 Math.Pow(z, 2) +
                 Math.Pow(w, 2));
 
+        public Tuple Normalize => this / Magnitude;
+        
         public override bool Equals(object obj)
         {
             return
                 obj is Tuple t &&
-                t.x == x &&
-                t.y == y &&
-                t.z == z &&
-                t.w == w;                        
+                Equals(t.x, x) &&
+                Equals(t.y, y) &&
+                Equals(t.z, z) &&
+                Equals(t.w, w);
+        }
+
+        private bool Equals(double d1, double d2)
+        {
+            return Math.Abs(d1 - d2) < 0.00001;
         }
 
         public override int GetHashCode()

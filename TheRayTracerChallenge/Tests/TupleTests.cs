@@ -149,5 +149,29 @@ namespace TheRayTracerChallenge.Tests
             var v = Tuple.Vector(-1, -2, -3);
             Assert.AreEqual(Math.Sqrt(14), v.Magnitude);
         }
+
+        [Test]
+        public void Normalizing_vector_4_0_0_gives_1_0_0()
+        {
+            var v = Tuple.Vector(4, 0, 0);
+            var normalized = v.Normalize;
+            Assert.AreEqual(Tuple.Vector(1, 0, 0), normalized);
+        }
+
+        [Test]
+        public void Normalizing_vector_1_2_3()
+        {
+            var v = Tuple.Vector(1, 2, 3);
+            var normalized = v.Normalize;
+            Assert.AreEqual(Tuple.Vector(0.26726, 0.53452, 0.80178), normalized);
+        }
+
+        [Test]
+        public void Magnitude_of_a_normalized_vector()
+        {
+            var v = Tuple.Vector(1, 2, 3);
+            var normalized = v.Normalize;
+            Assert.AreEqual(1, normalized.Magnitude);
+        }
     }
 }
