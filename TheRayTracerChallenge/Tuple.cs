@@ -30,6 +30,13 @@ namespace TheRayTracerChallenge
 
         public bool IsVector => w == 0.0;
 
+        public double Magnitude => 
+            Math.Sqrt(
+                Math.Pow(x, 2) + 
+                Math.Pow(y, 2) +
+                Math.Pow(z, 2) +
+                Math.Pow(w, 2));
+
         public override bool Equals(object obj)
         {
             return

@@ -114,5 +114,40 @@ namespace TheRayTracerChallenge.Tests
             var scaled = t / 2;
             Assert.AreEqual(new Tuple(0.5, -1, 1.5, -2), scaled);
         }
+
+        [Test]
+        public void Computing_the_magnitude_of_vector_1_0_0()
+        {
+            var v = Tuple.Vector(1, 0, 0);
+            Assert.AreEqual(1, v.Magnitude);
+        }
+
+        [Test]
+        public void Computing_the_magnitude_of_vector_0_1_0()
+        {
+            var v = Tuple.Vector(0, 1, 0);
+            Assert.AreEqual(1, v.Magnitude);
+        }
+
+        [Test]
+        public void Computing_the_magnitude_of_vector_0_0_1()
+        {
+            var v = Tuple.Vector(0, 0, 1);
+            Assert.AreEqual(1, v.Magnitude);
+        }
+
+        [Test]
+        public void Computing_the_magnitude_of_vector_1_2_3()
+        {
+            var v = Tuple.Vector(1, 2, 3);
+            Assert.AreEqual(Math.Sqrt(14), v.Magnitude);
+        }
+
+        [Test]
+        public void Computing_the_magnitude_of_vector_neg1_neg2_neg3()
+        {
+            var v = Tuple.Vector(-1, -2, -3);
+            Assert.AreEqual(Math.Sqrt(14), v.Magnitude);
+        }
     }
 }
