@@ -173,5 +173,27 @@ namespace TheRayTracerChallenge.Tests
             var normalized = v.Normalize;
             Assert.AreEqual(1, normalized.Magnitude);
         }
+
+        [Test]
+        public void The_dot_product_of_two_vectors()
+        {
+            var v1 = Tuple.Vector(1, 2, 3);
+            var v2 = Tuple.Vector(2, 3, 4);
+            var dotProduct = v1.Dot(v2);
+            Assert.AreEqual(20, dotProduct);
+        }
+
+        [Test]
+        public void The_cross_product_of_two_vectors()
+        {
+            var v1 = Tuple.Vector(1, 2, 3);
+            var v2 = Tuple.Vector(2, 3, 4);
+
+            var cross1 = v1.Cross(v2);
+            Assert.AreEqual(Tuple.Vector(-1, 2, -1), cross1);
+
+            var cross2 = v2.Cross(v1);
+            Assert.AreEqual(Tuple.Vector(1, -2, 1), cross2);
+        }
     }
 }

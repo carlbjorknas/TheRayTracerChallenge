@@ -79,6 +79,18 @@ namespace TheRayTracerChallenge
             return new Tuple(d*t.x, d*t.y, d*t.z, d*t.w);
         }
 
+        public double Dot(Tuple t) => 
+            x * t.x + 
+            y * t.y + 
+            z * t.z + 
+            w * t.w;
+        
+        public Tuple Cross(Tuple t)
+        => Vector(
+            y * t.z - z * t.y,
+            z * t.x - x * t.z,
+            x * t.y - y * t.x);
+
         public static Tuple operator/(Tuple t, double d)
         {
             return new Tuple(t.x / d, t.y / d, t.z / d, t.w / d);
