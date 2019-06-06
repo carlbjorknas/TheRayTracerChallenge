@@ -25,7 +25,7 @@ namespace TheRayTracerChallenge
             => _colors[x, y] = c;
 
         internal string ToPpm()
-            => PpmHeader + PpmPixelData;
+            => PpmHeader + PpmPixelData + Environment.NewLine;
       
         private string PpmHeader
             => new StringBuilder()
@@ -46,7 +46,8 @@ namespace TheRayTracerChallenge
                 .Select(colIndex => PixelAt(colIndex, rowIndex));
 
         private string ConvertToPpmRow(IEnumerable<Color> colors)
-            => string.Join(' ', colors.Select(ConvertToPpmColor));
+            => string.Join(' ', colors.Select(ConvertToPpmColor))
+                .BreakIntoLinesWithMaxLength(70);
 
         private string ConvertToPpmColor(Color c)
             => $"{PpmValueFor(c.r)} {PpmValueFor(c.g)} {PpmValueFor(c.b)}";

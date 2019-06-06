@@ -17,11 +17,8 @@ namespace TheRayTracerChallenge.Tests
             Assert.AreEqual(20, canvas.Height);
 
             var black = new Color(0, 0, 0);
-            var cols = Enumerable.Range(0, 10);
-            var rows = Enumerable.Range(0, 20);
-            cols
-                .SelectMany(x => rows, (x, y) => new { x, y })
-                .Select(pair => canvas.PixelAt(pair.x, pair.y))
+            GetAllCoordsIn(canvas)
+                .Select(coords => canvas.PixelAt(coords.x, coords.y))
                 .ToList()
                 .ForEach(pixelColor => Assert.AreEqual(black, pixelColor));
         }
@@ -65,6 +62,38 @@ namespace TheRayTracerChallenge.Tests
             Assert.AreEqual("255 0 0 0 0 0 0 0 0 0 0 0 0 0 0", ppmLines[3]);
             Assert.AreEqual("0 0 0 0 0 0 0 128 0 0 0 0 0 0 0", ppmLines[4]);
             Assert.AreEqual("0 0 0 0 0 0 0 0 0 0 0 0 0 0 255", ppmLines[5]);
+        }
+
+        [Test]
+        public void Splitting_long_lines_in_PPM_files()
+        {
+            var canvas = new Canvas(10, 2);
+            var color = new Color(1, 0.8, 0.6);
+            GetAllCoordsIn(canvas)
+                .ToList()
+                .ForEach(coord => canvas.WritePixel(coord.x, coord.y, color));
+
+            var ppm = canvas.ToPpm();
+            var ppmLines = ppm.Split("\r\n");
+            Assert.AreEqual("255 204 153 255 204 153 255 204 153 255 204 153 255 204 153 255 204", ppmLines[3]);
+            Assert.AreEqual("153 255 204 153 255 204 153 255 204 153 255 204 153", ppmLines[4]);
+            Assert.AreEqual("255 204 153 255 204 153 255 204 153 255 204 153 255 204 153 255 204", ppmLines[5]);
+            Assert.AreEqual("153 255 204 153 255 204 153 255 204 153 255 204 153", ppmLines[6]);
+        }
+
+        [Test]
+        public void PPM_files_are_terminated_by_a_newline_character()
+        {
+            var canvas = new Canvas(5, 3);
+            var ppm = canvas.ToPpm();
+            Assert.AreEqual('\n', ppm.Last());
+        }
+
+        private IEnumerable<(int x, int y)> GetAllCoordsIn(Canvas c)
+        {
+            var cols = Enumerable.Range(0, c.Width);
+            var rows = Enumerable.Range(0, c.Height);
+            return cols.SelectMany(x => rows, (x, y) => (x, y));
         }
     }
 }
