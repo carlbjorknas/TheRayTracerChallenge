@@ -6,7 +6,7 @@ namespace TheRayTracerChallenge
 {
     struct Color
     {
-        double r, g, b;
+        public double r, g, b;
 
         public Color(double r, double g, double b)
         {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace TheRayTracerChallenge
@@ -22,5 +23,41 @@ namespace TheRayTracerChallenge
 
         internal void WritePixel(int x, int y, Color c) 
             => _colors[x, y] = c;
+
+        internal string ToPpm()
+            => PpmHeader + PpmPixelData;
+      
+        private string PpmHeader
+            => new StringBuilder()
+                .AppendLine("P3")
+                .AppendLine($"{Width} {Height}")
+                .AppendLine("255")
+                .ToString();
+
+        private string PpmPixelData
+            => string.Join("\r\n", GetAllRows.Select(ConvertToPpmRow));
+
+        private IEnumerable<IEnumerable<Color>> GetAllRows
+            => Enumerable.Range(0, Height)
+                .Select(rowIndex => GetPixelsInRow(rowIndex));        
+
+        private IEnumerable<Color> GetPixelsInRow(int rowIndex)
+            => Enumerable.Range(0, Width)
+                .Select(colIndex => PixelAt(colIndex, rowIndex));
+
+        private string ConvertToPpmRow(IEnumerable<Color> colors)
+            => string.Join(' ', colors.Select(ConvertToPpmColor));
+
+        private string ConvertToPpmColor(Color c)
+            => $"{PpmValueFor(c.r)} {PpmValueFor(c.g)} {PpmValueFor(c.b)}";
+
+        private int PpmValueFor(double value)
+        {
+            var ppmValue = (int)Math.Round(value * 255);
+
+            if (ppmValue < 0) return 0;
+            if (ppmValue > 255) return 255;
+            return ppmValue;
+        }
     }
 }
