@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MathNet.Numerics.LinearAlgebra;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,13 @@ namespace TheRayTracerChallenge
 
         internal void WritePixel(int x, int y, Color c) 
             => _colors[x, y] = c;
+
+        internal void WritePixel(Vector<double> vec, Color c)
+        {
+            var x = (int)Math.Round(vec[0] + (Width -1 ) / 2);
+            var y = (int)Math.Round(Height - 1 - (vec[1] + (Height-1) / 2));
+            WritePixel(x, y, c);
+        }
 
         internal string ToPpm()
             => PpmHeader + PpmPixelData + Environment.NewLine;
