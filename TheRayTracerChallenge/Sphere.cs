@@ -19,7 +19,7 @@ namespace TheRayTracerChallenge
             Center = center;
         }
 
-        public double[] Intersect(Ray3D ray)
+        public IntersectionCollection Intersect(Ray3D ray)
         {
             var sphereToRay = ray.ThroughPoint - Center;
             var a = ray.Direction.DotProduct(ray.Direction);
@@ -30,13 +30,16 @@ namespace TheRayTracerChallenge
             var intersects = discriminant >= 0;
             if (!intersects)
             {
-                return new double[] { };
+                return new IntersectionCollection();
             }
 
             var t1 = (-b - Math.Sqrt(discriminant)) / (2 * a);
             var t2 = (-b + Math.Sqrt(discriminant)) / (2 * a);
 
-            return new[] { t1, t2 };
+            var i1 = new Intersection(Math.Min(t1, t2), this);
+            var i2 = new Intersection(Math.Max(t1, t2), this);
+
+            return new IntersectionCollection(i1, i2);
         }
     }
 }

@@ -20,9 +20,9 @@ namespace TheRayTracerChallenge.Tests
 
             var intersections = sphere.Intersect(ray);
 
-            Assert.AreEqual(2, intersections.Length);
-            Assert.AreEqual(5.0, intersections[0]);
-            Assert.AreEqual(5.0, intersections[1]);
+            Assert.AreEqual(2, intersections.Count);
+            Assert.AreEqual(5.0, intersections[0].T);
+            Assert.AreEqual(5.0, intersections[1].T);
         }
 
         [Test]
@@ -36,7 +36,7 @@ namespace TheRayTracerChallenge.Tests
 
             var intersections = sphere.Intersect(ray);
 
-            Assert.AreEqual(0, intersections.Length);
+            Assert.AreEqual(0, intersections.Count);
         }
 
         [Test]
@@ -50,9 +50,9 @@ namespace TheRayTracerChallenge.Tests
 
             var intersections = sphere.Intersect(ray);
 
-            Assert.AreEqual(2, intersections.Length);
-            Assert.AreEqual(-1.0, intersections[0]);
-            Assert.AreEqual(1.0, intersections[1]);
+            Assert.AreEqual(2, intersections.Count);
+            Assert.AreEqual(-1.0, intersections[0].T);
+            Assert.AreEqual(1.0, intersections[1].T);
         }
 
         [Test]
@@ -66,9 +66,25 @@ namespace TheRayTracerChallenge.Tests
 
             var intersections = sphere.Intersect(ray);
 
-            Assert.AreEqual(2, intersections.Length);
-            Assert.AreEqual(-6.0, intersections[0]);
-            Assert.AreEqual(-4.0, intersections[1]);
-        }      
+            Assert.AreEqual(2, intersections.Count);
+            Assert.AreEqual(-6.0, intersections[0].T);
+            Assert.AreEqual(-4.0, intersections[1].T);
+        }    
+        
+        [Test]
+        public void Intersect_sets_the_object_on_the_intersection()
+        {
+            var ray = new Ray3D(
+                new Point3D(0, 0, -5),
+                new Vector3D(0, 0, 1));
+
+            var sphere = Sphere.UnitSphere();
+
+            var intersections = sphere.Intersect(ray);
+
+            Assert.AreEqual(2, intersections.Count);
+            Assert.AreEqual(sphere, intersections[0].Object);
+            Assert.AreEqual(sphere, intersections[1].Object);
+        }
     }
 }
