@@ -27,7 +27,7 @@ namespace TheRayTracerChallenge
         internal static Transformation Scaling(double x, double y, double z)
         {
             var matrix = Matrix<double>.Build.Dense(4, 4);
-            matrix.SetDiagonal(new[] { x, y, z, 1 });            
+            matrix.SetDiagonal(new[] { x, y, z, 1 });
             return new Transformation(matrix);
         }
 
@@ -76,6 +76,8 @@ namespace TheRayTracerChallenge
 
             return new Transformation(matrix);
         }
+
+        internal static Transformation Identity { get; } = new Transformation(Matrix<double>.Build.DenseIdentity(4, 4));
 
         public Tuple Transform(Tuple tuple)
         {

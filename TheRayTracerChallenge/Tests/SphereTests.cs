@@ -12,9 +12,9 @@ namespace TheRayTracerChallenge.Tests
         [Test]
         public void A_ray_intersects_a_sphere_at_a_tangent()
         {
-            var ray = new Ray3D(
-                new Point3D(0, 1, -5),
-                new Vector3D(0, 0, 1));
+            var ray = new Ray(
+                Tuple.Point(0, 1, -5),
+                Tuple.Vector(0, 0, 1));
 
             var sphere = Sphere.UnitSphere();
 
@@ -28,9 +28,9 @@ namespace TheRayTracerChallenge.Tests
         [Test]
         public void A_ray_misses_a_sphere()
         {
-            var ray = new Ray3D(
-                new Point3D(0, 2, -5),
-                new Vector3D(0, 0, 1));
+            var ray = new Ray(
+                Tuple.Point(0, 2, -5),
+                Tuple.Vector(0, 0, 1));
 
             var sphere = Sphere.UnitSphere();
 
@@ -42,9 +42,9 @@ namespace TheRayTracerChallenge.Tests
         [Test]
         public void A_ray_originates_inside_a_sphere()
         {
-            var ray = new Ray3D(
-                new Point3D(0, 0, 0),
-                new Vector3D(0, 0, 1));
+            var ray = new Ray(
+                Tuple.Point(0, 0, 0),
+                Tuple.Vector(0, 0, 1));
 
             var sphere = Sphere.UnitSphere();
 
@@ -58,9 +58,9 @@ namespace TheRayTracerChallenge.Tests
         [Test]
         public void A_sphere_is_behind_a_ray()
         {
-            var ray = new Ray3D(
-                new Point3D(0, 0, 5),
-                new Vector3D(0, 0, 1));
+            var ray = new Ray(
+                Tuple.Point(0, 0, 5),
+                Tuple.Vector(0, 0, 1));
 
             var sphere = Sphere.UnitSphere();
 
@@ -74,9 +74,9 @@ namespace TheRayTracerChallenge.Tests
         [Test]
         public void Intersect_sets_the_object_on_the_intersection()
         {
-            var ray = new Ray3D(
-                new Point3D(0, 0, -5),
-                new Vector3D(0, 0, 1));
+            var ray = new Ray(
+                Tuple.Point(0, 0, -5),
+                Tuple.Vector(0, 0, 1));
 
             var sphere = Sphere.UnitSphere();
 
@@ -85,6 +85,43 @@ namespace TheRayTracerChallenge.Tests
             Assert.AreEqual(2, intersections.Count);
             Assert.AreEqual(sphere, intersections[0].Object);
             Assert.AreEqual(sphere, intersections[1].Object);
+        }
+
+        [Test]
+        public void A_spheres_default_transformation()
+        {
+            var s = Sphere.UnitSphere();
+            Assert.AreSame(Transformation.Identity, s.Transform);
+        }
+
+        [Test]
+        public void Intersecting_a_scaled_sphere_with_a_ray()
+        {
+            var ray = new Ray(
+                Tuple.Point(0, 0, -5),
+                Tuple.Vector(0, 0, 1));
+            var sphere = Sphere.UnitSphere();
+            sphere.Transform = Transformation.Scaling(2,2,2);
+
+            var intersections = sphere.Intersect(ray);
+
+            Assert.AreEqual(2, intersections.Count);
+            Assert.AreEqual(3, intersections[0].T);
+            Assert.AreEqual(7, intersections[1].T);
+        }
+
+        [Test]
+        public void Intersecting_a_translated_sphere_with_a_ray()
+        {
+            var ray = new Ray(
+                Tuple.Point(0, 0, -5),
+                Tuple.Vector(0, 0, 1));
+            var sphere = Sphere.UnitSphere();
+            sphere.Transform = Transformation.Translation(5, 0, 0);
+
+            var intersections = sphere.Intersect(ray);
+
+            Assert.AreEqual(0, intersections.Count);
         }
     }
 }

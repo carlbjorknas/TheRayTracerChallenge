@@ -5,26 +5,30 @@ using MathNet.Spatial.Euclidean;
 
 namespace TheRayTracerChallenge
 {
-    public struct Sphere
+    struct Sphere
     {
         public static Sphere UnitSphere()
-            => new Sphere(new Point3D(0, 0, 0));
+            => new Sphere(Tuple.Point(0, 0, 0));
 
         Guid Id;
-        public Point3D Center;
+        public Tuple Center;
 
-        public Sphere(Point3D center)
+        public Sphere(Tuple center)
         {
             Id = Guid.NewGuid();
             Center = center;
+            Transform = Transformation.Identity;
         }
 
-        public IntersectionCollection Intersect(Ray3D ray)
+        public Transformation Transform { get; set; }
+
+        public IntersectionCollection Intersect(Ray ray)
         {
-            var sphereToRay = ray.ThroughPoint - Center;
-            var a = ray.Direction.DotProduct(ray.Direction);
-            var b = 2 * (ray.Direction.DotProduct(sphereToRay));
-            var c = sphereToRay.DotProduct(sphereToRay) - 1;
+            var transformedRay = ray.Transform(Transform.Inverse);
+            var sphereToRay = transformedRay.Point - Center;
+            var a = transformedRay.Direction.Dot(transformedRay.Direction);
+            var b = 2 * (transformedRay.Direction.Dot(sphereToRay));
+            var c = sphereToRay.Dot(sphereToRay) - 1;
             var discriminant = b * b - 4 * a * c;
 
             var intersects = discriminant >= 0;

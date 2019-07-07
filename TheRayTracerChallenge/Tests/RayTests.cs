@@ -35,18 +35,17 @@ namespace TheRayTracerChallenge.Tests
             Assert.AreEqual(Tuple.Vector(0, 1, 0), ray2.Direction);
         }
 
-        //[Test]
-        //public void Scaling_a_ray()
-        //{
-        //    var ray = new Ray3D(
-        //        new Point3D(1, 2, 3),
-        //        new Vector3D(0, 1, 0));
-        //    var translation = Matrix<double>.Build.Dense(4, 4);
-        //    translation.SetDiagonal(new double[] { 2, 3, 4, 1 });
-        //    var ray2 = ray.Transform(translation);
+        [Test]
+        public void Scaling_a_ray()
+        {
+            var ray = new Ray(
+                Tuple.Point(1, 2, 3),
+                Tuple.Vector(0, 1, 0));
+            var transformation = Transformation.Scaling(2, 3, 4);
+            var ray2 = ray.Transform(transformation);
 
-        //    Assert.AreEqual(new Point3D(4, 6, 8), ray2.ThroughPoint);
-        //    Assert.AreEqual(new Vector3D(0, 1, 0), ray2.Direction);
-        //}
+            Assert.AreEqual(Tuple.Point(2, 6, 12), ray2.Point);
+            Assert.AreEqual(Tuple.Vector(0, 3, 0), ray2.Direction);
+        }
     }
 }
