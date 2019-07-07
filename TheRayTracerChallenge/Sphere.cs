@@ -48,7 +48,11 @@ namespace TheRayTracerChallenge
 
         internal Tuple NormalAt(Tuple point)
         {
-            return (point - Center).Normalize;
+            var objectPoint = Transform.Inverse.Transform(point);
+            var objectNormal = objectPoint - Center;
+            var worldNormal = Transform.Inverse.Transpose.Transform(objectNormal);
+            worldNormal.w = 0;
+            return worldNormal.Normalize;
         }
     }
 }

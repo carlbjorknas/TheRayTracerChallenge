@@ -17,6 +17,9 @@ namespace TheRayTracerChallenge
         public Transformation Inverse
             => new Transformation(_matrix.Inverse());
 
+        public Transformation Transpose
+            => new Transformation(_matrix.Transpose());
+
         public static Transformation Translation(double x, double y, double z)
         {
             var matrix = Matrix<double>.Build.DenseIdentity(4, 4);
@@ -77,7 +80,7 @@ namespace TheRayTracerChallenge
             return new Transformation(matrix);
         }
 
-        internal static Transformation Identity { get; } = new Transformation(Matrix<double>.Build.DenseIdentity(4, 4));
+        internal static Transformation Identity { get; } = new Transformation(Matrix<double>.Build.DenseIdentity(4, 4));        
 
         public Tuple Transform(Tuple tuple)
         {

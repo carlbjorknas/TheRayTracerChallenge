@@ -16,7 +16,8 @@ namespace TheRayTracerChallenge
             return new Tuple(x, y, z, 0);
         }
 
-        public readonly double x, y, z, w;
+        public readonly double x, y, z;
+        public double w;
 
         public Tuple(double x, double y, double z, double w)
         {

@@ -165,5 +165,28 @@ namespace TheRayTracerChallenge.Tests
             var normal = sphere.NormalAt(Tuple.Point(p, p, p));
             Assert.AreEqual(normal, normal.Normalize);
         }
+
+        [Test]
+        public void Computing_the_normal_on_a_translated_sphere()
+        {
+            var sphere = Sphere.UnitSphere();
+            sphere.Transform = Transformation.Translation(0, 1, 0);
+
+            var n = sphere.NormalAt(Tuple.Point(0, 1.70711, -0.70711));
+
+            Assert.AreEqual(Tuple.Vector(0, 0.70711, -0.70711), n);
+        }
+
+        [Test]
+        public void Computing_the_normal_on_a_transformed_sphere()
+        {
+            var sphere = Sphere.UnitSphere();
+            sphere.Transform = Transformation.Scaling(1, 0.5, 1)
+                .Chain(Transformation.RotationZ(Math.PI / 5));
+
+            var n = sphere.NormalAt(Tuple.Point(0, Math.Sqrt(2)/2, -Math.Sqrt(2) / 2));
+
+            Assert.AreEqual(Tuple.Vector(0, 0.97014, -0.24254), n);
+        }
     }
 }
