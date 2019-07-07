@@ -195,5 +195,27 @@ namespace TheRayTracerChallenge.Tests
             var cross2 = v2.Cross(v1);
             Assert.AreEqual(Tuple.Vector(1, -2, 1), cross2);
         }
+
+        [Test]
+        public void Reflecting_a_vector_approaching_at_45_degrees()
+        {
+            var v = Tuple.Vector(1, -1, 0);
+            var n = Tuple.Vector(0, 1, 0);
+
+            var reflected = v.Reflect(n);
+
+            Assert.AreEqual(Tuple.Vector(1, 1, 0), reflected);
+        }
+
+        [Test]
+        public void Reflecting_a_vector_off_a_slanted_surface()
+        {
+            var v = Tuple.Vector(0, -1, 0);
+            var n = Tuple.Vector(Math.Sqrt(2) / 2, Math.Sqrt(2) / 2, 0);
+
+            var reflected = v.Reflect(n);
+
+            Assert.AreEqual(Tuple.Vector(1, 0, 0), reflected);
+        }
     }
 }

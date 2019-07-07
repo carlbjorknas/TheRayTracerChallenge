@@ -38,8 +38,12 @@ namespace TheRayTracerChallenge
                 Math.Pow(z, 2) +
                 Math.Pow(w, 2));
 
-        public Tuple Normalize => this / Magnitude;
-        
+        public Tuple Normalize 
+            => this / Magnitude;
+
+        internal Tuple Reflect(Tuple normal)
+            => this - normal * 2 * Dot(normal);
+
         public override bool Equals(object obj)
         {
             return
