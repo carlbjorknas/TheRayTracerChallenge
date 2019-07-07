@@ -25,10 +25,10 @@ namespace TheRayTracerChallenge
         internal void WritePixel(int x, int y, Color c) 
             => _colors[x, y] = c;
 
-        internal void WritePixel(Vector<double> vec, Color c)
+        internal void WritePixel(Tuple point, Color c)
         {
-            var x = (int)Math.Round(vec[0] + (Width -1 ) / 2);
-            var y = (int)Math.Round(Height - 1 - (vec[1] + (Height-1) / 2));
+            var x = (int)Math.Round(point.x + (Width -1 ) / 2);
+            var y = (int)Math.Round(Height - 1 - (point.y + (Height-1) / 2));
             WritePixel(x, y, c);
         }
 
