@@ -123,5 +123,47 @@ namespace TheRayTracerChallenge.Tests
 
             Assert.AreEqual(0, intersections.Count);
         }
+
+        [Test]
+        public void The_normal_on_a_sphere_at_a_point_on_the_x_axis()
+        {
+            var sphere = Sphere.UnitSphere();
+            var normal = sphere.NormalAt(Tuple.Point(1, 0, 0));
+            Assert.AreEqual(Tuple.Vector(1, 0, 0), normal);
+        }
+
+        [Test]
+        public void The_normal_on_a_sphere_at_a_point_on_the_y_axis()
+        {
+            var sphere = Sphere.UnitSphere();
+            var normal = sphere.NormalAt(Tuple.Point(0, 1, 0));
+            Assert.AreEqual(Tuple.Vector(0, 1, 0), normal);
+        }
+
+        [Test]
+        public void The_normal_on_a_sphere_at_a_point_on_the_z_axis()
+        {
+            var sphere = Sphere.UnitSphere();
+            var normal = sphere.NormalAt(Tuple.Point(0, 0, 1));
+            Assert.AreEqual(Tuple.Vector(0, 0, 1), normal);
+        }
+
+        [Test]
+        public void The_normal_on_a_sphere_at_a_nonaxial_point()
+        {
+            var sphere = Sphere.UnitSphere();
+            var p = Math.Sqrt(3) / 3;
+            var normal = sphere.NormalAt(Tuple.Point(p, p, p));
+            Assert.AreEqual(Tuple.Vector(p, p, p), normal);
+        }
+
+        [Test]
+        public void The_normal_is_a_normalized_vector()
+        {
+            var sphere = Sphere.UnitSphere();
+            var p = Math.Sqrt(3) / 3;
+            var normal = sphere.NormalAt(Tuple.Point(p, p, p));
+            Assert.AreEqual(normal, normal.Normalize);
+        }
     }
 }

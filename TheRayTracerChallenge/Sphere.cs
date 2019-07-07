@@ -45,5 +45,10 @@ namespace TheRayTracerChallenge
 
             return new IntersectionCollection(i1, i2);
         }
+
+        internal Tuple NormalAt(Tuple point)
+        {
+            return (point - Center).Normalize;
+        }
     }
 }
