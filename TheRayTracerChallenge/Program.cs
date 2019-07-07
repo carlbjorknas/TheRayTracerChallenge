@@ -11,7 +11,7 @@ namespace TheRayTracerChallenge
 
             PrintAPixelToACanvas();
             PrintClockFace();
-            PrintSphereSilhouette();
+            PrintSphereSilhouttes();
         }
 
         private static void PrintAPixelToACanvas()
@@ -41,7 +41,27 @@ namespace TheRayTracerChallenge
             File.WriteAllText("clock_face.ppm", ppm);
         }
 
-        private static void PrintSphereSilhouette()
+        private static void PrintSphereSilhouttes()
+        {
+            var sphere = Sphere.UnitSphere();
+            PrintSphereSilhouette(sphere, "sphere_silhoutte.ppm");
+
+            sphere.Transform = Transformation.Scaling(1, 0.5, 1);
+            PrintSphereSilhouette(sphere, "sphere_silhoutte_scaled.ppm");
+
+            // Shrink and rotate
+            var rotation = Transformation.RotationZ(Math.PI / 4);
+            var scaling = Transformation.Scaling(0.5, 1, 1);
+            sphere.Transform = rotation.Chain(scaling);
+            PrintSphereSilhouette(sphere, "sphere_silhoutte_scaled_and_rotated.ppm");
+
+            // shrink and skew
+            sphere.Transform = Transformation.Shearing(1, 0, 0, 0, 0, 0)
+                .Chain(Transformation.Scaling(0.5, 1, 1));
+            PrintSphereSilhouette(sphere, "sphere_silhoutte_scaled_and_skewed.ppm");
+        }
+
+        private static void PrintSphereSilhouette(Sphere shape, string filename)
         {                        
             var ray_origin = Tuple.Point(0, 0, -5);
             var wall_z = 10;
@@ -52,7 +72,6 @@ namespace TheRayTracerChallenge
 
             var canvas = new Canvas(canvas_pixels, canvas_pixels);
             var color = new Color(1, 0, 0);
-            var shape = Sphere.UnitSphere();
 
             for (var y=0; y<canvas_pixels; y++)
             {
@@ -79,7 +98,7 @@ namespace TheRayTracerChallenge
 
 
             canvas.WritePixel(0, 0, color);
-            File.WriteAllText("sphere_silhoutte.ppm", canvas.ToPpm());
+            File.WriteAllText(filename, canvas.ToPpm());
         }
     }
 }

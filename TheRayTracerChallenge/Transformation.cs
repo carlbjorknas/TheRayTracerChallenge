@@ -85,5 +85,10 @@ namespace TheRayTracerChallenge
             var newVec = _matrix * vector;
             return new Tuple(newVec[0], newVec[1], newVec[2], newVec[3]);
         }
+
+        public Transformation Chain(Transformation transformation)
+        {
+            return new Transformation(_matrix * transformation._matrix);
+        }
     }
 }
