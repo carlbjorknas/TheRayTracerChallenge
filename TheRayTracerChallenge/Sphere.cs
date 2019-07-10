@@ -18,9 +18,11 @@ namespace TheRayTracerChallenge
             Id = Guid.NewGuid();
             Center = center;
             Transform = Transformation.Identity;
+            Material = new Material();
         }
 
         public Transformation Transform { get; set; }
+        public Material Material { get; internal set; }
 
         public IntersectionCollection Intersect(Ray ray)
         {

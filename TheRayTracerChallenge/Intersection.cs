@@ -4,15 +4,15 @@ using System.Text;
 
 namespace TheRayTracerChallenge
 {
-    public struct Intersection
+    internal struct Intersection
     {
-        public Intersection(double t, object o)
+        public Intersection(double t, Sphere o)
         {
             T = t;
             Object = o;
         }
 
         public readonly double T;
-        public readonly object Object;
+        public readonly Sphere Object;
     }
 }

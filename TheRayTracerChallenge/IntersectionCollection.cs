@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TheRayTracerChallenge
 {
-    public class IntersectionCollection
+    internal class IntersectionCollection
     {
         private readonly Intersection[] _intersections;
 

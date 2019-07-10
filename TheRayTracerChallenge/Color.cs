@@ -53,5 +53,7 @@ namespace TheRayTracerChallenge
         {
             return HashCode.Combine(r, g, b);
         }
+
+        public static Color Black { get; } = new Color();
     }
 }

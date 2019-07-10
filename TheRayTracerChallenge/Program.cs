@@ -12,6 +12,7 @@ namespace TheRayTracerChallenge
             PrintAPixelToACanvas();
             PrintClockFace();
             PrintSphereSilhouttes();
+            Print3DSphere();
         }
 
         private static void PrintAPixelToACanvas()
@@ -99,6 +100,55 @@ namespace TheRayTracerChallenge
 
             canvas.WritePixel(0, 0, color);
             File.WriteAllText(filename, canvas.ToPpm());
+        }
+
+        private static void Print3DSphere()
+        {
+            var shape = Sphere.UnitSphere();
+            shape.Material.Color = new Color(1, 0.2, 1);
+
+            var ray_origin = Tuple.Point(0, 0, -5);
+            var wall_z = 10;
+            const double wall_size = 7.0;
+            const int canvas_pixels = 300;
+            var pixel_size = wall_size / canvas_pixels;
+            var half = wall_size / 2;
+
+            var light = new PointLight(Tuple.Point(-10, 10, -10), new Color(1, 1, 1));
+
+            var canvas = new Canvas(canvas_pixels, canvas_pixels);
+
+            for (var y = 0; y < canvas_pixels; y++)
+            {
+                // compute the world y coordinate (top = +half, bottom = -half)
+                var world_y = half - pixel_size * y;
+
+                for (var x = 0; x < canvas_pixels; x++)
+                {
+                    // compute the world x coordinate (left = -half, right = half)
+                    var world_x = -half + pixel_size * x;
+
+                    // describe the point on the wall that the ray will target
+                    var position = Tuple.Point(world_x, world_y, wall_z);
+
+                    var ray = new Ray(ray_origin, (position - ray_origin).Normalize);
+                    var intersections = shape.Intersect(ray);
+
+                    if (intersections.Hit() != null)
+                    {
+                        var hit = intersections.Hit().Value;
+                        var point = ray.Position(hit.T);
+                        var normalv = hit.Object.NormalAt(point);
+                        var eyev = -ray.Direction;
+                        var color = hit.Object.Material.Lightning(light, point, eyev, normalv);
+                        canvas.WritePixel(x, y, color);
+                    }
+                }
+            }
+
+
+            canvas.WritePixel(0, 0, Color.Black);
+            File.WriteAllText("sphere_3D.ppm", canvas.ToPpm());
         }
     }
 }

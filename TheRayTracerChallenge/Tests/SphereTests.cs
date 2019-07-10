@@ -188,5 +188,23 @@ namespace TheRayTracerChallenge.Tests
 
             Assert.AreEqual(Tuple.Vector(0, 0.97014, -0.24254), n);
         }
+
+        [Test]
+        public void A_sphere_has_a_default_material()
+        {
+            var s = Sphere.UnitSphere();
+            Assert.AreEqual(new Material(), s.Material);
+        }
+
+        [Test]
+        public void A_sphere_may_be_assigned_a_material()
+        {
+            var s = Sphere.UnitSphere();
+            var m = new Material();
+
+            s.Material = m;
+
+            Assert.AreEqual(m, s.Material);
+        }
     }
 }
