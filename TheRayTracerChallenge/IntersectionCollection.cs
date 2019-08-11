@@ -7,23 +7,28 @@ namespace TheRayTracerChallenge
 {
     internal class IntersectionCollection
     {
-        private readonly Intersection[] _intersections;
+        public Intersection[] Intersections;
 
         public IntersectionCollection(params Intersection[] intersections)
         {
-            _intersections = intersections
+            Intersections = intersections
                 .OrderBy(i => i.T)
                 .ToArray();
         }
 
+        public IntersectionCollection(IEnumerable<Intersection> intersections)
+        {
+            Intersections = intersections.ToArray();
+        }
+
         public int Count 
-            => _intersections.Length;
+            => Intersections.Length;
         public Intersection this[int index] 
-            => _intersections[index];
+            => Intersections[index];
 
         internal Intersection? Hit()
         {
-            return _intersections
+            return Intersections
                 .Where(i => i.T >= 0)
                 .Cast<Intersection?>()
                 .FirstOrDefault();

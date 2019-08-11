@@ -80,5 +80,48 @@ namespace TheRayTracerChallenge.Tests
 
             Assert.AreEqual(i4, hit);
         }
+
+        [Test]
+        public void Precomputing_the_state_of_an_intersection()
+        {
+            var ray = new Ray(Tuple.Point(0, 0, -5), Tuple.Vector(0, 0, 1));
+            var shape = Sphere.UnitSphere();
+            var i = new Intersection(4, shape);
+
+            var comps = i.PrepareComputations(ray);
+
+            Assert.AreEqual(i.T, comps.T);
+            Assert.AreEqual(i.Object, comps.Object);
+            Assert.AreEqual(Tuple.Point(0, 0, -1), comps.Point);
+            Assert.AreEqual(Tuple.Vector(0, 0, -1), comps.EyeVector);
+            Assert.AreEqual(Tuple.Vector(0, 0, -1), comps.NormalVector);
+        }
+
+        [Test]
+        public void The_hit_when_an_intersection_occurs_on_the_outside()
+        {
+            var ray = new Ray(Tuple.Point(0, 0, -5), Tuple.Vector(0, 0, 1));
+            var shape = Sphere.UnitSphere();
+            var i = new Intersection(4, shape);
+
+            var comps = i.PrepareComputations(ray);
+
+            Assert.IsFalse(comps.Inside);
+        }
+
+        [Test]
+        public void The_hit_when_an_intersection_occurs_on_the_inside()
+        {
+            var ray = new Ray(Tuple.Point(0, 0, 0), Tuple.Vector(0, 0, 1));
+            var shape = Sphere.UnitSphere();
+            var i = new Intersection(1, shape);
+
+            var comps = i.PrepareComputations(ray);
+
+            Assert.AreEqual(Tuple.Point(0, 0, 1), comps.Point);
+            Assert.AreEqual(Tuple.Vector(0, 0, -1), comps.EyeVector);
+            Assert.IsTrue(comps.Inside);
+            Assert.AreEqual(Tuple.Vector(0, 0, -1), comps.NormalVector);
+        }
     }
 }

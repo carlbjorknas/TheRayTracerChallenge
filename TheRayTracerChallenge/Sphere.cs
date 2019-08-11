@@ -5,7 +5,7 @@ using MathNet.Spatial.Euclidean;
 
 namespace TheRayTracerChallenge
 {
-    struct Sphere
+    class Sphere
     {
         public static Sphere UnitSphere()
             => new Sphere(Tuple.Point(0, 0, 0));
@@ -56,5 +56,14 @@ namespace TheRayTracerChallenge
             worldNormal.w = 0;
             return worldNormal.Normalize;
         }
+
+        public override bool Equals(object obj)
+            => obj is Sphere s &&
+            s.Center.Equals(Center) &&
+            s.Material.Equals(Material) &&
+            s.Transform.Equals(Transform);
+
+        public override int GetHashCode()
+            => HashCode.Combine(Center.GetHashCode(), Material.GetHashCode(), Transform.GetHashCode());
     }
 }

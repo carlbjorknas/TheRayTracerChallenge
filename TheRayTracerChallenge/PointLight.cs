@@ -14,5 +14,15 @@ namespace TheRayTracerChallenge
             this.Position = position;
             this.Intensity = intensity;
         }
+
+        public override bool Equals(object obj)
+        {
+            return obj is PointLight pl &&
+                pl.Intensity.Equals(Intensity) &&
+                pl.Position.Equals(Position);
+        }
+
+        public override int GetHashCode()
+            => HashCode.Combine(Position.GetHashCode(), Intensity.GetHashCode());
     }
 }
