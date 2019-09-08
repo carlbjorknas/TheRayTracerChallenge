@@ -54,6 +54,9 @@ namespace TheRayTracerChallenge
             return HashCode.Combine(r, g, b);
         }
 
+        public override string ToString()
+            => $"{base.ToString()} r={r}, g={g}, b={b}";
+    
         public static Color Black { get; } = new Color();
         public static Color White { get; } = new Color(1, 1, 1);
     }

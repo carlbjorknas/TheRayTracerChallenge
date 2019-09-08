@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace TheRayTracerChallenge.Tests
@@ -52,7 +53,33 @@ namespace TheRayTracerChallenge.Tests
             Assert.AreEqual(6, intersections[3].T);
         }
 
-        //[Test]
-        //public void 
+        [Test]
+        public void Shading_an_intersection()
+        {
+            var world = World.Default();
+            var ray = new Ray(Tuple.Point(0, 0, -5), Tuple.Vector(0, 0, 1));
+            var shape = world.Spheres.First();
+            var i = new Intersection(4, shape);
+            var comps = i.PrepareComputations(ray);
+
+            var color = world.ShadeHit(comps);
+
+            Assert.AreEqual(new Color(0.38066, 0.47583, 0.2855), color);
+        }
+
+        [Test]
+        public void Shading_an_intersection_from_the_inside()
+        {
+            var world = World.Default();
+            world.LightSource = new PointLight(Tuple.Point(0, 0.25, 0), Color.White);
+            var ray = new Ray(Tuple.Point(0, 0, 0), Tuple.Vector(0, 0, 1));
+            var shape = world.Spheres.Skip(1).First();
+            var i = new Intersection(0.5, shape);
+            var comps = i.PrepareComputations(ray);
+
+            var color = world.ShadeHit(comps);
+
+            Assert.AreEqual(new Color(0.90498, 0.90498, 0.90498), color);
+        }
     }
 }

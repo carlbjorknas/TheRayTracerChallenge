@@ -41,5 +41,8 @@ namespace TheRayTracerChallenge
                 .ToList();
             return new IntersectionCollection(intersections);
         }
+
+        internal Color ShadeHit(Computations comps)
+            => comps.Object.Material.Lightning(LightSource, comps.Point, comps.EyeVector, comps.NormalVector);
     }
 }
