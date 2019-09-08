@@ -44,5 +44,19 @@ namespace TheRayTracerChallenge
 
         internal Color ShadeHit(Computations comps)
             => comps.Object.Material.Lightning(LightSource, comps.Point, comps.EyeVector, comps.NormalVector);
+
+        internal Color ColorAt(Ray ray)
+        {
+            var intersections = Intersect(ray);
+            var hit = intersections.Hit();
+
+            if (hit == null)
+            {
+                return Color.Black;
+            }
+
+            var comps = hit.Value.PrepareComputations(ray);
+            return ShadeHit(comps);
+        }
     }
 }

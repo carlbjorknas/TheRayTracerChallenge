@@ -81,5 +81,42 @@ namespace TheRayTracerChallenge.Tests
 
             Assert.AreEqual(new Color(0.90498, 0.90498, 0.90498), color);
         }
+
+        [Test]
+        public void The_color_when_a_ray_misses()
+        {
+            var world = World.Default();
+            var ray = new Ray(Tuple.Point(0, 0, -5), Tuple.Vector(0, 1, 0));
+
+            var color = world.ColorAt(ray);
+
+            Assert.AreEqual(Color.Black, color);
+        }
+
+        [Test]
+        public void The_color_when_a_ray_hits()
+        {
+            var world = World.Default();
+            var ray = new Ray(Tuple.Point(0, 0, -5), Tuple.Vector(0, 0, 1));
+
+            var color = world.ColorAt(ray);
+
+            Assert.AreEqual(new Color(0.38066, 0.47583, 0.2855), color);
+        }
+
+        [Test]
+        public void The_color_with_an_intersection_behind_the_ray()
+        {
+            var world = World.Default();
+            var outer = world.Spheres.First();
+            outer.Material.Ambient = 1;
+            var inner = world.Spheres.Skip(1).First();
+            inner.Material.Ambient = 1;
+            var ray = new Ray(Tuple.Point(0, 0, 0.75), Tuple.Vector(0, 0, -1));
+
+            var color = world.ColorAt(ray);
+
+            Assert.AreEqual(inner.Material.Color, color);
+        }
     }
 }
