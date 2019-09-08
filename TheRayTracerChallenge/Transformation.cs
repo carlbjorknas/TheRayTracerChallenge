@@ -7,18 +7,16 @@ namespace TheRayTracerChallenge
 {
     class Transformation
     {
-        Matrix<double> _matrix;
-
         private Transformation(Matrix<double> matrix)
         {
-            _matrix = matrix;
+            Matrix = matrix;
         }
 
         public Transformation Inverse
-            => new Transformation(_matrix.Inverse());
+            => new Transformation(Matrix.Inverse());
 
         public Transformation Transpose
-            => new Transformation(_matrix.Transpose());
+            => new Transformation(Matrix.Transpose());
 
         public static Transformation Translation(double x, double y, double z)
         {
@@ -80,18 +78,54 @@ namespace TheRayTracerChallenge
             return new Transformation(matrix);
         }
 
+        internal static Transformation ViewTransform(Tuple from, Tuple to, Tuple up)
+        {
+            var forwardVec = (to - from).Normalize;
+            var leftVec = forwardVec.Cross(up.Normalize);
+            var trueUpVec = leftVec.Cross(forwardVec);
+
+            var orientationMatrix = Matrix<double>.Build.DenseIdentity(4, 4);
+            orientationMatrix[0, 0] = leftVec.x;
+            orientationMatrix[0, 1] = leftVec.y;
+            orientationMatrix[0, 2] = leftVec.z;
+            orientationMatrix[1, 0] = trueUpVec.x;
+            orientationMatrix[1, 1] = trueUpVec.y;
+            orientationMatrix[1, 2] = trueUpVec.z;
+            orientationMatrix[2, 0] = -forwardVec.x;
+            orientationMatrix[2, 1] = -forwardVec.y;
+            orientationMatrix[2, 2] = -forwardVec.z;
+            orientationMatrix[3, 3] = 1;
+
+            var translation = Translation(-from.x, -from.y, -from.z);
+
+            return new Transformation(orientationMatrix).Chain(translation);
+        }
+
         internal static Transformation Identity { get; } = new Transformation(Matrix<double>.Build.DenseIdentity(4, 4));        
 
         public Tuple Transform(Tuple tuple)
         {
             var vector = Vector<double>.Build.Dense(new[] { tuple.x, tuple.y, tuple.z, tuple.w });
-            var newVec = _matrix * vector;
+            var newVec = Matrix * vector;
             return new Tuple(newVec[0], newVec[1], newVec[2], newVec[3]);
         }
 
         public Transformation Chain(Transformation transformation)
         {
-            return new Transformation(_matrix * transformation._matrix);
+            return new Transformation(Matrix * transformation.Matrix);
         }
+
+        public Matrix<double> Matrix { get; }
+
+        public override string ToString()
+        {
+            return $"{base.ToString()} {Matrix}";
+        }
+
+        public override bool Equals(object obj)
+            => obj is Transformation t && Matrix.Equals(t.Matrix);
+
+        public override int GetHashCode()
+            => Matrix.GetHashCode();
     }
 }

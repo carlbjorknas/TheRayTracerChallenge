@@ -1,4 +1,6 @@
-﻿using NUnit.Framework;
+﻿using MathNet.Numerics.LinearAlgebra;
+using MathNet.Numerics.LinearAlgebra.Double;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -205,6 +207,61 @@ namespace TheRayTracerChallenge.Tests
             var shearedPoint = transformation.Transform(p);
 
             Assert.AreEqual(Tuple.Point(2, 3, 7), shearedPoint);
+        }
+
+        [Test]
+        public void The_transformation_matrix_for_the_default_orientation()
+        {
+            var from = Tuple.Point(0, 0, 0);
+            var to = Tuple.Point(0, 0, -1);
+            var up = Tuple.Vector(0, 1, 0);
+
+            var transform = Transformation.ViewTransform(from, to, up);
+
+            Assert.AreEqual(Transformation.Identity, transform);
+        }
+
+        [Test]
+        public void A_view_transformation_matrix_looking_in_positive_z_direction()
+        {
+            var from = Tuple.Point(0, 0, 0);
+            var to = Tuple.Point(0, 0, 1);
+            var up = Tuple.Vector(0, 1, 0);
+
+            var transform = Transformation.ViewTransform(from, to, up);
+
+            Assert.AreEqual(Transformation.Scaling(-1, 1, -1), transform);
+        }
+
+        [Test]
+        public void The_view_transformation_moves_the_world()
+        {
+            var from = Tuple.Point(0, 0, 8);
+            var to = Tuple.Point(0, 0, 0);
+            var up = Tuple.Vector(0, 1, 0);
+
+            var transform = Transformation.ViewTransform(from, to, up);
+
+            Assert.AreEqual(Transformation.Translation(0, 0, -8), transform);
+        }
+
+        [Test]
+        public void An_arbitrary_view_transformation()
+        {
+            var from = Tuple.Point(1, 3, 2);
+            var to = Tuple.Point(4, -2, 8);
+            var up = Tuple.Vector(1, 1, 0);
+
+            var transform = Transformation.ViewTransform(from, to, up);
+
+            Matrix<double> expected = DenseMatrix.OfArray(new double[,] {
+                {-0.50709,  0.50709,  0.67612, -2.36643 },
+                { 0.76772,  0.60609,  0.12122, -2.82843 },
+                { -0.35857, 0.59761, -0.71714,  0.00000 },
+                { 0.00000 , 0.00000,  0.00000,  1.00000 } });
+
+            // The expected matrix values from the books are rounded, 
+            Assert.AreEqual(expected.ToString("F5"), transform.Matrix.ToString("F5"));
         }
     }
 }
