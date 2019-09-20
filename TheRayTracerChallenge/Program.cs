@@ -13,6 +13,7 @@ namespace TheRayTracerChallenge
             PrintClockFace();
             PrintSphereSilhouttes();
             Print3DSphere();
+            PrintAScene();
         }
 
         private static void PrintAPixelToACanvas()
@@ -149,6 +150,81 @@ namespace TheRayTracerChallenge
 
             canvas.WritePixel(0, 0, Color.Black);
             File.WriteAllText("sphere_3D.ppm", canvas.ToPpm());
+        }
+
+        static void PrintAScene()
+        {
+            var floor = Sphere.UnitSphere();
+            floor.Transform = Transformation.Scaling(10, 0.01, 10);
+            floor.Material = new Material
+            {
+                Color = new Color(1, 0.9, 0.9),
+                Specular = 0
+            };
+
+            var leftWall = Sphere.UnitSphere();
+            leftWall.Transform =
+                Transformation.Translation(0, 0, 5)
+                    .Chain(Transformation.RotationY(-Math.PI / 4))
+                    .Chain(Transformation.RotationX(Math.PI / 2))
+                    .Chain(Transformation.Scaling(10, 0.01, 10));                   
+            leftWall.Material = floor.Material;
+
+            var rightWall = Sphere.UnitSphere();
+            rightWall.Transform =
+                Transformation.Translation(0, 0, 5)
+                    .Chain(Transformation.RotationY(Math.PI / 4))
+                    .Chain(Transformation.RotationX(Math.PI / 2))
+                    .Chain(Transformation.Scaling(10, 0.01, 10));
+            rightWall.Material = floor.Material;
+
+            var middle = Sphere.UnitSphere();
+            middle.Transform = Transformation.Translation(-0.5, 1, 0.5);
+            middle.Material = new Material
+            {
+                Color = new Color(0.1, 1, 0.5),
+                Diffuse = 0.7,
+                Specular = 0.3
+            };
+
+            var right = Sphere.UnitSphere();
+            right.Transform = Transformation.Translation(1.5, 0.5, -0.5)
+                .Chain(Transformation.Scaling(0.5, 0.5, 0.5));
+            right.Material = new Material
+            {
+                Color = new Color(0.5, 1, 0.1),
+                Diffuse = 0.7,
+                Specular = 0.3
+            };
+
+            var left = Sphere.UnitSphere();
+            left.Transform = Transformation.Translation(-1.5, 0.33, -0.75)
+                .Chain(Transformation.Scaling(0.33, 0.33, 0.33));
+            left.Material = new Material
+            {
+                Color = new Color(1, 0.8, 0.1),
+                Diffuse = 0.7,
+                Specular = 0.3
+            };
+
+            var world = new World();
+            world.LightSource = new PointLight(Tuple.Point(-10, 10, -10), Color.White);
+            world.Spheres.Add(floor);
+            world.Spheres.Add(leftWall);
+            world.Spheres.Add(rightWall);
+            world.Spheres.Add(left);
+            world.Spheres.Add(middle);
+            world.Spheres.Add(right);
+
+            var camera = new Camera(1000, 500, Math.PI / 3);
+            camera.Transform = Transformation.ViewTransform(
+                Tuple.Point(0, 1.5, -5),
+                Tuple.Point(0, 1, 0),
+                Tuple.Point(0, 1, 0));
+
+            var canvas = camera.Render(world);
+
+            File.WriteAllText("scene.ppm", canvas.ToPpm());
         }
     }
 }
