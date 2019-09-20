@@ -9,7 +9,7 @@ namespace TheRayTracerChallenge.Tests
     public class CameraTests
     {
         [Test]
-        public void Contruction_a_camera()
+        public void Contructing_a_camera()
         {
             var hSize = 160;
             var vSize = 120;
@@ -21,6 +21,20 @@ namespace TheRayTracerChallenge.Tests
             Assert.AreEqual(vSize, camera.VSize);
             Assert.AreEqual(fieldOfView, camera.FieldOfView);
             Assert.AreEqual(Transformation.Identity, camera.Transform);
+        }
+
+        [Test]
+        public void The_pixel_size_for_a_horizontal_canvas()
+        {
+            var camera = new Camera(200, 125, Math.PI / 2);
+            Assert.AreEqual(0.01, camera.PixelSize, 0.00001);
+        }
+
+        [Test]
+        public void The_pixel_size_for_a_vertical_canvas()
+        {
+            var camera = new Camera(125, 200, Math.PI / 2);
+            Assert.AreEqual(0.01, camera.PixelSize, 0.00001);
         }
     }
 }
