@@ -36,5 +36,36 @@ namespace TheRayTracerChallenge.Tests
             var camera = new Camera(125, 200, Math.PI / 2);
             Assert.AreEqual(0.01, camera.PixelSize, 0.00001);
         }
+
+        [Test]
+        public void Constructing_a_ray_through_the_center_of_the_canvas()
+        {
+            var camera = new Camera(201, 101, Math.PI / 2);
+            var ray = camera.RayForPixel(100, 50);
+
+            Assert.AreEqual(Tuple.Point(0, 0, 0), ray.Point);
+            Assert.AreEqual(Tuple.Vector(0, 0, -1), ray.Direction);
+        }
+
+        [Test]
+        public void Constructing_a_ray_through_a_corner_of_the_canvas()
+        {
+            var camera = new Camera(201, 101, Math.PI / 2);
+            var ray = camera.RayForPixel(0, 0);
+
+            Assert.AreEqual(Tuple.Point(0, 0, 0), ray.Point);
+            Assert.AreEqual(Tuple.Vector(0.66519, 0.33259, -0.66851), ray.Direction);
+        }
+
+        [Test]
+        public void Constructing_a_ray_when_the_camera_is_transformed()
+        {
+            var camera = new Camera(201, 101, Math.PI / 2);
+            camera.Transform = Transformation.RotationY(Math.PI / 4).Chain(Transformation.Translation(0, -2, 5));
+            var ray = camera.RayForPixel(100, 50);
+
+            Assert.AreEqual(Tuple.Point(0, 2, -5), ray.Point);
+            Assert.AreEqual(Tuple.Vector(Math.Sqrt(2) / 2, 0, -Math.Sqrt(2) / 2), ray.Direction);
+        }
     }
 }

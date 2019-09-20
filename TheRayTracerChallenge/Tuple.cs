@@ -96,6 +96,9 @@ namespace TheRayTracerChallenge
             z * t.x - x * t.z,
             x * t.y - y * t.x);
 
+        public override string ToString()
+            => $"x={x} y={y} z={z} w={w}";
+
         public static Tuple operator/(Tuple t, double d)
         {
             return new Tuple(t.x / d, t.y / d, t.z / d, t.w / d);
