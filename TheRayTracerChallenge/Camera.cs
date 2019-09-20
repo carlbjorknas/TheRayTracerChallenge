@@ -18,8 +18,8 @@ namespace TheRayTracerChallenge
         private double _halfWidth;
         private double _halfHeight;
 
-        public double HSize { get; }
-        public double VSize { get; }
+        public int HSize { get; }
+        public int VSize { get; }
         public double FieldOfView { get; }
         public Transformation Transform { get; set; }
         public double PixelSize { get; internal set; }        
@@ -62,6 +62,21 @@ namespace TheRayTracerChallenge
             var direction = (pixel - origin).Normalize;
 
             return new Ray(origin, direction);
+        }
+
+        internal Canvas Render(World world)
+        {
+            var image = new Canvas(HSize, VSize);
+            for (var y = 0; y < VSize; y++)
+            {
+                for (var x = 0; x < HSize; x++)
+                {
+                    var ray = RayForPixel(x, y);
+                    var color = world.ColorAt(ray);
+                    image.WritePixel(x, y, color);
+                }
+            }
+            return image;
         }
     }
 }

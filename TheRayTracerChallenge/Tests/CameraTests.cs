@@ -67,5 +67,20 @@ namespace TheRayTracerChallenge.Tests
             Assert.AreEqual(Tuple.Point(0, 2, -5), ray.Point);
             Assert.AreEqual(Tuple.Vector(Math.Sqrt(2) / 2, 0, -Math.Sqrt(2) / 2), ray.Direction);
         }
+
+        [Test]
+        public void Rendering_a_world_with_the_camera()
+        {
+            var world = World.Default();
+            var camera = new Camera(11, 11, Math.PI / 2);
+            var from = Tuple.Point(0, 0, -5);
+            var to = Tuple.Point(0, 0, 0);
+            var up = Tuple.Vector(0, 1, 0);
+            camera.Transform = Transformation.ViewTransform(from, to, up);
+
+            var image = camera.Render(world);
+
+            Assert.AreEqual(new Color(0.38066, 0.47583, 0.2855), image.PixelAt(5, 5));
+        }
     }
 }
