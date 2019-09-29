@@ -118,5 +118,37 @@ namespace TheRayTracerChallenge.Tests
 
             Assert.AreEqual(inner.Material.Color, color);
         }
+
+        [Test]
+        public void There_is_no_shadow_when_nothing_is_collinear_with_the_point_and_light()
+        {
+            var world = World.Default();
+            var point = Tuple.Point(0, 10, 0);
+            Assert.IsFalse(world.IsShadowed(point));
+        }
+
+        [Test]
+        public void In_shadow_when_an_object_is_between_the_point_and_the_light()
+        {
+            var world = World.Default();
+            var point = Tuple.Point(10, -10, 10);
+            Assert.IsTrue(world.IsShadowed(point));
+        }
+
+        [Test]
+        public void There_is_no_shadow_when_an_object_is_behind_the_light()
+        {
+            var world = World.Default();
+            var point = Tuple.Point(-20, 20, -20);
+            Assert.IsFalse(world.IsShadowed(point));
+        }
+
+        [Test]
+        public void There_is_no_shadow_when_an_object_is_behind_the_point()
+        {
+            var world = World.Default();
+            var point = Tuple.Point(-2, 2, -2);
+            Assert.IsFalse(world.IsShadowed(point));
+        }
     }
 }

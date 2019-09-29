@@ -58,5 +58,16 @@ namespace TheRayTracerChallenge
             var comps = hit.Value.PrepareComputations(ray);
             return ShadeHit(comps);
         }
+
+        internal bool IsShadowed(Tuple point)
+        {
+            var toLightVector = LightSource.Position - point;            
+            var rayToLight = new Ray(point, toLightVector.Normalize);
+            var intersections = Intersect(rayToLight);
+
+            var hit = intersections.Hit();
+            var distance = toLightVector.Magnitude;
+            return hit.HasValue && hit.Value.T < distance;            
+        }
     }
 }
