@@ -43,7 +43,7 @@ namespace TheRayTracerChallenge
         }
 
         internal Color ShadeHit(Computations comps)
-            => comps.Object.Material.Lightning(LightSource, comps.Point, comps.EyeVector, comps.NormalVector);
+            => comps.Object.Material.Lighting(LightSource, comps.Point, comps.EyeVector, comps.NormalVector, false);
 
         internal Color ColorAt(Ray ray)
         {

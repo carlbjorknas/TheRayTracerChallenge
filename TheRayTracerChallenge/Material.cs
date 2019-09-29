@@ -36,11 +36,14 @@ namespace TheRayTracerChallenge
             return HashCode.Combine(Color, Ambient, Diffuse, Specular, Shininess);
         }
 
-        internal Color Lightning(PointLight light, Tuple position, Tuple eyev, Tuple normalv)
+        internal Color Lighting(PointLight light, Tuple position, Tuple eyev, Tuple normalv, bool inShadow)
         {
             var effectiveColor = Color * light.Intensity;
             var lightv = (light.Position - position).Normalize;
             var ambient = effectiveColor * Ambient;
+
+            if (inShadow)
+                return ambient;
 
             var lightDotNormal = lightv.Dot(normalv);
             if (lightDotNormal < 0)

@@ -141,7 +141,7 @@ namespace TheRayTracerChallenge
                         var point = ray.Position(hit.T);
                         var normalv = hit.Object.NormalAt(point);
                         var eyev = -ray.Direction;
-                        var color = hit.Object.Material.Lightning(light, point, eyev, normalv);
+                        var color = hit.Object.Material.Lighting(light, point, eyev, normalv, false);
                         canvas.WritePixel(x, y, color);
                     }
                 }
