@@ -27,7 +27,7 @@ namespace TheRayTracerChallenge
         private void PrecalculateAndSetCanvasData()
         {
             var halfView = Math.Tan(FieldOfView / 2);
-            var aspect = HSize / VSize;
+            var aspect = (double)HSize / VSize;
 
             if (aspect >= 1)
             {
