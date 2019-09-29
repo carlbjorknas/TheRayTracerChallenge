@@ -150,5 +150,29 @@ namespace TheRayTracerChallenge.Tests
             var point = Tuple.Point(-2, 2, -2);
             Assert.IsFalse(world.IsShadowed(point));
         }
+
+        [Test]
+        public void The_ShadeHit_method_is_given_an_intersection_in_shadow()
+        {
+            var world = new World
+            {
+                LightSource = new PointLight(Tuple.Point(0, 0, -10), Color.White)
+            };
+
+            var shadowingSphere = Sphere.UnitSphere();
+            world.Spheres.Add(shadowingSphere);
+
+            var shadowedSphere = Sphere.UnitSphere();
+            shadowedSphere.Transform = Transformation.Translation(0, 0, 10);
+            world.Spheres.Add(shadowedSphere);
+
+            var ray = new Ray(Tuple.Point(0, 0, 5), Tuple.Vector(0, 0, 1));
+            var intersection = new Intersection(4, shadowedSphere);
+            var comps = intersection.PrepareComputations(ray);
+
+            var color = world.ShadeHit(comps);
+
+            Assert.AreEqual(new Color(0.1, 0.1, 0.1), color);
+        }
     }
 }
