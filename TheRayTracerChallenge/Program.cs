@@ -21,7 +21,7 @@ namespace TheRayTracerChallenge
             var canvas = new Canvas(5, 5);
             canvas.WritePixel(1, 1, new Color(1, 1, 1));
             var ppm = canvas.ToPpm();
-            File.WriteAllText("single_pixel.ppm", ppm);
+            SaveImage("single_pixel.ppm", ppm);
         }
 
         private static void PrintClockFace()
@@ -40,7 +40,7 @@ namespace TheRayTracerChallenge
             }
 
             var ppm = canvas.ToPpm();
-            File.WriteAllText("clock_face.ppm", ppm);
+            SaveImage("clock_face.ppm", ppm);
         }
 
         private static void PrintSphereSilhouttes()
@@ -100,7 +100,7 @@ namespace TheRayTracerChallenge
 
 
             canvas.WritePixel(0, 0, color);
-            File.WriteAllText(filename, canvas.ToPpm());
+            SaveImage(filename, canvas.ToPpm());
         }
 
         private static void Print3DSphere()
@@ -149,7 +149,7 @@ namespace TheRayTracerChallenge
 
 
             canvas.WritePixel(0, 0, Color.Black);
-            File.WriteAllText("sphere_3D.ppm", canvas.ToPpm());
+            SaveImage("sphere_3D.ppm", canvas.ToPpm());
         }
 
         static void PrintAScene()
@@ -224,7 +224,12 @@ namespace TheRayTracerChallenge
 
             var canvas = camera.Render(world);
 
-            File.WriteAllText("scene.ppm", canvas.ToPpm());
+            SaveImage("scene.ppm", canvas.ToPpm());
+        }
+
+        private static void SaveImage(string name, string ppm)
+        {
+            File.WriteAllText("..\\..\\..\\Images\\" + name, ppm);
         }
     }
 }
