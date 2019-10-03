@@ -56,7 +56,7 @@ namespace TheRayTracerChallenge
 
         private bool Equals(double d1, double d2)
         {
-            return Math.Abs(d1 - d2) < 0.00001;
+            return Math.Abs(d1 - d2) < Constants.Epsilon;
         }
 
         public override int GetHashCode()

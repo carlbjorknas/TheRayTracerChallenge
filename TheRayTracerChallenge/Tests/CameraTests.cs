@@ -27,14 +27,14 @@ namespace TheRayTracerChallenge.Tests
         public void The_pixel_size_for_a_horizontal_canvas()
         {
             var camera = new Camera(200, 125, Math.PI / 2);
-            Assert.AreEqual(0.01, camera.PixelSize, 0.00001);
+            Assert.AreEqual(0.01, camera.PixelSize, Constants.Epsilon);
         }
 
         [Test]
         public void The_pixel_size_for_a_vertical_canvas()
         {
             var camera = new Camera(125, 200, Math.PI / 2);
-            Assert.AreEqual(0.01, camera.PixelSize, 0.00001);
+            Assert.AreEqual(0.01, camera.PixelSize, Constants.Epsilon);
         }
 
         [Test]

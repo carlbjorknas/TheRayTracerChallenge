@@ -123,5 +123,19 @@ namespace TheRayTracerChallenge.Tests
             Assert.IsTrue(comps.Inside);
             Assert.AreEqual(Tuple.Vector(0, 0, -1), comps.NormalVector);
         }
+
+        [Test]
+        public void The_hit_should_offset_the_point()
+        {
+            var ray = new Ray(Tuple.Point(0, 0, -5), Tuple.Vector(0, 0, 1));
+            var sphere = Sphere.UnitSphere();
+            sphere.Transform = Transformation.Translation(0, 0, 1);
+            var intersection = new Intersection(5, sphere);
+
+            var comps = intersection.PrepareComputations(ray);
+
+            Assert.Less(comps.OverPoint.z, -Constants.Epsilon / 2);
+            Assert.Greater(comps.Point.z, comps.OverPoint.z);
+        }
     }
 }

@@ -21,7 +21,7 @@ namespace TheRayTracerChallenge
             c.T = T;
             c.Object = Object;
             c.Point = ray.Position(T);
-            c.EyeVector = -ray.Direction;
+            c.EyeVector = -ray.Direction;            
             c.NormalVector = Object.NormalAt(c.Point);
 
             if (c.NormalVector.Dot(c.EyeVector) < 0)
@@ -29,6 +29,8 @@ namespace TheRayTracerChallenge
                 c.Inside = true;
                 c.NormalVector = -c.NormalVector;
             }
+
+            c.OverPoint = c.Point + c.NormalVector * Constants.Epsilon;
 
             return c;
         }

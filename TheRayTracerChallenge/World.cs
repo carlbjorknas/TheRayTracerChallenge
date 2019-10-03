@@ -44,7 +44,7 @@ namespace TheRayTracerChallenge
 
         internal Color ShadeHit(Computations comps)
         {
-            var isShadowed = IsShadowed(comps.Point);
+            var isShadowed = IsShadowed(comps.OverPoint);
             return comps.Object.Material.Lighting(LightSource, comps.Point, comps.EyeVector, comps.NormalVector, isShadowed);
         }
 
