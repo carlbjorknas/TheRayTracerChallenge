@@ -5,7 +5,7 @@ using MathNet.Spatial.Euclidean;
 
 namespace TheRayTracerChallenge
 {
-    class Sphere
+    class Sphere : Shape
     {
         public static Sphere UnitSphere()
             => new Sphere(Tuple.Point(0, 0, 0));
@@ -16,20 +16,14 @@ namespace TheRayTracerChallenge
         public Sphere(Tuple center)
         {
             Id = Guid.NewGuid();
-            Center = center;
-            Transform = Transformation.Identity;
-            Material = new Material();
+            Center = center;            
         }
 
-        public Transformation Transform { get; set; }
-        public Material Material { get; internal set; }
-
-        public IntersectionCollection Intersect(Ray ray)
-        {
-            var transformedRay = ray.Transform(Transform.Inverse);
-            var sphereToRay = transformedRay.Point - Center;
-            var a = transformedRay.Direction.Dot(transformedRay.Direction);
-            var b = 2 * (transformedRay.Direction.Dot(sphereToRay));
+        protected override IntersectionCollection LocalIntersect(Ray localRay)
+        {            
+            var sphereToRay = localRay.Point - Center;
+            var a = localRay.Direction.Dot(localRay.Direction);
+            var b = 2 * (localRay.Direction.Dot(sphereToRay));
             var c = sphereToRay.Dot(sphereToRay) - 1;
             var discriminant = b * b - 4 * a * c;
 

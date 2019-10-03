@@ -88,43 +88,6 @@ namespace TheRayTracerChallenge.Tests
         }
 
         [Test]
-        public void A_spheres_default_transformation()
-        {
-            var s = Sphere.UnitSphere();
-            Assert.AreSame(Transformation.Identity, s.Transform);
-        }
-
-        [Test]
-        public void Intersecting_a_scaled_sphere_with_a_ray()
-        {
-            var ray = new Ray(
-                Tuple.Point(0, 0, -5),
-                Tuple.Vector(0, 0, 1));
-            var sphere = Sphere.UnitSphere();
-            sphere.Transform = Transformation.Scaling(2,2,2);
-
-            var intersections = sphere.Intersect(ray);
-
-            Assert.AreEqual(2, intersections.Count);
-            Assert.AreEqual(3, intersections[0].T);
-            Assert.AreEqual(7, intersections[1].T);
-        }
-
-        [Test]
-        public void Intersecting_a_translated_sphere_with_a_ray()
-        {
-            var ray = new Ray(
-                Tuple.Point(0, 0, -5),
-                Tuple.Vector(0, 0, 1));
-            var sphere = Sphere.UnitSphere();
-            sphere.Transform = Transformation.Translation(5, 0, 0);
-
-            var intersections = sphere.Intersect(ray);
-
-            Assert.AreEqual(0, intersections.Count);
-        }
-
-        [Test]
         public void The_normal_on_a_sphere_at_a_point_on_the_x_axis()
         {
             var sphere = Sphere.UnitSphere();
@@ -187,24 +150,6 @@ namespace TheRayTracerChallenge.Tests
             var n = sphere.NormalAt(Tuple.Point(0, Math.Sqrt(2)/2, -Math.Sqrt(2) / 2));
 
             Assert.AreEqual(Tuple.Vector(0, 0.97014, -0.24254), n);
-        }
-
-        [Test]
-        public void A_sphere_has_a_default_material()
-        {
-            var s = Sphere.UnitSphere();
-            Assert.AreEqual(new Material(), s.Material);
-        }
-
-        [Test]
-        public void A_sphere_may_be_assigned_a_material()
-        {
-            var s = Sphere.UnitSphere();
-            var m = new Material();
-
-            s.Material = m;
-
-            Assert.AreEqual(m, s.Material);
         }
     }
 }
