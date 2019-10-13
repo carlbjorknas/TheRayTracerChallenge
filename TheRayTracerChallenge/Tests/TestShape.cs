@@ -13,5 +13,8 @@ namespace TheRayTracerChallenge.Tests
             LocalRay = localRay;
             return new IntersectionCollection();
         }
+
+        protected override Tuple LocalNormalAt(Tuple localPoint)
+            => Tuple.Vector(localPoint.x, localPoint.y, localPoint.z);
     }
 }

@@ -70,5 +70,26 @@ namespace TheRayTracerChallenge.Tests
             Assert.AreEqual(Tuple.Point(-5, 0, -5), shape.LocalRay.Point);
             Assert.AreEqual(Tuple.Vector(0, 0, 1), shape.LocalRay.Direction);
         }
+
+        [Test]
+        public void Computing_the_normal_on_a_translated_shape()
+        {
+            var shape = new TestShape();
+            shape.Transform = Transformation.Translation(0, 1, 0);
+            var normal = shape.NormalAt(Tuple.Point(0, 1.70711, -0.70711));
+
+            Assert.AreEqual(Tuple.Vector(0, 0.70711, -0.70711), normal);
+        }
+
+        [Test]
+        public void Computing_the_normal_on_a_transformed_shape()
+        {
+            var shape = new TestShape();
+            shape.Transform = Transformation.Scaling(1, 0.5, 1)
+                .Chain(Transformation.RotationZ(Math.PI/5));
+            var normal = shape.NormalAt(Tuple.Point(0, Math.Sqrt(2) / 2, -Math.Sqrt(2) / 2));
+
+            Assert.AreEqual(Tuple.Vector(0, 0.97014, -0.24254), normal);
+        }
     }
 }

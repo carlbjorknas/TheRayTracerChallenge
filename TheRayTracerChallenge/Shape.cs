@@ -22,5 +22,16 @@ namespace TheRayTracerChallenge
         }
 
         protected abstract IntersectionCollection LocalIntersect(Ray localRay);
+
+        public Tuple NormalAt(Tuple point)
+        {
+            var localPoint = Transform.Inverse.Transform(point);
+            var localNormal = LocalNormalAt(localPoint);
+            var worldNormal = Transform.Inverse.Transpose.Transform(localNormal);
+            worldNormal.w = 0;
+            return worldNormal.Normalize;
+        }
+
+        protected abstract Tuple LocalNormalAt(Tuple localPoint);
     }
 }

@@ -10,6 +10,13 @@ namespace TheRayTracerChallenge.Tests
     public class SphereTests
     {
         [Test]
+        public void A_sphere_is_a_shape()
+        {
+            var sphere = Sphere.UnitSphere();
+            Assert.IsTrue(sphere is Shape);
+        }
+
+        [Test]
         public void A_ray_intersects_a_sphere_at_a_tangent()
         {
             var ray = new Ray(

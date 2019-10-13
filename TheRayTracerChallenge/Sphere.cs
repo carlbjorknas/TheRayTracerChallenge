@@ -42,14 +42,8 @@ namespace TheRayTracerChallenge
             return new IntersectionCollection(i1, i2);
         }
 
-        internal Tuple NormalAt(Tuple point)
-        {
-            var objectPoint = Transform.Inverse.Transform(point);
-            var objectNormal = objectPoint - Center;
-            var worldNormal = Transform.Inverse.Transpose.Transform(objectNormal);
-            worldNormal.w = 0;
-            return worldNormal.Normalize;
-        }
+        protected override Tuple LocalNormalAt(Tuple localPoint)
+            => localPoint - Center;
 
         public override bool Equals(object obj)
             => obj is Sphere s &&
