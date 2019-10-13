@@ -37,11 +37,11 @@ namespace TheRayTracerChallenge
             return HashCode.Combine(Color, Ambient, Diffuse, Specular, Shininess);
         }
 
-        internal Color Lighting(PointLight light, Tuple point, Tuple eyev, Tuple normalv, bool inShadow)
+        internal Color Lighting(Shape shape, PointLight light, Tuple point, Tuple eyev, Tuple normalv, bool inShadow)
         {
             var color = Pattern == null 
                 ? Color 
-                : Pattern.StripeAt(point);
+                : Pattern.StripeAtObject(shape, point);
 
             var effectiveColor = color * light.Intensity;
             var lightv = (light.Position - point).Normalize;

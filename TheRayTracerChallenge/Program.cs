@@ -14,7 +14,8 @@ namespace TheRayTracerChallenge
             //PrintSphereSilhouttes();
             //Print3DSphere();
             //PrintAScene();
-            PrintASceneUsingAPlane();
+            //PrintASceneUsingAPlane();
+            PrintASceneWithPattern();
         }
 
         private static void PrintAPixelToACanvas()
@@ -142,7 +143,7 @@ namespace TheRayTracerChallenge
                         var point = ray.Position(hit.T);
                         var normalv = hit.Object.NormalAt(point);
                         var eyev = -ray.Direction;
-                        var color = hit.Object.Material.Lighting(light, point, eyev, normalv, false);
+                        var color = hit.Object.Material.Lighting(shape, light, point, eyev, normalv, false);
                         canvas.WritePixel(x, y, color);
                     }
                 }
@@ -234,7 +235,7 @@ namespace TheRayTracerChallenge
             floor.Transform = Transformation.Scaling(10, 0.01, 10);
             floor.Material = new Material
             {
-                Pattern = new StripePattern(Color.White, new Color(0.1, 0.1, 0.5)),
+                Color = new Color(1, 0.9, 0.9),
                 Specular = 0
             };
 
@@ -283,6 +284,67 @@ namespace TheRayTracerChallenge
             var canvas = camera.Render(world);
 
             SaveImage("scene_with_plane.ppm", canvas.ToPpm());
+        }
+
+        static void PrintASceneWithPattern()
+        {
+            var floor = new Plane();
+            floor.Material = new Material
+            {
+                Pattern = new StripePattern(Color.White, new Color(0.2, 0.2, 1)),
+                Specular = 0
+            };
+
+            var middle = Sphere.UnitSphere();
+            middle.Transform = Transformation.Translation(-0.5, 0, 0.5);
+            middle.Material = new Material
+            {
+                Color = new Color(0.1, 1, 0.5),
+                Diffuse = 0.7,
+                Specular = 0.3
+            };
+
+            var right = Sphere.UnitSphere();
+            right.Transform = Transformation.Translation(1.5, 0.5, -0.5)
+                .Chain(Transformation.Scaling(0.5, 0.5, 0.5))
+                .Chain(Transformation.RotationZ(Math.PI / 4))
+                .Chain(Transformation.RotationY(Math.PI / 4));                
+            right.Material = new Material
+            {
+                Pattern = new StripePattern(Color.Black, new Color(0.5, 1, 0.1))
+                {
+                    Transform = Transformation.Scaling(0.1, 0.1, 0.1)
+                },                
+                Diffuse = 0.7,
+                Specular = 0.3
+            };
+
+            var left = Sphere.UnitSphere();
+            left.Transform = Transformation.Translation(-1.5, 0.33, -0.75)
+                .Chain(Transformation.Scaling(0.33, 0.33, 0.33));
+            left.Material = new Material
+            {
+                Color = new Color(1, 0.8, 0.1),
+                Diffuse = 0.7,
+                Specular = 0.3
+            };
+
+            var world = new World();
+            world.LightSource = new PointLight(Tuple.Point(-10, 10, -10), Color.White);
+            world.Shapes.Add(floor);
+            world.Shapes.Add(left);
+            world.Shapes.Add(middle);
+            world.Shapes.Add(right);
+
+            var camera = new Camera(1000, 500, Math.PI / 3);
+            camera.Transform = Transformation.ViewTransform(
+                Tuple.Point(0, 1.5, -5),
+                Tuple.Point(0, 1, 0),
+                Tuple.Point(0, 1, 0));
+
+            var canvas = camera.Render(world);
+
+            SaveImage("scene_with_patterned_plane.ppm", canvas.ToPpm());
         }
 
         private static void SaveImage(string name, string ppm)

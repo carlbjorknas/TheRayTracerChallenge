@@ -45,5 +45,39 @@ namespace TheRayTracerChallenge.Tests
             Assert.AreEqual(Color.Black, pattern.StripeAt(Tuple.Point(-1, 0, 0)));
             Assert.AreEqual(Color.White, pattern.StripeAt(Tuple.Point(-1.1, 0, 0)));
         }
+
+        [Test]
+        public void Stripes_with_an_object_transformation()
+        {
+            var sphere = Sphere.UnitSphere();
+            sphere.Transform = Transformation.Scaling(2, 2, 2);
+            var pattern = new StripePattern(Color.White, Color.Black);
+            var color = pattern.StripeAtObject(sphere, Tuple.Point(1.5, 0, 0));
+
+            Assert.AreEqual(Color.White, color);
+        }
+
+        [Test]
+        public void Stripes_with_a_pattern_transformation()
+        {
+            var sphere = Sphere.UnitSphere();            
+            var pattern = new StripePattern(Color.White, Color.Black);
+            pattern.Transform = Transformation.Scaling(2, 2, 2);
+            var color = pattern.StripeAtObject(sphere, Tuple.Point(1.5, 0, 0));
+
+            Assert.AreEqual(Color.White, color);
+        }
+
+        [Test]
+        public void Stripes_with_both_an_object_and_a_pattern_transformation()
+        {
+            var sphere = Sphere.UnitSphere();
+            sphere.Transform = Transformation.Scaling(2, 2, 2);
+            var pattern = new StripePattern(Color.White, Color.Black);
+            pattern.Transform = Transformation.Translation(0.5, 0, 0);
+            var color = pattern.StripeAtObject(sphere, Tuple.Point(2.5, 0, 0));
+
+            Assert.AreEqual(Color.White, color);
+        }
     }
 }

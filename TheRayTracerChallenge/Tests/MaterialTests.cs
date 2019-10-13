@@ -35,7 +35,7 @@ namespace TheRayTracerChallenge.Tests
             var normalv = Tuple.Vector(0, 0, -1);
             var light = new PointLight(Tuple.Point(0, 0, -10), new Color(1, 1, 1));
 
-            var result = _m.Lighting(light, _position, eyev, normalv, false);
+            var result = _m.Lighting(null, light, _position, eyev, normalv, false);
 
             Assert.AreEqual(new Color(1.9, 1.9, 1.9), result);
         }
@@ -47,7 +47,7 @@ namespace TheRayTracerChallenge.Tests
             var normalv = Tuple.Vector(0, 0, -1);
             var light = new PointLight(Tuple.Point(0, 0, -10), new Color(1, 1, 1));
 
-            var result = _m.Lighting(light, _position, eyev, normalv, false);
+            var result = _m.Lighting(null, light, _position, eyev, normalv, false);
 
             Assert.AreEqual(new Color(1.0, 1.0, 1.0), result);
         }
@@ -59,7 +59,7 @@ namespace TheRayTracerChallenge.Tests
             var normalv = Tuple.Vector(0, 0, -1);
             var light = new PointLight(Tuple.Point(0, 10, -10), new Color(1, 1, 1));
 
-            var result = _m.Lighting(light, _position, eyev, normalv, false);
+            var result = _m.Lighting(null, light, _position, eyev, normalv, false);
 
             Assert.AreEqual(new Color(0.7364, 0.7364, 0.7364), result);
         }
@@ -71,7 +71,7 @@ namespace TheRayTracerChallenge.Tests
             var normalv = Tuple.Vector(0, 0, -1);
             var light = new PointLight(Tuple.Point(0, 10, -10), new Color(1, 1, 1));
 
-            var result = _m.Lighting(light, _position, eyev, normalv, false);
+            var result = _m.Lighting(null, light, _position, eyev, normalv, false);
 
             Assert.AreEqual(new Color(1.6364, 1.6364, 1.6364), result);
         }
@@ -83,7 +83,7 @@ namespace TheRayTracerChallenge.Tests
             var normalv = Tuple.Vector(0, 0, -1);
             var light = new PointLight(Tuple.Point(0, 0, 10), new Color(1, 1, 1));
 
-            var result = _m.Lighting(light, _position, eyev, normalv, false);
+            var result = _m.Lighting(null, light, _position, eyev, normalv, false);
 
             Assert.AreEqual(new Color(0.1, 0.1, 0.1), result);
         }
@@ -95,7 +95,7 @@ namespace TheRayTracerChallenge.Tests
             var normalVector = Tuple.Vector(0, 0, -1);
             var light = new PointLight(Tuple.Point(0, 0, -10), Color.White);
             var inShadow = true;
-            var result = _m.Lighting(light, _position, eyeVector, normalVector, inShadow);
+            var result = _m.Lighting(null, light, _position, eyeVector, normalVector, inShadow);
 
             Assert.AreEqual(new Color(0.1, 0.1, 0.1), result);
         }
@@ -111,8 +111,8 @@ namespace TheRayTracerChallenge.Tests
             var normalVec = Tuple.Vector(0, 0, -1);
             var light = new PointLight(Tuple.Point(0, 0, -10), Color.White);
 
-            var c1 = _m.Lighting(light, Tuple.Point(0.9, 0, 0), eyeVec, normalVec, false);
-            var c2 = _m.Lighting(light, Tuple.Point(1.1, 0, 0), eyeVec, normalVec, false);
+            var c1 = _m.Lighting(null, light, Tuple.Point(0.9, 0, 0), eyeVec, normalVec, false);
+            var c2 = _m.Lighting(null, light, Tuple.Point(1.1, 0, 0), eyeVec, normalVec, false);
 
             Assert.AreEqual(Color.White, c1);
             Assert.AreEqual(Color.Black, c2);
