@@ -234,7 +234,7 @@ namespace TheRayTracerChallenge
             floor.Transform = Transformation.Scaling(10, 0.01, 10);
             floor.Material = new Material
             {
-                Color = new Color(1, 0.9, 0.9),
+                Pattern = new StripePattern(Color.White, new Color(0.1, 0.1, 0.5)),
                 Specular = 0
             };
 

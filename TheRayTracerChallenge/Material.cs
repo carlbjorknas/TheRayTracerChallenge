@@ -20,6 +20,7 @@ namespace TheRayTracerChallenge
         public double Diffuse { get; internal set; }
         public double Specular { get; internal set; }
         public double Shininess { get; internal set; }
+        public StripePattern Pattern { get; internal set; }
 
         public override bool Equals(object obj)
         {
@@ -36,10 +37,14 @@ namespace TheRayTracerChallenge
             return HashCode.Combine(Color, Ambient, Diffuse, Specular, Shininess);
         }
 
-        internal Color Lighting(PointLight light, Tuple position, Tuple eyev, Tuple normalv, bool inShadow)
+        internal Color Lighting(PointLight light, Tuple point, Tuple eyev, Tuple normalv, bool inShadow)
         {
-            var effectiveColor = Color * light.Intensity;
-            var lightv = (light.Position - position).Normalize;
+            var color = Pattern == null 
+                ? Color 
+                : Pattern.StripeAt(point);
+
+            var effectiveColor = color * light.Intensity;
+            var lightv = (light.Position - point).Normalize;
             var ambient = effectiveColor * Ambient;
 
             if (inShadow)

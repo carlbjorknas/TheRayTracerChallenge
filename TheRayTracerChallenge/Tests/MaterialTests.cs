@@ -99,5 +99,23 @@ namespace TheRayTracerChallenge.Tests
 
             Assert.AreEqual(new Color(0.1, 0.1, 0.1), result);
         }
+
+        [Test]
+        public void Lighting_with_a_pattern_applied()
+        {
+            _m.Pattern = new StripePattern(Color.White, Color.Black);
+            _m.Ambient = 1;
+            _m.Diffuse = 0;
+            _m.Specular = 0;
+            var eyeVec = Tuple.Vector(0, 0, -1);
+            var normalVec = Tuple.Vector(0, 0, -1);
+            var light = new PointLight(Tuple.Point(0, 0, -10), Color.White);
+
+            var c1 = _m.Lighting(light, Tuple.Point(0.9, 0, 0), eyeVec, normalVec, false);
+            var c2 = _m.Lighting(light, Tuple.Point(1.1, 0, 0), eyeVec, normalVec, false);
+
+            Assert.AreEqual(Color.White, c1);
+            Assert.AreEqual(Color.Black, c2);
+        }
     }
 }
