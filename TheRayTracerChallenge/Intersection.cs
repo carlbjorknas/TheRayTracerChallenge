@@ -6,14 +6,14 @@ namespace TheRayTracerChallenge
 {
     internal struct Intersection
     {
-        public Intersection(double t, Sphere o)
+        public Intersection(double t, Shape o)
         {
             T = t;
             Object = o;
         }
 
         public readonly double T;
-        public readonly Sphere Object;
+        public readonly Shape Object;
 
         public Computations PrepareComputations(Ray ray)
         {

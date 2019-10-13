@@ -19,7 +19,7 @@ namespace TheRayTracerChallenge
             Center = center;            
         }
 
-        protected override IntersectionCollection LocalIntersect(Ray localRay)
+        public override IntersectionCollection LocalIntersect(Ray localRay)
         {            
             var sphereToRay = localRay.Point - Center;
             var a = localRay.Direction.Dot(localRay.Direction);
@@ -42,7 +42,7 @@ namespace TheRayTracerChallenge
             return new IntersectionCollection(i1, i2);
         }
 
-        protected override Tuple LocalNormalAt(Tuple localPoint)
+        public override Tuple LocalNormalAt(Tuple localPoint)
             => localPoint - Center;
 
         public override bool Equals(object obj)

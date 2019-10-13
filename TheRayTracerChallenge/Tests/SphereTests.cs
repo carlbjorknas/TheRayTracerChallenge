@@ -25,7 +25,7 @@ namespace TheRayTracerChallenge.Tests
 
             var sphere = Sphere.UnitSphere();
 
-            var intersections = sphere.Intersect(ray);
+            var intersections = sphere.LocalIntersect(ray);
 
             Assert.AreEqual(2, intersections.Count);
             Assert.AreEqual(5.0, intersections[0].T);
@@ -41,7 +41,7 @@ namespace TheRayTracerChallenge.Tests
 
             var sphere = Sphere.UnitSphere();
 
-            var intersections = sphere.Intersect(ray);
+            var intersections = sphere.LocalIntersect(ray);
 
             Assert.AreEqual(0, intersections.Count);
         }
@@ -55,7 +55,7 @@ namespace TheRayTracerChallenge.Tests
 
             var sphere = Sphere.UnitSphere();
 
-            var intersections = sphere.Intersect(ray);
+            var intersections = sphere.LocalIntersect(ray);
 
             Assert.AreEqual(2, intersections.Count);
             Assert.AreEqual(-1.0, intersections[0].T);
@@ -71,7 +71,7 @@ namespace TheRayTracerChallenge.Tests
 
             var sphere = Sphere.UnitSphere();
 
-            var intersections = sphere.Intersect(ray);
+            var intersections = sphere.LocalIntersect(ray);
 
             Assert.AreEqual(2, intersections.Count);
             Assert.AreEqual(-6.0, intersections[0].T);
@@ -87,7 +87,7 @@ namespace TheRayTracerChallenge.Tests
 
             var sphere = Sphere.UnitSphere();
 
-            var intersections = sphere.Intersect(ray);
+            var intersections = sphere.LocalIntersect(ray);
 
             Assert.AreEqual(2, intersections.Count);
             Assert.AreEqual(sphere, intersections[0].Object);

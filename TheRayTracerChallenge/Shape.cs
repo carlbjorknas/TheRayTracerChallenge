@@ -21,7 +21,7 @@ namespace TheRayTracerChallenge
             return LocalIntersect(localRay);
         }
 
-        protected abstract IntersectionCollection LocalIntersect(Ray localRay);
+        public abstract IntersectionCollection LocalIntersect(Ray localRay);
 
         public Tuple NormalAt(Tuple point)
         {
@@ -32,6 +32,6 @@ namespace TheRayTracerChallenge
             return worldNormal.Normalize;
         }
 
-        protected abstract Tuple LocalNormalAt(Tuple localPoint);
+        public abstract Tuple LocalNormalAt(Tuple localPoint);
     }
 }

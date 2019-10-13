@@ -8,13 +8,13 @@ namespace TheRayTracerChallenge.Tests
     {
         public Ray LocalRay { get; private set; }
 
-        protected override IntersectionCollection LocalIntersect(Ray localRay)
+        public override IntersectionCollection LocalIntersect(Ray localRay)
         {
             LocalRay = localRay;
             return new IntersectionCollection();
         }
 
-        protected override Tuple LocalNormalAt(Tuple localPoint)
+        public override Tuple LocalNormalAt(Tuple localPoint)
             => Tuple.Vector(localPoint.x, localPoint.y, localPoint.z);
     }
 }
