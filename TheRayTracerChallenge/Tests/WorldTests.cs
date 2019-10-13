@@ -13,7 +13,7 @@ namespace TheRayTracerChallenge.Tests
         public void Creating_a_world()
         {
             var w = new World();
-            Assert.IsEmpty(w.Spheres);
+            Assert.IsEmpty(w.Shapes);
             Assert.IsNull(w.LightSource);
         }
 
@@ -35,7 +35,7 @@ namespace TheRayTracerChallenge.Tests
 
             var world = World.Default();
             Assert.AreEqual(light, world.LightSource);
-            Assert.Contains(s1, world.Spheres);
+            Assert.Contains(s1, world.Shapes);
         }
 
         [Test]
@@ -58,7 +58,7 @@ namespace TheRayTracerChallenge.Tests
         {
             var world = World.Default();
             var ray = new Ray(Tuple.Point(0, 0, -5), Tuple.Vector(0, 0, 1));
-            var shape = world.Spheres.First();
+            var shape = world.Shapes.First();
             var i = new Intersection(4, shape);
             var comps = i.PrepareComputations(ray);
 
@@ -73,7 +73,7 @@ namespace TheRayTracerChallenge.Tests
             var world = World.Default();
             world.LightSource = new PointLight(Tuple.Point(0, 0.25, 0), Color.White);
             var ray = new Ray(Tuple.Point(0, 0, 0), Tuple.Vector(0, 0, 1));
-            var shape = world.Spheres.Skip(1).First();
+            var shape = world.Shapes.Skip(1).First();
             var i = new Intersection(0.5, shape);
             var comps = i.PrepareComputations(ray);
 
@@ -108,9 +108,9 @@ namespace TheRayTracerChallenge.Tests
         public void The_color_with_an_intersection_behind_the_ray()
         {
             var world = World.Default();
-            var outer = world.Spheres.First();
+            var outer = world.Shapes.First();
             outer.Material.Ambient = 1;
-            var inner = world.Spheres.Skip(1).First();
+            var inner = world.Shapes.Skip(1).First();
             inner.Material.Ambient = 1;
             var ray = new Ray(Tuple.Point(0, 0, 0.75), Tuple.Vector(0, 0, -1));
 
@@ -160,11 +160,11 @@ namespace TheRayTracerChallenge.Tests
             };
 
             var shadowingSphere = Sphere.UnitSphere();
-            world.Spheres.Add(shadowingSphere);
+            world.Shapes.Add(shadowingSphere);
 
             var shadowedSphere = Sphere.UnitSphere();
             shadowedSphere.Transform = Transformation.Translation(0, 0, 10);
-            world.Spheres.Add(shadowedSphere);
+            world.Shapes.Add(shadowedSphere);
 
             var ray = new Ray(Tuple.Point(0, 0, 5), Tuple.Vector(0, 0, 1));
             var intersection = new Intersection(4, shadowedSphere);

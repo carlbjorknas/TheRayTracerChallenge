@@ -7,7 +7,7 @@ namespace TheRayTracerChallenge
 {
     class World
     {
-        public List<Sphere> Spheres { get; set; } = new List<Sphere>();
+        public List<Shape> Shapes { get; set; } = new List<Shape>();
         public PointLight LightSource { get; set; }
 
         public static World Default()
@@ -27,15 +27,15 @@ namespace TheRayTracerChallenge
 
             var world = new World();
             world.LightSource = light;
-            world.Spheres.Add(s1);
-            world.Spheres.Add(s2);
+            world.Shapes.Add(s1);
+            world.Shapes.Add(s2);
 
             return world;
         }
 
         internal IntersectionCollection Intersect(Ray ray)
         {
-            var intersections = Spheres
+            var intersections = Shapes
                 .SelectMany(s => s.Intersect(ray).Intersections)
                 .OrderBy(i => i.T)
                 .ToList();
