@@ -9,41 +9,18 @@ namespace TheRayTracerChallenge.Tests
     class PatternTests
     {
         [Test]
-        public void Creating_a_stripe_pattern()
+        public void The_default_pattern_transformation()
         {
-            var pattern = new StripePattern(Color.White, Color.Black);
-            Assert.AreEqual(Color.White, pattern.Color1);
-            Assert.AreEqual(Color.Black, pattern.Color2);
+            var pattern = new TestPattern();
+            Assert.AreEqual(Transformation.Identity, pattern.Transform);
         }
 
         [Test]
-        public void A_stripe_pattern_is_constant_in_y()
+        public void Assigning_a_transformation()
         {
-            var pattern = new StripePattern(Color.White, Color.Black);
-            Assert.AreEqual(Color.White, pattern.StripeAt(Tuple.Point(0, 0, 0)));
-            Assert.AreEqual(Color.White, pattern.StripeAt(Tuple.Point(0, 1, 0)));
-            Assert.AreEqual(Color.White, pattern.StripeAt(Tuple.Point(0, 2, 0)));
-        }
-
-        [Test]
-        public void A_stripe_pattern_is_constant_in_z()
-        {
-            var pattern = new StripePattern(Color.White, Color.Black);
-            Assert.AreEqual(Color.White, pattern.StripeAt(Tuple.Point(0, 0, 0)));
-            Assert.AreEqual(Color.White, pattern.StripeAt(Tuple.Point(0, 0, 1)));
-            Assert.AreEqual(Color.White, pattern.StripeAt(Tuple.Point(0, 0, 2)));
-        }
-
-        [Test]
-        public void A_stripe_pattern_alternates_in_x()
-        {
-            var pattern = new StripePattern(Color.White, Color.Black);
-            Assert.AreEqual(Color.White, pattern.StripeAt(Tuple.Point(0, 0, 0)));
-            Assert.AreEqual(Color.White, pattern.StripeAt(Tuple.Point(0.9, 0, 0)));
-            Assert.AreEqual(Color.Black, pattern.StripeAt(Tuple.Point(1, 0, 0)));
-            Assert.AreEqual(Color.Black, pattern.StripeAt(Tuple.Point(-0.1, 0, 0)));
-            Assert.AreEqual(Color.Black, pattern.StripeAt(Tuple.Point(-1, 0, 0)));
-            Assert.AreEqual(Color.White, pattern.StripeAt(Tuple.Point(-1.1, 0, 0)));
+            var pattern = new TestPattern();
+            pattern.Transform = Transformation.Translation(1, 2, 3);
+            Assert.AreEqual(Transformation.Translation(1, 2, 3), pattern.Transform);
         }
 
         [Test]
@@ -51,21 +28,21 @@ namespace TheRayTracerChallenge.Tests
         {
             var sphere = Sphere.UnitSphere();
             sphere.Transform = Transformation.Scaling(2, 2, 2);
-            var pattern = new StripePattern(Color.White, Color.Black);
-            var color = pattern.StripeAtObject(sphere, Tuple.Point(1.5, 0, 0));
+            var pattern = new TestPattern();
+            var color = pattern.PatternColorAtShape(sphere, Tuple.Point(2, 3, 4));
 
-            Assert.AreEqual(Color.White, color);
+            Assert.AreEqual(new Color(1, 1.5, 2), color);
         }
 
         [Test]
         public void Stripes_with_a_pattern_transformation()
         {
-            var sphere = Sphere.UnitSphere();            
-            var pattern = new StripePattern(Color.White, Color.Black);
+            var sphere = Sphere.UnitSphere();
+            var pattern = new TestPattern();
             pattern.Transform = Transformation.Scaling(2, 2, 2);
-            var color = pattern.StripeAtObject(sphere, Tuple.Point(1.5, 0, 0));
+            var color = pattern.PatternColorAtShape(sphere, Tuple.Point(2, 3, 4));
 
-            Assert.AreEqual(Color.White, color);
+            Assert.AreEqual(new Color(1, 1.5, 2), color);
         }
 
         [Test]
@@ -73,11 +50,11 @@ namespace TheRayTracerChallenge.Tests
         {
             var sphere = Sphere.UnitSphere();
             sphere.Transform = Transformation.Scaling(2, 2, 2);
-            var pattern = new StripePattern(Color.White, Color.Black);
-            pattern.Transform = Transformation.Translation(0.5, 0, 0);
-            var color = pattern.StripeAtObject(sphere, Tuple.Point(2.5, 0, 0));
+            var pattern = new TestPattern();
+            pattern.Transform = Transformation.Translation(0.5, 1, 1.5);
+            var color = pattern.PatternColorAtShape(sphere, Tuple.Point(2.5, 3, 3.5));
 
-            Assert.AreEqual(Color.White, color);
+            Assert.AreEqual(new Color(0.75, 0.5, 0.25), color);
         }
     }
 }

@@ -20,7 +20,7 @@ namespace TheRayTracerChallenge
         public double Diffuse { get; internal set; }
         public double Specular { get; internal set; }
         public double Shininess { get; internal set; }
-        public StripePattern Pattern { get; internal set; }
+        public Pattern Pattern { get; internal set; }
 
         public override bool Equals(object obj)
         {
@@ -41,7 +41,7 @@ namespace TheRayTracerChallenge
         {
             var color = Pattern == null 
                 ? Color 
-                : Pattern.StripeAtObject(shape, point);
+                : Pattern.PatternColorAtShape(shape, point);
 
             var effectiveColor = color * light.Intensity;
             var lightv = (light.Position - point).Normalize;

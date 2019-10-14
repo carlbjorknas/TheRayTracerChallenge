@@ -110,9 +110,10 @@ namespace TheRayTracerChallenge.Tests
             var eyeVec = Tuple.Vector(0, 0, -1);
             var normalVec = Tuple.Vector(0, 0, -1);
             var light = new PointLight(Tuple.Point(0, 0, -10), Color.White);
+            var shape = Sphere.UnitSphere();
 
-            var c1 = _m.Lighting(null, light, Tuple.Point(0.9, 0, 0), eyeVec, normalVec, false);
-            var c2 = _m.Lighting(null, light, Tuple.Point(1.1, 0, 0), eyeVec, normalVec, false);
+            var c1 = _m.Lighting(shape, light, Tuple.Point(0.9, 0, 0), eyeVec, normalVec, false);
+            var c2 = _m.Lighting(shape, light, Tuple.Point(1.1, 0, 0), eyeVec, normalVec, false);
 
             Assert.AreEqual(Color.White, c1);
             Assert.AreEqual(Color.Black, c2);
