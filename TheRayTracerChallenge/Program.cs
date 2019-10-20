@@ -17,7 +17,8 @@ namespace TheRayTracerChallenge
             //PrintAScene();
             //PrintASceneUsingAPlane();
             //PrintASceneWithPattern();
-            TestingPatterns();
+            //TestingPatterns();
+            RadialGradientFloor();
         }
 
         private static void PrintAPixelToACanvas()
@@ -420,6 +421,32 @@ namespace TheRayTracerChallenge
             var canvas = camera.Render(world);
 
             SaveImage("testing_patterns.ppm", canvas.ToPpm());
+        }
+
+        static void RadialGradientFloor()
+        {
+            var floor = new Plane()
+            {
+                Material = new Material
+                {
+                    Pattern = new RadialGradientPattern(Color.White, new Color(0.2, 0.2, 1)),
+                    Specular = 0
+                }
+            };
+
+            var world = new World();
+            world.LightSource = new PointLight(Tuple.Point(-10, 10, -10), Color.White);
+            world.Shapes.Add(floor);
+
+            var camera = new Camera(1000, 500, Math.PI / 3);
+            camera.Transform = Transformation.ViewTransform(
+                Tuple.Point(0, 5, -5),
+                Tuple.Point(0, 1, 0),
+                Tuple.Point(0, 1, 0));
+
+            var canvas = camera.Render(world);
+
+            SaveImage("radial_gradient.ppm", canvas.ToPpm());
         }
 
         private static void SaveImage(string name, string ppm)
