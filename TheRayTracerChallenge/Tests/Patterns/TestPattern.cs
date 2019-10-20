@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using TheRayTracerChallenge.Patterns;
 
-namespace TheRayTracerChallenge.Tests
+namespace TheRayTracerChallenge.Tests.Patterns
 {
     class TestPattern : Pattern
     {

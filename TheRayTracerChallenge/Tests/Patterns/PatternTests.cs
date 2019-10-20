@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace TheRayTracerChallenge.Tests
+namespace TheRayTracerChallenge.Tests.Patterns
 {
     [TestFixture]
     class PatternTests

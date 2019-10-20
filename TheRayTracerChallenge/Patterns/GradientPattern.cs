@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TheRayTracerChallenge
+namespace TheRayTracerChallenge.Patterns
 {
     internal class GradientPattern : Pattern
     {
