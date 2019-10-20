@@ -22,7 +22,7 @@ namespace TheRayTracerChallenge.Patterns
                 Math.Floor(point.y) +
                 Math.Floor(point.z);
 
-            return sum % 2 == 0 ? Color.White : Color.Black;
+            return sum % 2 == 0 ? _col1 : _col2;
         }
     }
 }
