@@ -468,13 +468,35 @@ namespace TheRayTracerChallenge
                 }
             };
 
+            var wall = new Plane()
+            {
+                Material = new Material
+                {
+                    Pattern = 
+                        new RingPattern(
+                            new RadialGradientPattern(Color.White, new Color(0.2, 0.2, 1)),
+                            new StripePattern(Color.Black, new Color(0, 1, 0))
+                            {
+                                Transform = Transformation.RotationY(Math.PI / 4)
+                                    .Chain(Transformation.Scaling(0.1, 1, 1))
+                            })
+                        {
+                            Transform = Transformation.Translation(0, 0.1, 0)
+                        },
+                    Specular = 0
+                },
+                Transform = Transformation.Translation(0, 0, 10)
+                    .Chain(Transformation.RotationX(Math.PI / 2))
+            };
+
             var world = new World();
             world.LightSource = new PointLight(Tuple.Point(-10, 10, -10), Color.White);
             world.Shapes.Add(floor);
+            world.Shapes.Add(wall);
 
             var camera = new Camera(1000, 500, Math.PI / 3);
             camera.Transform = Transformation.ViewTransform(
-                Tuple.Point(0, 5, -5),
+                Tuple.Point(0, 2, -5),
                 Tuple.Point(0, 1, 0),
                 Tuple.Point(0, 1, 0));
 
