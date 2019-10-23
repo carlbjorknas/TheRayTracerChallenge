@@ -7,9 +7,7 @@ namespace TheRayTracerChallenge.Patterns
     class RadialGradientPattern : Pattern
     {
         private readonly Color _col1;
-        private readonly Color _col2;
         private readonly Color _colorDistance;
-
 
         public RadialGradientPattern(Color col1, Color col2)
         {

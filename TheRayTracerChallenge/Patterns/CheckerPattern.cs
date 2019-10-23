@@ -27,9 +27,9 @@ namespace TheRayTracerChallenge.Patterns
                 Math.Floor(point.y) +
                 Math.Floor(point.z);
 
-            var pattern1point = _pattern1.Transform.Inverse.Transform(point);
-            var pattern2point = _pattern2.Transform.Inverse.Transform(point);
-            return sum % 2 == 0 ? _pattern1.ColorAt(pattern1point) : _pattern2.ColorAt(pattern2point);
+            return sum % 2 == 0 
+                ? _pattern1.ColorAtShapePoint(point)
+                : _pattern2.ColorAtShapePoint(point);
         }
     }
 }

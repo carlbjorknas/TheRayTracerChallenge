@@ -27,9 +27,9 @@ namespace TheRayTracerChallenge.Patterns
                      Math.Pow(point.x, 2) +
                      Math.Pow(point.z, 2)));
 
-            var pattern1point = _pattern1.Transform.Inverse.Transform(point);
-            var pattern2point = _pattern2.Transform.Inverse.Transform(point);
-            return distance % 2 == 0 ? _pattern1.ColorAt(pattern1point) : _pattern2.ColorAt(pattern2point);
+            return distance % 2 == 0 
+                ? _pattern1.ColorAtShapePoint(point) 
+                : _pattern2.ColorAtShapePoint(point);
         }
     }
 }
