@@ -19,7 +19,8 @@ namespace TheRayTracerChallenge
             //PrintASceneWithPattern();
             //TestingPatterns();
             //RadialGradientFloor();
-            NestedPatternFloor();
+            //NestedPatternFloor();
+            BlendedPatternFloor();
         }
 
         private static void PrintAPixelToACanvas()
@@ -503,6 +504,39 @@ namespace TheRayTracerChallenge
             var canvas = camera.Render(world);
 
             SaveImage("nested_patterns.ppm", canvas.ToPpm());
+        }
+
+        static void BlendedPatternFloor()
+        {
+            var floor = new Plane()
+            {
+                Material = new Material
+                {
+                    Pattern = new BlendedPattern(
+                        new RadialGradientPattern(Color.White, new Color(0, 0, 0)),
+                        new StripePattern(Color.Black, new Color(1, 0, 0))
+                        {
+                            Transform = Transformation.RotationY(Math.PI / 4)
+                                .Chain(Transformation.Scaling(0.5, 1, 1))
+                        })
+                    { Transform = Transformation.Translation(0, 0.1, 0) },
+                    Specular = 0
+                }
+            };
+
+            var world = new World();
+            world.LightSource = new PointLight(Tuple.Point(-10, 10, -10), Color.White);
+            world.Shapes.Add(floor);
+
+            var camera = new Camera(1000, 500, Math.PI / 3);
+            camera.Transform = Transformation.ViewTransform(
+                Tuple.Point(0, 2, -5),
+                Tuple.Point(0, 1, 0),
+                Tuple.Point(0, 1, 0));
+
+            var canvas = camera.Render(world);
+
+            SaveImage("blended_patterns.ppm", canvas.ToPpm());
         }
 
         private static void SaveImage(string name, string ppm)

@@ -35,6 +35,9 @@ namespace TheRayTracerChallenge
             return new Color(c1.r * c2.r, c1.g * c2.g, c1.b * c2.b);
         }
 
+        public static Color operator /(Color c, double d)
+            => new Color(c.r / d, c.g / d, c.b / d);
+
         public override bool Equals(object obj)
         {
             return
