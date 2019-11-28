@@ -137,5 +137,15 @@ namespace TheRayTracerChallenge.Tests
             Assert.Less(comps.OverPoint.z, -Constants.Epsilon / 2);
             Assert.Greater(comps.Point.z, comps.OverPoint.z);
         }
+
+        [Test]
+        public void Precomputing_the_reflection_vector()
+        {
+            var plane = new Plane();
+            var ray = new Ray(Tuple.Point(0, 1, -1), Tuple.Vector(0, -Math.Sqrt(2) / 2, Math.Sqrt(2) / 2));
+            var i = new Intersection(Math.Sqrt(2), plane);
+            var comps = i.PrepareComputations(ray);
+            Assert.AreEqual(Tuple.Vector(0, Math.Sqrt(2) / 2, Math.Sqrt(2) / 2), comps.ReflectV);
+        }
     }
 }

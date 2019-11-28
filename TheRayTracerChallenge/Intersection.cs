@@ -31,6 +31,7 @@ namespace TheRayTracerChallenge
             }
 
             c.OverPoint = c.Point + c.NormalVector * Constants.Epsilon;
+            c.ReflectV = ray.Direction.Reflect(c.NormalVector);
 
             return c;
         }

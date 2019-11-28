@@ -72,5 +72,17 @@ namespace TheRayTracerChallenge
             var distance = toLightVector.Magnitude;
             return hit.HasValue && hit.Value.T < distance;            
         }
+
+        internal Color ReflectedColor(Computations comps)
+        {
+            if (comps.Object.Material.Reflective == 0.0)
+            {
+                return Color.Black;
+            }
+
+            var reflectRay = new Ray(comps.OverPoint, comps.ReflectV);
+            var color = ColorAt(reflectRay);
+            return color * comps.Object.Material.Reflective;
+        }
     }
 }

@@ -119,5 +119,12 @@ namespace TheRayTracerChallenge.Tests
             Assert.AreEqual(Color.White, c1);
             Assert.AreEqual(Color.Black, c2);
         }
+
+        [Test]
+        public void Reflectivity_for_the_default_material()
+        {
+            var m = new Material();
+            Assert.AreEqual(0.0, m.Reflective);
+        }
     }
 }

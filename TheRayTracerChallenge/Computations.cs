@@ -4,6 +4,7 @@
     {
         public double T { get; internal set; }
         public bool Inside { get; internal set; }
+        internal Tuple ReflectV { get; set; }
         internal Tuple OverPoint { get; set; }
         internal Shape Object { get; set; }
         internal Tuple Point { get; set; }

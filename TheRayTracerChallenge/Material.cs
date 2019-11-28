@@ -22,6 +22,7 @@ namespace TheRayTracerChallenge
         public double Specular { get; internal set; }
         public double Shininess { get; internal set; }
         public Pattern Pattern { get; internal set; }
+        public double Reflective { get; internal set; }
 
         public override bool Equals(object obj)
         {
