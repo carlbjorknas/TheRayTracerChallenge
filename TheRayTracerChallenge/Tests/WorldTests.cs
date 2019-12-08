@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace TheRayTracerChallenge.Tests
 {
@@ -207,6 +209,80 @@ namespace TheRayTracerChallenge.Tests
             // I hade to tweak the values from the book a little to make the test pass...
             //Assert.AreEqual(new Color(0.19032, 0.2379, 0.14274), color);
             Assert.AreEqual(new Color(0.19033, 0.23791, 0.14274), color);
+        }
+
+        [Test]
+        public void ShadeHit_with_a_reflective_material()
+        {
+            var world = World.Default();
+            var plane = new Plane
+            {
+                Material = new Material { Reflective = 0.5 },
+                Transform = Transformation.Translation(0, -1, 0)
+            };
+            world.Shapes.Add(plane);
+
+            var ray = new Ray(Tuple.Point(0, 0, -3), Tuple.Vector(0, -Math.Sqrt(2) / 2, Math.Sqrt(2) / 2));
+            var i = new Intersection(Math.Sqrt(2), plane);
+            var comps = i.PrepareComputations(ray);
+            var color = world.ShadeHit(comps);
+
+            // Color values are adjusted a little, book seems to use different epsilons...
+            // http://forum.raytracerchallenge.com/thread/44/epsilon-weirdness
+            Assert.AreEqual(new Color(0.876757, 0.924340, 0.829174), color);
+        }
+
+        [Test]
+        public void ShadeHit_with_mutually_reflective_surfaces()
+        {
+            var world = new World
+            {
+                LightSource = new PointLight(Tuple.Point(0, 0, 0), Color.White)
+            };
+
+            var lowerPlane = new Plane
+            {
+                Material = new Material { Reflective = 1 },
+                Transform = Transformation.Translation(0, -1, 0)
+            };
+            world.Shapes.Add(lowerPlane);
+
+            var upperPlane = new Plane
+            {
+                Material = new Material { Reflective = 1 },
+                Transform = Transformation.Translation(0, 1, 0)
+            };
+            world.Shapes.Add(upperPlane);
+
+            var ray = new Ray(Tuple.Point(0, 0, 0), Tuple.Vector(0, 1, 0));
+
+            // I didn't find a way to fail the unit test when infinte recursion occurred.
+            // When there is an infinite call loop a stack overflow exception will be thrown and 
+            // that is an exceptin that cannot be catched, so the test runner just stops.
+            // Tried run it in a separate thread.
+            // Tried use the "Timeout" test attribute.
+            // But, well, let's just hope the code won't be changed so stack overflow happens.            
+            world.ColorAt(ray);            
+        }
+
+        [Test]
+        public void The_reflected_color_at_the_maximum_recursive_depth()
+        {
+            var world = World.Default();
+            var plane = new Plane
+            {
+                Material = new Material { Reflective = 0.5 },
+                Transform = Transformation.Translation(0, -1, 0)
+            };
+            world.Shapes.Add(plane);
+
+            var ray = new Ray(Tuple.Point(0, 0, -3), Tuple.Vector(0, -Math.Sqrt(2) / 2, Math.Sqrt(2) / 2));
+            var i = new Intersection(Math.Sqrt(2), plane);
+            var comps = i.PrepareComputations(ray);
+
+            var color = world.ReflectedColor(comps, 0);
+
+            Assert.AreEqual(Color.Black, color);
         }
     }
 }

@@ -42,13 +42,15 @@ namespace TheRayTracerChallenge
             return new IntersectionCollection(intersections);
         }
 
-        internal Color ShadeHit(Computations comps)
+        internal Color ShadeHit(Computations comps, int remaining = 1)
         {
             var isShadowed = IsShadowed(comps.OverPoint);
-            return comps.Object.Material.Lighting(comps.Object, LightSource, comps.Point, comps.EyeVector, comps.NormalVector, isShadowed);
+            var surface = comps.Object.Material.Lighting(comps.Object, LightSource, comps.Point, comps.EyeVector, comps.NormalVector, isShadowed);
+            var reflected = ReflectedColor(comps, remaining);
+            return surface + reflected;
         }
 
-        internal Color ColorAt(Ray ray)
+        internal Color ColorAt(Ray ray, int remaining = 5)
         {
             var intersections = Intersect(ray);
             var hit = intersections.Hit();
@@ -59,7 +61,7 @@ namespace TheRayTracerChallenge
             }
 
             var comps = hit.Value.PrepareComputations(ray);
-            return ShadeHit(comps);
+            return ShadeHit(comps, remaining);
         }
 
         internal bool IsShadowed(Tuple point)
@@ -73,15 +75,16 @@ namespace TheRayTracerChallenge
             return hit.HasValue && hit.Value.T < distance;            
         }
 
-        internal Color ReflectedColor(Computations comps)
+        internal Color ReflectedColor(Computations comps, int remaining = 1)
         {
-            if (comps.Object.Material.Reflective == 0.0)
-            {
+            if (remaining < 1)
                 return Color.Black;
-            }
+
+            if (comps.Object.Material.Reflective == 0.0)
+                return Color.Black;
 
             var reflectRay = new Ray(comps.OverPoint, comps.ReflectV);
-            var color = ColorAt(reflectRay);
+            var color = ColorAt(reflectRay, --remaining);
             return color * comps.Object.Material.Reflective;
         }
     }
