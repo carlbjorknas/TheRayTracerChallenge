@@ -184,5 +184,19 @@ namespace TheRayTracerChallenge.Tests
             Assert.AreEqual(n1, comps.n1);
             Assert.AreEqual(n2, comps.n2);
         }
+
+        [Test]
+        public void The_under_point_is_offset_below_the_surface()
+        {
+            var r = new Ray(Tuple.Point(0, 0, -5), Tuple.Vector(0, 0, 1));
+            var shape = Sphere.Glass();
+            shape.Transform = Transformation.Translation(0, 0, 1);
+            var i = new Intersection(5, shape);
+            var xs = new IntersectionCollection(i);
+
+            var comps = i.PrepareComputations(r, xs);
+            Assert.Greater(comps.UnderPoint.z, Constants.Epsilon / 2);
+            Assert.Less(comps.Point.z, comps.UnderPoint.z);
+        }
     }
 }
