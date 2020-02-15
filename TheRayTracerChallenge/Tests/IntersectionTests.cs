@@ -147,5 +147,42 @@ namespace TheRayTracerChallenge.Tests
             var comps = i.PrepareComputations(ray);
             Assert.AreEqual(Tuple.Vector(0, Math.Sqrt(2) / 2, Math.Sqrt(2) / 2), comps.ReflectV);
         }
+
+        // Test setup as in the image "Refractive_test_setup" included in the project.
+        [Test]
+        [TestCase(0, 1.0, 1.5)]
+        [TestCase(1, 1.5, 2.0)]
+        [TestCase(2, 2.0, 2.5)]
+        [TestCase(3, 2.5, 2.5)]
+        [TestCase(4, 2.5, 1.5)]
+        [TestCase(5, 1.5, 1.0)]
+        public void Finding_n1_and_n2_at_various_intersections(int index, double n1, double n2)
+        {
+            var a = Sphere.Glass();
+            a.Transform = Transformation.Scaling(2, 2, 2);
+            a.Material.RefractiveIndex = 1.5;
+
+            var b = Sphere.Glass();
+            b.Transform = Transformation.Translation(0, 0, -0.25);
+            b.Material.RefractiveIndex = 2.0;
+
+            var c = Sphere.Glass();
+            c.Transform = Transformation.Translation(0, 0, 0.25);
+            c.Material.RefractiveIndex = 2.5;
+
+            var ray = new Ray(Tuple.Point(0, 0, -4), Tuple.Vector(0, 0, 1));
+            var xs = new IntersectionCollection(
+                new Intersection(2, a),
+                new Intersection(2.75, b),
+                new Intersection(3.25, c),
+                new Intersection(4.75, b),
+                new Intersection(5.25, c),
+                new Intersection(6, a));
+
+            var comps = xs[index].PrepareComputations(ray, xs);
+
+            Assert.AreEqual(n1, comps.n1);
+            Assert.AreEqual(n2, comps.n2);
+        }
     }
 }

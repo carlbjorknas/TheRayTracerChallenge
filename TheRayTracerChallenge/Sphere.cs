@@ -10,6 +10,14 @@ namespace TheRayTracerChallenge
         public static Sphere UnitSphere()
             => new Sphere(Tuple.Point(0, 0, 0));
 
+        public static Sphere Glass()
+        {
+            var s = UnitSphere();
+            s.Material.Transparency = 1.0;
+            s.Material.RefractiveIndex = 1.5;
+            return s;
+        }
+
         Guid Id;
         public Tuple Center;
 

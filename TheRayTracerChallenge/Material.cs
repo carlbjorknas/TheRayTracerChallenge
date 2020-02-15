@@ -14,6 +14,7 @@ namespace TheRayTracerChallenge
             Diffuse = 0.9;
             Specular = 0.9;
             Shininess = 200;
+            RefractiveIndex = 1.0;
         }
 
         public Color Color { get; internal set; }
@@ -23,6 +24,8 @@ namespace TheRayTracerChallenge
         public double Shininess { get; internal set; }
         public Pattern Pattern { get; internal set; }
         public double Reflective { get; internal set; }
+        public double Transparency { get; internal set; }
+        public double RefractiveIndex { get; internal set; }
 
         public override bool Equals(object obj)
         {

@@ -60,7 +60,7 @@ namespace TheRayTracerChallenge
                 return Color.Black;
             }
 
-            var comps = hit.Value.PrepareComputations(ray);
+            var comps = hit.Value.PrepareComputations(ray, intersections);
             return ShadeHit(comps, remaining);
         }
 

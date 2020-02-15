@@ -158,5 +158,14 @@ namespace TheRayTracerChallenge.Tests
 
             Assert.AreEqual(Tuple.Vector(0, 0.97014, -0.24254), n);
         }
+
+        [Test]
+        public void A_helper_for_producing_a_sphere_with_a_glassy_material()
+        {
+            var s = Sphere.Glass();
+            Assert.AreEqual(Transformation.Identity, s.Transform);
+            Assert.AreEqual(1.0, s.Material.Transparency);
+            Assert.AreEqual(1.5, s.Material.RefractiveIndex);
+        }
     }
 }

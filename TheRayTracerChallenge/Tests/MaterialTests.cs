@@ -126,5 +126,13 @@ namespace TheRayTracerChallenge.Tests
             var m = new Material();
             Assert.AreEqual(0.0, m.Reflective);
         }
+
+        [Test]
+        public void Transparency_and_refractive_index_for_the_default_material()
+        {
+            var m = new Material();
+            Assert.AreEqual(0.0, m.Transparency);
+            Assert.AreEqual(1.0, m.RefractiveIndex);
+        }
     }
 }
