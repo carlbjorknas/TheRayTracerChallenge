@@ -87,5 +87,13 @@ namespace TheRayTracerChallenge
             var color = ColorAt(reflectRay, --remaining);
             return color * comps.Object.Material.Reflective;
         }
+
+        internal Color RefractedColor(Computations comps, int remaining)
+        {
+            if (comps.Object.Material.Transparency == 0)
+                return Color.Black;
+
+            return Color.White;
+        }
     }
 }

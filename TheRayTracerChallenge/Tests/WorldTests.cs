@@ -284,5 +284,21 @@ namespace TheRayTracerChallenge.Tests
 
             Assert.AreEqual(Color.Black, color);
         }
+
+        [Test]
+        public void The_refracted_color_with_an_opaque_surface()
+        {
+            var w = World.Default();
+            var shape = w.Shapes.First();
+            var ray = new Ray(Tuple.Point(0, 0, -5), Tuple.Vector(0, 0, 1));
+            var xs = new IntersectionCollection(
+                new Intersection(4, shape),
+                new Intersection(6, shape));
+            var comps = xs[0].PrepareComputations(ray, xs);
+
+            var c = w.RefractedColor(comps, 5);
+
+            Assert.AreEqual(Color.Black, c);
+        }
     }
 }
