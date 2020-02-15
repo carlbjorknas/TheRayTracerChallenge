@@ -20,7 +20,8 @@ namespace TheRayTracerChallenge
             //TestingPatterns();
             //RadialGradientFloor();
             //NestedPatternFloor();
-            BlendedPatternFloor();
+            //BlendedPatternFloor();
+            PrintReflectionScene();
         }
 
         private static void PrintAPixelToACanvas()
@@ -537,6 +538,66 @@ namespace TheRayTracerChallenge
             var canvas = camera.Render(world);
 
             SaveImage("blended_patterns.ppm", canvas.ToPpm());
+        }
+
+        public static void PrintReflectionScene()
+        {
+            var floor = new Plane();
+            floor.Transform = Transformation.Scaling(10, 0.01, 10);
+            floor.Material = new Material
+            {
+                Color = new Color(1, 0.9, 0.9),
+                Specular = 0,
+                Reflective = 0.4
+            };
+
+            var middle = Sphere.UnitSphere();
+            middle.Transform = Transformation.Translation(-0.5, 1, 0.5);
+            middle.Material = new Material
+            {
+                Color = new Color(0.1, 1, 0.5),
+                Diffuse = 0.7,
+                Specular = 0.3,
+                Reflective = 0.5
+            };
+
+            var right = Sphere.UnitSphere();
+            right.Transform = Transformation.Translation(1.5, 0.5, -0.5)
+                .Chain(Transformation.Scaling(0.5, 0.5, 0.5));
+            right.Material = new Material
+            {
+                Color = new Color(0.5, 1, 0.1),
+                Diffuse = 0.7,
+                Specular = 0.3
+            };
+
+            var left = Sphere.UnitSphere();
+            left.Transform = Transformation.Translation(-1.5, 0.33, -0.75)
+                .Chain(Transformation.Scaling(0.33, 0.33, 0.33));
+            left.Material = new Material
+            {
+                Color = new Color(1, 0.8, 0.1),
+                Diffuse = 0.7,
+                Specular = 0.3,
+                Reflective = 0.1
+            };
+
+            var world = new World();
+            world.LightSource = new PointLight(Tuple.Point(-10, 10, -10), Color.White);
+            world.Shapes.Add(floor);
+            world.Shapes.Add(left);
+            world.Shapes.Add(middle);
+            world.Shapes.Add(right);
+
+            var camera = new Camera(1000, 500, Math.PI / 3);
+            camera.Transform = Transformation.ViewTransform(
+                Tuple.Point(0, 1.5, -5),
+                Tuple.Point(0, 1, 0),
+                Tuple.Point(0, 1, 0));
+
+            var canvas = camera.Render(world);
+
+            SaveImage("scene_with_reflections.ppm", canvas.ToPpm());
         }
 
         private static void SaveImage(string name, string ppm)
