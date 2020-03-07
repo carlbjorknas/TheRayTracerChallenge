@@ -12,7 +12,9 @@ namespace TheRayTracerChallenge
 
         public static World Default()
         {
-            var light = new PointLight(Tuple.Point(-10, 10, -10), Color.White);
+            var world = new World();
+
+            world.LightSource = new PointLight(Tuple.Point(-10, 10, -10), Color.White);
 
             var s1 = Sphere.UnitSphere();
             s1.Material = new Material
@@ -21,13 +23,10 @@ namespace TheRayTracerChallenge
                 Diffuse = 0.7,
                 Specular = 0.2
             };
+            world.Shapes.Add(s1);
 
             var s2 = Sphere.UnitSphere();
             s2.Transform = Transformation.Scaling(0.5, 0.5, 0.5);
-
-            var world = new World();
-            world.LightSource = light;
-            world.Shapes.Add(s1);
             world.Shapes.Add(s2);
 
             return world;
@@ -94,6 +93,14 @@ namespace TheRayTracerChallenge
                 return Color.Black;
 
             if (comps.Object.Material.Transparency == 0)
+                return Color.Black;
+
+            // Snell's law
+            var nRatio = comps.n1 / comps.n2;
+            var cosTheta_i = comps.EyeVector.Dot(comps.NormalVector);
+            var sinTheta_t_squared = Math.Pow(nRatio, 2) * (1 - Math.Pow(cosTheta_i, 2));
+
+            if (sinTheta_t_squared > 1)
                 return Color.Black;
 
             return Color.White;

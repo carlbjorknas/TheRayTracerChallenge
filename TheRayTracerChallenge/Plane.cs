@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using TheRayTracerChallenge.Utils;
 
 namespace TheRayTracerChallenge
 {
@@ -8,7 +9,7 @@ namespace TheRayTracerChallenge
     {
         public override IntersectionCollection LocalIntersect(Ray localRay)
         {
-            if (Math.Abs(localRay.Direction.y) < Constants.Epsilon)
+            if (Math.Abs(localRay.Direction.y) < C.Epsilon)
             {
                 return new IntersectionCollection();
             }

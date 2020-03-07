@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TheRayTracerChallenge.Utils;
 
 namespace TheRayTracerChallenge
 {
@@ -31,8 +32,8 @@ namespace TheRayTracerChallenge
                 c.NormalVector = -c.NormalVector;
             }
 
-            c.OverPoint = c.Point + c.NormalVector * Constants.Epsilon;
-            c.UnderPoint = c.Point - c.NormalVector * Constants.Epsilon;
+            c.OverPoint = c.Point + c.NormalVector * C.Epsilon;
+            c.UnderPoint = c.Point - c.NormalVector * C.Epsilon;
             c.ReflectV = ray.Direction.Reflect(c.NormalVector);
 
             xs = xs ?? new IntersectionCollection();

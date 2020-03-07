@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using TheRayTracerChallenge.Utils;
 
 namespace TheRayTracerChallenge
 {
@@ -56,7 +57,7 @@ namespace TheRayTracerChallenge
 
         private bool Equals(double d1, double d2)
         {
-            return Math.Abs(d1 - d2) < Constants.Epsilon;
+            return Math.Abs(d1 - d2) < C.Epsilon;
         }
 
         public override int GetHashCode()

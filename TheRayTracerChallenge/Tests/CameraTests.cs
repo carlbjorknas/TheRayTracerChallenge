@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using TheRayTracerChallenge.Utils;
 
 namespace TheRayTracerChallenge.Tests
 {
@@ -27,14 +28,14 @@ namespace TheRayTracerChallenge.Tests
         public void The_pixel_size_for_a_horizontal_canvas()
         {
             var camera = new Camera(200, 125, Math.PI / 2);
-            Assert.AreEqual(0.01, camera.PixelSize, Constants.Epsilon);
+            Assert.AreEqual(0.01, camera.PixelSize, C.Epsilon);
         }
 
         [Test]
         public void The_pixel_size_for_a_vertical_canvas()
         {
             var camera = new Camera(125, 200, Math.PI / 2);
-            Assert.AreEqual(0.01, camera.PixelSize, Constants.Epsilon);
+            Assert.AreEqual(0.01, camera.PixelSize, C.Epsilon);
         }
 
         [Test]

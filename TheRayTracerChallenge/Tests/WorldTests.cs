@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using TheRayTracerChallenge.Utils;
 
 namespace TheRayTracerChallenge.Tests
 {
@@ -315,6 +316,26 @@ namespace TheRayTracerChallenge.Tests
             var comps = xs[0].PrepareComputations(ray, xs);
 
             var c = w.RefractedColor(comps, 0);
+
+            Assert.AreEqual(Color.Black, c);
+        }
+
+        [Test]
+        public void The_refracted_color_under_total_internal_reflection()
+        {
+            var w = World.Default();
+            var shape = w.Shapes.First();
+            shape.Material.Transparency = 1.0;
+            shape.Material.RefractiveIndex = 1.5;
+            var ray = new Ray(Tuple.Point(0, 0, C.SqrtOf2DividedBy2), Tuple.Vector(0, 1, 0));
+            var xs = new IntersectionCollection(
+                new Intersection(-C.SqrtOf2DividedBy2, shape),
+                new Intersection(C.SqrtOf2DividedBy2, shape));            
+            // Author's NOTE: this time you're inside the sphere, so you need
+            // to look at the second intersection, xs[1], not xs[0]
+            var comps = xs[1].PrepareComputations(ray, xs);
+
+            var c = w.RefractedColor(comps, 5);
 
             Assert.AreEqual(Color.Black, c);
         }

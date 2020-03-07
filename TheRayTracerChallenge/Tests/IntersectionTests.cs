@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using TheRayTracerChallenge.Utils;
 
 namespace TheRayTracerChallenge.Tests
 {
@@ -134,7 +135,7 @@ namespace TheRayTracerChallenge.Tests
 
             var comps = intersection.PrepareComputations(ray);
 
-            Assert.Less(comps.OverPoint.z, -Constants.Epsilon / 2);
+            Assert.Less(comps.OverPoint.z, -C.Epsilon / 2);
             Assert.Greater(comps.Point.z, comps.OverPoint.z);
         }
 
@@ -195,7 +196,7 @@ namespace TheRayTracerChallenge.Tests
             var xs = new IntersectionCollection(i);
 
             var comps = i.PrepareComputations(r, xs);
-            Assert.Greater(comps.UnderPoint.z, Constants.Epsilon / 2);
+            Assert.Greater(comps.UnderPoint.z, C.Epsilon / 2);
             Assert.Less(comps.Point.z, comps.UnderPoint.z);
         }
     }
