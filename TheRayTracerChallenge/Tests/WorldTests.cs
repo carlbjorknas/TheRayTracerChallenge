@@ -300,5 +300,23 @@ namespace TheRayTracerChallenge.Tests
 
             Assert.AreEqual(Color.Black, c);
         }
+
+        [Test]
+        public void The_refracted_color_at_the_maximum_recursive_depth()
+        {
+            var w = World.Default();
+            var shape = w.Shapes.First();
+            shape.Material.Transparency = 1.0;
+            shape.Material.RefractiveIndex = 1.5;
+            var ray = new Ray(Tuple.Point(0, 0, -5), Tuple.Vector(0, 0, 1));
+            var xs = new IntersectionCollection(
+                new Intersection(4, shape),
+                new Intersection(6, shape));
+            var comps = xs[0].PrepareComputations(ray, xs);
+
+            var c = w.RefractedColor(comps, 0);
+
+            Assert.AreEqual(Color.Black, c);
+        }
     }
 }

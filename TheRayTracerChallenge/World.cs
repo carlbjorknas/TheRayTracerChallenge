@@ -90,6 +90,9 @@ namespace TheRayTracerChallenge
 
         internal Color RefractedColor(Computations comps, int remaining)
         {
+            if (remaining == 0)
+                return Color.Black;
+
             if (comps.Object.Material.Transparency == 0)
                 return Color.Black;
 
