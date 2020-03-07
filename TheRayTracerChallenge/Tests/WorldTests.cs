@@ -410,5 +410,40 @@ namespace TheRayTracerChallenge.Tests
 
             Assert.AreEqual(new Color(0.93642, 0.68642, 0.68642), color);
         }
+
+        [Test]
+        public void Shade_hit_with_a_reflective_transparent_material()
+        {
+            var w = World.Default();
+
+            var floor = new Plane
+            {
+                Transform = Transformation.Translation(0, -1, 0),
+                Material = new Material
+                {
+                    Reflective = 0.5,
+                    Transparency = 0.5,
+                    RefractiveIndex = 1.5
+                }
+            };
+            w.Shapes.Add(floor);
+
+            var ball = Sphere.UnitSphere();
+            ball.Transform = Transformation.Translation(0, -3.5, -0.5);
+            ball.Material = new Material
+            {
+                Color = Color.Red,
+                Ambient = 0.5
+            };
+            w.Shapes.Add(ball);
+
+            var ray = new Ray(Tuple.Point(0, 0, -3), Tuple.Vector(0, -C.SqrtOf2DividedBy2, C.SqrtOf2DividedBy2));
+            var xs = new IntersectionCollection(new Intersection(C.SqrtOf2, floor));
+            var comps = xs[0].PrepareComputations(ray, xs);
+
+            var color = w.ShadeHit(comps, 5);
+
+            Assert.AreEqual(new Color(0.933915, 0.696434, 0.69243), color);
+        }
     }
 }

@@ -47,6 +47,16 @@ namespace TheRayTracerChallenge
             var surface = comps.Object.Material.Lighting(comps.Object, LightSource, comps.Point, comps.EyeVector, comps.NormalVector, isShadowed);
             var reflected = ReflectedColor(comps, remaining);
             var refracted = RefractedColor(comps, remaining);
+
+            var material = comps.Object.Material;
+            if (material.Reflective > 0 && material.Transparency > 0)
+            {
+                var reflectance = comps.Schlick();
+                return surface + 
+                    reflected * reflectance + 
+                    refracted * (1-reflectance);
+            }
+
             return surface + reflected + refracted;
         }
 
