@@ -63,5 +63,6 @@ namespace TheRayTracerChallenge
     
         public static Color Black { get; } = new Color();
         public static Color White { get; } = new Color(1, 1, 1);
+        public static Color Red { get; } = new Color(1, 0, 0);
     }
 }

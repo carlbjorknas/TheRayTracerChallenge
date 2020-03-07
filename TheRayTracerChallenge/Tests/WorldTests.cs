@@ -367,5 +367,48 @@ namespace TheRayTracerChallenge.Tests
 
             Assert.AreEqual(new Color(0, 0.998884, 0.047219), c);
         }
+
+        /*
+            Test #8: Handling Refraction in shade_hit
+            Show that your shade_hit() function handles refraction.
+            Add a glass floor to the default world, positioned just below the two default
+            spheres, and add a new, colored sphere below the floor. Cast a ray diagonally
+            toward the floor, with the expectation that it will refract and eventually strike
+            the colored ball. Because the plane is only semitransparent, the resulting
+            color should combine the refracted color of the ball and the color of the plane.
+         */
+        [Test]
+        public void Shade_hit_with_a_transparent_material()
+        {
+            var w = World.Default();
+
+            var floor = new Plane
+            {
+                Transform = Transformation.Translation(0, -1, 0),
+                Material = new Material
+                {
+                    Transparency = 0.5,
+                    RefractiveIndex = 1.5
+                }
+            };
+            w.Shapes.Add(floor);
+
+            var ball = Sphere.UnitSphere();
+            ball.Transform = Transformation.Translation(0, -3.5, -0.5);
+            ball.Material = new Material
+            {
+                Color = Color.Red,
+                Ambient = 0.5
+            };
+            w.Shapes.Add(ball);
+
+            var ray = new Ray(Tuple.Point(0, 0, -3), Tuple.Vector(0, -C.SqrtOf2DividedBy2, C.SqrtOf2DividedBy2));
+            var xs = new IntersectionCollection(new Intersection(C.SqrtOf2, floor));
+            var comps = xs[0].PrepareComputations(ray, xs);
+
+            var color = w.ShadeHit(comps, 5);
+
+            Assert.AreEqual(new Color(0.93642, 0.68642, 0.68642), color);
+        }
     }
 }

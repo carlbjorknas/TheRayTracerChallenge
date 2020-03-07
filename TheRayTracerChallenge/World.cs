@@ -46,7 +46,8 @@ namespace TheRayTracerChallenge
             var isShadowed = IsShadowed(comps.OverPoint);
             var surface = comps.Object.Material.Lighting(comps.Object, LightSource, comps.Point, comps.EyeVector, comps.NormalVector, isShadowed);
             var reflected = ReflectedColor(comps, remaining);
-            return surface + reflected;
+            var refracted = RefractedColor(comps, remaining);
+            return surface + reflected + refracted;
         }
 
         internal Color ColorAt(Ray ray, int remaining = 5)
