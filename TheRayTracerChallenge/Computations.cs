@@ -1,4 +1,6 @@
-﻿namespace TheRayTracerChallenge
+﻿using System;
+
+namespace TheRayTracerChallenge
 {
     public class Computations
     {
@@ -13,5 +15,25 @@
         internal Tuple Point { get; set; }
         internal Tuple EyeVector { get; set; }
         internal Tuple NormalVector { get; set; }
+
+        /*
+        Christophe Schlick, came up with an
+        approximation to Fresnel’s equations that is much faster, and plenty accurate
+        besides. Hurray for Schlick!         
+         */
+        internal double Schlick()
+        {
+            var cos = EyeVector.Dot(NormalVector);
+
+            if (n1 > n2)
+            {
+                var n = n1 / n2;
+                var sin2_t = n * n * (1.0 - cos * cos);
+                if (sin2_t > 1)
+                    return 1.0;
+            }
+
+            return 0;
+        }
     }
 }

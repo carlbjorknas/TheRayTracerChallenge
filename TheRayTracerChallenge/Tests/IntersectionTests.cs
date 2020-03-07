@@ -199,5 +199,25 @@ namespace TheRayTracerChallenge.Tests
             Assert.Greater(comps.UnderPoint.z, C.Epsilon / 2);
             Assert.Less(comps.Point.z, comps.UnderPoint.z);
         }
+
+        /*
+         * Position a ray inside a glass sphere, offset from the center and pointing straight
+         * up. The ray is offset sufficiently to trigger total internal reflection, resulting
+         * in schlick() returning 1.
+         */
+        [Test]
+        public void The_Schlick_approximation_under_total_internal_reflection()
+        {
+            var shape = Sphere.Glass();
+            var ray = new Ray(Tuple.Point(0, 0, C.SqrtOf2DividedBy2), Tuple.Vector(0, 1, 0));
+            var xs = new IntersectionCollection(
+                new Intersection(-C.SqrtOf2DividedBy2, shape),
+                new Intersection(C.SqrtOf2DividedBy2, shape));
+            var comps = xs[1].PrepareComputations(ray, xs);
+
+            var reflectance = comps.Schlick();
+
+            Assert.AreEqual(1.0, reflectance);
+        }
     }
 }
