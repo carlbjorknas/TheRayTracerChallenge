@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using MathNet.Spatial.Euclidean;
+using TheRayTracerChallenge.Utils;
 
 namespace TheRayTracerChallenge
 {
@@ -14,7 +15,7 @@ namespace TheRayTracerChallenge
         {
             var s = UnitSphere();
             s.Material.Transparency = 1.0;
-            s.Material.RefractiveIndex = 1.5;
+            s.Material.RefractiveIndex = RefractiveIndex.Glass;
             return s;
         }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using TheRayTracerChallenge.Patterns;
+using TheRayTracerChallenge.Utils;
 
 namespace TheRayTracerChallenge
 {
@@ -21,7 +22,8 @@ namespace TheRayTracerChallenge
             //RadialGradientFloor();
             //NestedPatternFloor();
             //BlendedPatternFloor();
-            PrintReflectionScene();
+            //PrintReflectionScene();
+            PrintReflectionAndRefractionScene();
         }
 
         private static void PrintAPixelToACanvas()
@@ -154,7 +156,6 @@ namespace TheRayTracerChallenge
                     }
                 }
             }
-
 
             canvas.WritePixel(0, 0, Color.Black);
             SaveImage("sphere_3D.ppm", canvas.ToPpm());
@@ -598,6 +599,90 @@ namespace TheRayTracerChallenge
             var canvas = camera.Render(world);
 
             SaveImage("scene_with_reflections.ppm", canvas.ToPpm());
+        }
+
+        public static void PrintReflectionAndRefractionScene()
+        {
+            var backWall = new Plane()
+            {
+                Transform = Transformation.RotationX(Math.PI / 2)
+                    .Chain(Transformation.Translation(0, 10, 0)),
+                Material = new Material
+                {
+                    Pattern = new CheckerPattern(Color.White, Color.Black)
+                }
+            };
+
+            var floor = new Plane()
+            {
+                Transform = Transformation.Translation(0, -1, 0)
+                    .Chain(Transformation.RotationY(Math.PI / 4))
+                    .Chain(Transformation.Scaling(0.8, 1, 1)),
+                Material = new Material
+                {
+                    Pattern = new StripePattern(Color.White, Color.Black)
+                }
+            };
+
+            var purpleGlassSphere = Sphere.Glass();
+            purpleGlassSphere.Material.Color = new Color(0.8, 0, 0.8);
+            purpleGlassSphere.Transform = Transformation.Translation(-1.2, 0, 0);
+
+            var blueGlassSphere = Sphere.Glass();
+            blueGlassSphere.Material.Color = new Color(0, 0, 0.8);
+            blueGlassSphere.Material.Ambient = 0;
+            blueGlassSphere.Material.Diffuse = 0;
+            blueGlassSphere.Material.Specular = 0.9;
+            blueGlassSphere.Material.Shininess = 300;
+            blueGlassSphere.Material.Reflective = 0.9;
+            blueGlassSphere.Transform = Transformation.Translation(1.2, 0, 0);
+
+            var airBubbleInsideBlueGlassSphere = Sphere.UnitSphere();
+            airBubbleInsideBlueGlassSphere.Material.Color = Color.White;
+            airBubbleInsideBlueGlassSphere.Material.Specular = 0.9;
+            airBubbleInsideBlueGlassSphere.Material.Shininess = 300;
+            airBubbleInsideBlueGlassSphere.Material.Reflective = 0.9;
+            airBubbleInsideBlueGlassSphere.Material.Transparency = 0.9;
+            airBubbleInsideBlueGlassSphere.Material.RefractiveIndex = RefractiveIndex.Air;
+            airBubbleInsideBlueGlassSphere.Transform = Transformation.Translation(1.2, 0, 0)
+                .Chain(Transformation.Scaling(0.3, 0.3, 0.3));
+
+            var totallyReflectiveSphere = Sphere.UnitSphere();
+            totallyReflectiveSphere.Transform = Transformation.Translation(0, 0, 5);
+            totallyReflectiveSphere.Material.Color = Color.Red;
+            totallyReflectiveSphere.Material.Reflective = 1;
+            totallyReflectiveSphere.Material.Transparency = 0;
+            totallyReflectiveSphere.Material.Shininess = 1000;
+
+            var yellowTransparent = Sphere.UnitSphere();
+            yellowTransparent.Transform = Transformation.Translation(5, 2, 3)
+                .Chain(Transformation.Scaling(0.6, 1, 0.6));
+            yellowTransparent.Material = new Material
+            {
+                Color = new Color(0.8, 0.8, 0),
+                Reflective = 0.05,
+                Transparency = 0.95
+            };
+
+            var world = new World();
+            world.LightSource = new PointLight(Tuple.Point(-10, 10, -10), Color.White);
+            world.Shapes.Add(backWall);
+            world.Shapes.Add(floor);
+            world.Shapes.Add(purpleGlassSphere);
+            world.Shapes.Add(blueGlassSphere);
+            world.Shapes.Add(airBubbleInsideBlueGlassSphere);
+            world.Shapes.Add(totallyReflectiveSphere);
+            world.Shapes.Add(yellowTransparent);
+
+            var camera = new Camera(1000, 500, Math.PI / 3);
+            camera.Transform = Transformation.ViewTransform(
+                Tuple.Point(0, 0, -5),
+                Tuple.Point(0, 0, 0),
+                Tuple.Point(0, 1, 0));
+
+            var canvas = camera.Render(world);
+
+            SaveImage("scene_with_reflection_and_refraction.ppm", canvas.ToPpm());
         }
 
         private static void SaveImage(string name, string ppm)
