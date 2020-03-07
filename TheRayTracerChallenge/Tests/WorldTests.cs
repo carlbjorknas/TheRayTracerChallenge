@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using TheRayTracerChallenge.Tests.Patterns;
 using TheRayTracerChallenge.Utils;
 
 namespace TheRayTracerChallenge.Tests
@@ -338,6 +339,33 @@ namespace TheRayTracerChallenge.Tests
             var c = w.RefractedColor(comps, 5);
 
             Assert.AreEqual(Color.Black, c);
+        }
+
+        [Test]
+        public void The_refracted_color_with_a_refracted_ray()
+        {
+            var w = World.Default();
+
+            var shape1 = w.Shapes.First();
+            shape1.Material.Ambient = 1.0;
+            shape1.Material.Pattern = new TestPattern();
+
+            var shape2 = w.Shapes.Last();
+            shape2.Material.Transparency = 1.0;
+            shape2.Material.RefractiveIndex = 1.5;
+
+            var ray = new Ray(Tuple.Point(0, 0, 0.1), Tuple.Vector(0, 1, 0));
+            var xs = new IntersectionCollection(
+                new Intersection(-0.9899, shape1),
+                new Intersection(-0.4899, shape2),
+                new Intersection(0.4899, shape2),
+                new Intersection(0.9899, shape1));
+
+            var comps = xs[2].PrepareComputations(ray, xs);
+
+            var c = w.RefractedColor(comps, 5);
+
+            Assert.AreEqual(new Color(0, 0.998884, 0.047219), c);
         }
     }
 }

@@ -103,7 +103,16 @@ namespace TheRayTracerChallenge
             if (sinTheta_t_squared > 1)
                 return Color.Black;
 
-            return Color.White;
+            var cosTheta_t = Math.Sqrt(1 - sinTheta_t_squared);
+            var refractedRayDirection =
+                comps.NormalVector * (nRatio * cosTheta_i - cosTheta_t) -
+                comps.EyeVector * nRatio;
+            var refractedRay = new Ray(comps.UnderPoint, refractedRayDirection);
+            // Find the color of the refracted ray, making sure to multiply
+            // by the transparency value to account for any opacity
+            var color = ColorAt(refractedRay, --remaining) * comps.Object.Material.Transparency;
+
+            return color;
         }
     }
 }
