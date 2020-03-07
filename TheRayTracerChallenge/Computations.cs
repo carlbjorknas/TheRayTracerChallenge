@@ -17,9 +17,9 @@ namespace TheRayTracerChallenge
         internal Tuple NormalVector { get; set; }
 
         /*
-        Christophe Schlick, came up with an
-        approximation to Fresnel’s equations that is much faster, and plenty accurate
-        besides. Hurray for Schlick!         
+         * Christophe Schlick, came up with an
+         * approximation to Fresnel’s equations that is much faster, and plenty accurate
+         * besides. Hurray for Schlick!         
          */
         internal double Schlick()
         {
@@ -31,9 +31,13 @@ namespace TheRayTracerChallenge
                 var sin2_t = n * n * (1.0 - cos * cos);
                 if (sin2_t > 1)
                     return 1.0;
+
+                var cos_t = Math.Sqrt(1.0 - sin2_t);
+                cos = cos_t;
             }
 
-            return 0;
+            var r0 = Math.Pow((n1 - n2) / (n1 + n2), 2);
+            return r0 + (1 - r0) * Math.Pow(1 - cos, 5);
         }
     }
 }

@@ -219,5 +219,43 @@ namespace TheRayTracerChallenge.Tests
 
             Assert.AreEqual(1.0, reflectance);
         }
+
+        /*
+         * Create a glass sphere and a ray that intersects it. The ray should strike the
+         * sphere perpendicular to its surface. The reflectance in this case will be slight.
+         */
+        [Test]
+        public void The_Schlick_approximation_with_a_perpendicular_viewing_angle()
+        {
+            var shape = Sphere.Glass();
+            var ray = new Ray(Tuple.Point(0, 0, 0), Tuple.Vector(0, 1, 0));
+            var xs = new IntersectionCollection(
+                new Intersection(-1, shape),
+                new Intersection(1, shape));
+            var comps = xs[1].PrepareComputations(ray, xs);
+
+            var reflectance = comps.Schlick();
+
+            Assert.AreEqual(0.04, reflectance, C.Epsilon);
+        }
+
+        /*
+         * This is the “looking across the lake to the far shore” scenario, and a significant
+         * amount of light should be reflected. The test mimics this by preparing a ray
+         * so that it glances off a sphere, almost tangent to it.
+         */
+        [Test]
+        public void The_Schlick_approximation_with_small_angle_and_n2_greater_than_n1()
+        {
+            var shape = Sphere.Glass();
+            var ray = new Ray(Tuple.Point(0, 0.99, -2), Tuple.Vector(0, 0, 1));
+            var xs = new IntersectionCollection(
+                new Intersection(1.8589, shape));
+            var comps = xs[0].PrepareComputations(ray, xs);
+
+            var reflectance = comps.Schlick();
+
+            Assert.AreEqual(0.48873, reflectance, C.Epsilon);
+        }
     }
 }
