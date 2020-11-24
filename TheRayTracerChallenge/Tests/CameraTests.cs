@@ -44,7 +44,7 @@ namespace TheRayTracerChallenge.Tests
             var camera = new Camera(201, 101, Math.PI / 2);
             var ray = camera.RayForPixel(100, 50);
 
-            Assert.AreEqual(Tuple.Point(0, 0, 0), ray.Point);
+            Assert.AreEqual(Tuple.Point(0, 0, 0), ray.Origin);
             Assert.AreEqual(Tuple.Vector(0, 0, -1), ray.Direction);
         }
 
@@ -54,7 +54,7 @@ namespace TheRayTracerChallenge.Tests
             var camera = new Camera(201, 101, Math.PI / 2);
             var ray = camera.RayForPixel(0, 0);
 
-            Assert.AreEqual(Tuple.Point(0, 0, 0), ray.Point);
+            Assert.AreEqual(Tuple.Point(0, 0, 0), ray.Origin);
             Assert.AreEqual(Tuple.Vector(0.66519, 0.33259, -0.66851), ray.Direction);
         }
 
@@ -65,7 +65,7 @@ namespace TheRayTracerChallenge.Tests
             camera.Transform = Transformation.RotationY(Math.PI / 4).Chain(Transformation.Translation(0, -2, 5));
             var ray = camera.RayForPixel(100, 50);
 
-            Assert.AreEqual(Tuple.Point(0, 2, -5), ray.Point);
+            Assert.AreEqual(Tuple.Point(0, 2, -5), ray.Origin);
             Assert.AreEqual(Tuple.Vector(Math.Sqrt(2) / 2, 0, -Math.Sqrt(2) / 2), ray.Direction);
         }
 

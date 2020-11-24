@@ -21,15 +21,35 @@ namespace TheRayTracerChallenge.Tests
             A_ray_intersects_a_cube(Tuple.Point(  0, 0.5,  0), Tuple.Vector( 0,  0,  1), -1, 1); // inside
         }
 
-        private void A_ray_intersects_a_cube(Tuple rayPoint, Tuple rayDirection, double t1, double t2)
+        private void A_ray_intersects_a_cube(Tuple origin, Tuple direction, double t1, double t2)
         {
             var c = new Cube();
-            var ray = new Ray(rayPoint, rayDirection);
+            var ray = new Ray(origin, direction);
             var xs = c.LocalIntersect(ray);
 
             xs.Count.Should().Be(2);
             xs[0].T.Should().Be(t1);
             xs[1].T.Should().Be(t2);
+        }
+
+        [Test]
+        public void A_ray_misses_a_cube()
+        {
+            A_ray_misses_a_cube(Tuple.Point(-2, 0, 0), Tuple.Vector(0.2673, 0.5345, 0.8018));
+            A_ray_misses_a_cube(Tuple.Point(0, -2, 0), Tuple.Vector(0.8018, 0.2673, 0.5345));
+            A_ray_misses_a_cube(Tuple.Point(0, 0, -2), Tuple.Vector(0.5345, 0.8018, 0.2673));
+            A_ray_misses_a_cube(Tuple.Point(2, 0, 2), Tuple.Vector(0, 0, -1));
+            A_ray_misses_a_cube(Tuple.Point(0, 2, 2), Tuple.Vector(0, -1, 0));
+            A_ray_misses_a_cube(Tuple.Point(2, 2, 0), Tuple.Vector(-1, 0, 0));
+        }
+
+        private void A_ray_misses_a_cube(Tuple origin, Tuple direction)
+        {
+            var c = new Cube();
+            var ray = new Ray(origin, direction);
+            var xs = c.LocalIntersect(ray);
+
+            xs.Count.Should().Be(0);
         }
     }
 }

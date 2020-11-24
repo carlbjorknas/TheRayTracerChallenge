@@ -31,7 +31,7 @@ namespace TheRayTracerChallenge.Tests
 
             var ray2 = ray.Transform(translation);
 
-            Assert.AreEqual(Tuple.Point(4, 6, 8), ray2.Point);
+            Assert.AreEqual(Tuple.Point(4, 6, 8), ray2.Origin);
             Assert.AreEqual(Tuple.Vector(0, 1, 0), ray2.Direction);
         }
 
@@ -44,7 +44,7 @@ namespace TheRayTracerChallenge.Tests
             var transformation = Transformation.Scaling(2, 3, 4);
             var ray2 = ray.Transform(transformation);
 
-            Assert.AreEqual(Tuple.Point(2, 6, 12), ray2.Point);
+            Assert.AreEqual(Tuple.Point(2, 6, 12), ray2.Origin);
             Assert.AreEqual(Tuple.Vector(0, 3, 0), ray2.Direction);
         }
     }

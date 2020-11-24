@@ -52,7 +52,7 @@ namespace TheRayTracerChallenge.Tests
 
             shape.Intersect(ray);
 
-            Assert.AreEqual(Tuple.Point(0,0,-2.5), shape.LocalRay.Point);
+            Assert.AreEqual(Tuple.Point(0,0,-2.5), shape.LocalRay.Origin);
             Assert.AreEqual(Tuple.Vector(0,0,0.5), shape.LocalRay.Direction);
         }
 
@@ -67,7 +67,7 @@ namespace TheRayTracerChallenge.Tests
 
             shape.Intersect(ray);
 
-            Assert.AreEqual(Tuple.Point(-5, 0, -5), shape.LocalRay.Point);
+            Assert.AreEqual(Tuple.Point(-5, 0, -5), shape.LocalRay.Origin);
             Assert.AreEqual(Tuple.Vector(0, 0, 1), shape.LocalRay.Direction);
         }
 

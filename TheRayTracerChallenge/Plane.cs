@@ -14,7 +14,7 @@ namespace TheRayTracerChallenge
                 return new IntersectionCollection();
             }
 
-            var t = -localRay.Point.y / localRay.Direction.y;
+            var t = -localRay.Origin.y / localRay.Direction.y;
             var i = new Intersection(t, this);
             return new IntersectionCollection(i);
         }

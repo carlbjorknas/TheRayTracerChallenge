@@ -7,21 +7,21 @@ namespace TheRayTracerChallenge
 {
     struct Ray
     {
-        public Ray(Tuple point, Tuple direction)
+        public Ray(Tuple origin, Tuple direction)
         {
-            Point = point;
+            Origin = origin;
             Direction = direction;
         }
 
-        public Tuple Point { get; }
+        public Tuple Origin { get; }
         public Tuple Direction { get; }
 
         public Tuple Position(double t)
-            => Point + Direction * t;
+            => Origin + Direction * t;
         
         public Ray Transform(Transformation transformation)
             => new Ray(
-                transformation.Transform(Point),
+                transformation.Transform(Origin),
                 transformation.Transform(Direction));
     }
 }

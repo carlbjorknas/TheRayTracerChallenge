@@ -30,7 +30,7 @@ namespace TheRayTracerChallenge
 
         public override IntersectionCollection LocalIntersect(Ray localRay)
         {            
-            var sphereToRay = localRay.Point - Center;
+            var sphereToRay = localRay.Origin - Center;
             var a = localRay.Direction.Dot(localRay.Direction);
             var b = 2 * (localRay.Direction.Dot(sphereToRay));
             var c = sphereToRay.Dot(sphereToRay) - 1;

@@ -10,12 +10,15 @@ namespace TheRayTracerChallenge
     {
         public override IntersectionCollection LocalIntersect(Ray localRay)
         {
-            var (xtMin, xtMax) = CheckAxis(localRay.Point.x, localRay.Direction.x);
-            var (ytMin, ytMax) = CheckAxis(localRay.Point.y, localRay.Direction.y);
-            var (ztMin, ztMax) = CheckAxis(localRay.Point.z, localRay.Direction.z);
+            var (xtMin, xtMax) = CheckAxis(localRay.Origin.x, localRay.Direction.x);
+            var (ytMin, ytMax) = CheckAxis(localRay.Origin.y, localRay.Direction.y);
+            var (ztMin, ztMax) = CheckAxis(localRay.Origin.z, localRay.Direction.z);
 
             var tMin = new[] { xtMin, ytMin, ztMin }.Max();
             var tMax = new[] { xtMax, ytMax, ztMax }.Min();
+
+            if (tMin > tMax)
+                return new IntersectionCollection();
 
             return new IntersectionCollection(
                 new Intersection(tMin, this), 
