@@ -5,7 +5,7 @@ using TheRayTracerChallenge.Utils;
 
 namespace TheRayTracerChallenge
 {
-    struct Tuple
+    public struct Tuple
     {
         public static Tuple Point(double x, double y, double z)
         {
