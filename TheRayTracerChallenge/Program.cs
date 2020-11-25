@@ -23,7 +23,8 @@ namespace TheRayTracerChallenge
             //NestedPatternFloor();
             //BlendedPatternFloor();
             //PrintReflectionScene();
-            PrintReflectionAndRefractionScene();
+            //PrintReflectionAndRefractionScene();
+            PrintCubeTable();
         }
 
         private static void PrintAPixelToACanvas()
@@ -683,6 +684,86 @@ namespace TheRayTracerChallenge
             var canvas = camera.Render(world);
 
             SaveImage("scene_with_reflection_and_refraction.ppm", canvas.ToPpm());
+        }
+
+        private static void PrintCubeTable()
+        {
+            var tableMaterial = new Material { Color = new Color(1, 0.8, 0.25) };
+
+            var tableSurface = new Cube();
+            tableSurface.Material = tableMaterial;
+            tableSurface.Transform = Transformation.Scaling(5, 0.1, 3);
+
+            var leftFrontLeg = CreateLeg();
+            leftFrontLeg.Transform = Transformation.Translation(-4.6, -3, -2.6).Chain(leftFrontLeg.Transform);
+
+            var leftBackLeg = CreateLeg();
+            leftBackLeg.Transform = Transformation.Translation(-4.6, -3, 2.6).Chain(leftBackLeg.Transform);
+
+            var rightFrontLeg = CreateLeg();
+            rightFrontLeg.Transform = Transformation.Translation(4.6, -3, -2.6).Chain(rightFrontLeg.Transform);
+
+            var rightBackLeg = CreateLeg();
+            rightBackLeg.Transform = Transformation.Translation(4.6, -3, 2.6).Chain(rightBackLeg.Transform);
+
+            // The light bulb idea doesn't seem to work. I guess the handling of shadows is too basic.
+            // It doesn't seem that shadowing care about transparency, which means a glass bulb doesn't let any light through
+            // to the objects it shadows.            
+            //var lamp = new Sphere(Tuple.Point(3, 5, 0));
+            //lamp.Material = new Material
+            //{
+            //    Transparency = 1,
+            //    Diffuse = 0.1,
+            //    Reflective = 0.5,
+            //    Ambient = 0.5,
+            //    Specular = 0.5,
+            //    Shininess = 0.5,
+            //    Color = new Color(1, 0, 0),
+            //    RefractiveIndex = RefractiveIndex.Air
+            //};
+
+            var floor = new Plane();
+            floor.Transform = Transformation.Translation(0, -6, 0);
+
+            var backWall = new Plane();
+            backWall.Transform = Transformation.Translation(0, 0, 20)
+                .Chain(Transformation.RotationX(Math.PI / 2));
+            backWall.Material.Pattern = new StripePattern(new Color(0.6, 0.6, 1), new Color(0.9, 0.9, 1));
+
+            var rightWall = new Plane();
+            rightWall.Transform = Transformation.Translation(5, 0, 0)
+                .Chain(Transformation.RotationY(Math.PI / 2))
+                .Chain(Transformation.RotationX(Math.PI / 2));
+                
+            rightWall.Material.Pattern = new StripePattern(new Color(0.6, 0.6, 1), new Color(0.9, 0.9, 1));
+
+            var world = new World();
+            world.LightSource = new PointLight(Tuple.Point(-10, 20, 0), Color.White);
+            world.Shapes.AddRange(new Shape[] { 
+                tableSurface, 
+                leftFrontLeg, leftBackLeg,
+                rightFrontLeg, rightBackLeg,
+                //lamp,
+                floor, backWall, rightWall
+            });
+
+            var camera = new Camera(1000, 500, Math.PI / 3);
+            camera.Transform = Transformation.ViewTransform(
+                Tuple.Point(-4, 2, -15),
+                Tuple.Point(0, 0, 0),
+                Tuple.Point(0, 1, 0));
+
+            var canvas = camera.Render(world);
+
+            SaveImage("scene_with_table_made_of_cubes.ppm", canvas.ToPpm());
+
+            Cube CreateLeg()
+            {
+                var leg = new Cube();
+                leg.Transform = Transformation.Scaling(0.2, 3, 0.2);
+                leg.Material = tableMaterial;
+                return leg;
+            }
         }
 
         private static void SaveImage(string name, string ppm)
