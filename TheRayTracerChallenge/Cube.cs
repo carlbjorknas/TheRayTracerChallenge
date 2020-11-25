@@ -50,7 +50,13 @@ namespace TheRayTracerChallenge
 
         public override Tuple LocalNormalAt(Tuple localPoint)
         {
-            throw new NotImplementedException();
+            var max = new[] { Math.Abs(localPoint.x), Math.Abs(localPoint.y), Math.Abs(localPoint.z) }.Max();
+
+            if (max == Math.Abs(localPoint.x))
+                return Tuple.Vector(localPoint.x, 0, 0);
+            if (max == Math.Abs(localPoint.y))
+                return Tuple.Vector(0, localPoint.y, 0);
+            return Tuple.Vector(0, 0, localPoint.z);
         }
     }
 }

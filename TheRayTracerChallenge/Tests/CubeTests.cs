@@ -51,5 +51,25 @@ namespace TheRayTracerChallenge.Tests
 
             xs.Count.Should().Be(0);
         }
+
+        [Test]
+        public void The_normal_on_the_surface_of_a_cube()
+        {
+            The_normal_on_the_surface_of_a_cube(Tuple.Point(1, 0.5, -0.8), Tuple.Vector(1, 0, 0));
+            The_normal_on_the_surface_of_a_cube(Tuple.Point(-1, -0.2, 0.9), Tuple.Vector(-1, 0, 0));
+            The_normal_on_the_surface_of_a_cube(Tuple.Point(-0.4, 1, -0.1), Tuple.Vector(0, 1, 0));
+            The_normal_on_the_surface_of_a_cube(Tuple.Point(0.3, -1, -0.7), Tuple.Vector(0, -1, 0));
+            The_normal_on_the_surface_of_a_cube(Tuple.Point(-0.6, 0.3, 1), Tuple.Vector(0, 0, 1));
+            The_normal_on_the_surface_of_a_cube(Tuple.Point(0.4, 0.4, -1), Tuple.Vector(0, 0, -1));
+            The_normal_on_the_surface_of_a_cube(Tuple.Point(1, 1, 1), Tuple.Vector(1, 0, 0));
+            The_normal_on_the_surface_of_a_cube(Tuple.Point(-1, -1, -1), Tuple.Vector(-1, 0, 0));
+        }
+
+        private void The_normal_on_the_surface_of_a_cube(Tuple point, Tuple expectedNormal)
+        {
+            var c = new Cube();
+            var normal = c.NormalAt(point);
+            normal.Should().Be(normal);
+        }
     }
 }
