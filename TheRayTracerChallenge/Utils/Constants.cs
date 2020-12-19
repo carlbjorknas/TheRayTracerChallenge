@@ -16,7 +16,7 @@ namespace TheRayTracerChallenge.Utils
         public static double Vacuum = 1;
         public static double Air = 1.00029;
         public static double Water = 1.333;
-        public static double Glass = 1.52;
+        public static double Glass = 1.5;
         public static double Diamond = 2.417;
     }
 }

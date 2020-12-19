@@ -163,7 +163,7 @@ namespace TheRayTracerChallenge.Tests.Shapes
             var s = Sphere.Glass();
             Assert.AreEqual(Transformation.Identity, s.Transform);
             Assert.AreEqual(1.0, s.Material.Transparency);
-            Assert.AreEqual(1.52, s.Material.RefractiveIndex);
+            Assert.AreEqual(1.5, s.Material.RefractiveIndex);
         }
     }
 }
