@@ -30,7 +30,12 @@ namespace TheRayTracerChallenge.Shapes
                 // Ray does not intersect the cylinder
                 return new IntersectionCollection();
 
-            return new IntersectionCollection(new Intersection(1, this));
+            var t0 = (-b - Math.Sqrt(disc)) / (2 * a);
+            var t1 = (-b + Math.Sqrt(disc)) / (2 * a);
+
+            return new IntersectionCollection(
+                new Intersection(t0, this),
+                new Intersection(t1, this));
         }
 
         public override Tuple LocalNormalAt(Tuple localPoint)
