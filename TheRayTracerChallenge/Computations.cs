@@ -1,4 +1,5 @@
 ﻿using System;
+using TheRayTracerChallenge.Shapes;
 
 namespace TheRayTracerChallenge
 {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using TheRayTracerChallenge.Patterns;
+using TheRayTracerChallenge.Shapes;
 using TheRayTracerChallenge.Utils;
 
 namespace TheRayTracerChallenge

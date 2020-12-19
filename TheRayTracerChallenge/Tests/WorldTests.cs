@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using TheRayTracerChallenge.Shapes;
 using TheRayTracerChallenge.Tests.Patterns;
 using TheRayTracerChallenge.Utils;
 
