@@ -122,5 +122,23 @@ namespace TheRayTracerChallenge.Tests.Shapes
             var xs = cylinder.LocalIntersect(ray);
             xs.Count.Should().Be(count);
         }
+
+        [Test]
+        public void The_normal_vector_on_a_cylinders_end_caps()
+        {
+            The_normal_vector_on_a_cylinders_end_caps(Tuple.Point(0, 1, 0), Tuple.Vector(0, -1, 0));
+            The_normal_vector_on_a_cylinders_end_caps(Tuple.Point(0.5, 1, 0), Tuple.Vector(0, -1, 0));
+            The_normal_vector_on_a_cylinders_end_caps(Tuple.Point(0, 1, 0.5), Tuple.Vector(0, -1, 0));
+            The_normal_vector_on_a_cylinders_end_caps(Tuple.Point(0, 2, 0), Tuple.Vector(0, 1, 0));
+            The_normal_vector_on_a_cylinders_end_caps(Tuple.Point(0.5, 2, 0), Tuple.Vector(0, 1, 0));
+            The_normal_vector_on_a_cylinders_end_caps(Tuple.Point(0, 2, 0.5), Tuple.Vector(0, 1, 0));
+        }
+
+        private void The_normal_vector_on_a_cylinders_end_caps(Tuple point, Tuple expectedNormal)
+        {
+            var cylinder = new Cylinder(1, 2, closed: true);
+            var normal = cylinder.LocalNormalAt(point);
+            normal.Should().Be(expectedNormal);
+        }
     }
 }
