@@ -2,6 +2,7 @@
 using FluentAssertions;
 using TheRayTracerChallenge.Shapes;
 using TheRayTracerChallenge.Utils;
+using System;
 
 namespace TheRayTracerChallenge.Tests.Shapes
 {
@@ -59,6 +60,41 @@ namespace TheRayTracerChallenge.Tests.Shapes
             var cylinder = new Cylinder();
             var normal = cylinder.LocalNormalAt(point);
             normal.Should().Be(expectedNormal);
+        }
+
+        [Test]
+        public void The_default_minimum_and_maximum_for_a_cylinder()
+        {
+            var cylinder = new Cylinder();
+            cylinder.Min.Should().Be(double.NegativeInfinity);
+            cylinder.Max.Should().Be(double.PositiveInfinity);
+        }
+
+        [Test]
+        public void Intersecting_a_constrained_cylinder()
+        {
+            // From the inside, diagonally upwards, won't intersect the cylinder
+            Intersecting_a_constrained_cylinder(Tuple.Point(0, 1.5, 0), Tuple.Vector(0.1, 1, 0), 0);
+
+            // Perpendicular to the y-axis, but first too high and the second too low
+            Intersecting_a_constrained_cylinder(Tuple.Point(0, 3, -5), Tuple.Vector(0, 0, 1), 0);
+            Intersecting_a_constrained_cylinder(Tuple.Point(0, 0, -5), Tuple.Vector(0, 0, 1), 0);
+
+            // Edge cases, shows that min and max is not included in the cylinder
+            Intersecting_a_constrained_cylinder(Tuple.Point(0, 2, -5), Tuple.Vector(0, 0, 1), 0);
+            Intersecting_a_constrained_cylinder(Tuple.Point(0, 1, -5), Tuple.Vector(0, 0, 1), 0);
+
+            // A ray through the cylinder, perpendicular to y-axis
+            Intersecting_a_constrained_cylinder(Tuple.Point(0, 1.5, -2), Tuple.Vector(0, 0, 1), 2);
+        }
+
+        private void Intersecting_a_constrained_cylinder(Tuple origin, Tuple direction, int count)
+        {
+            var cylinder = new Cylinder(1, 2);
+            direction = direction.Normalize;
+            var ray = new Ray(origin, direction);
+            var xs = cylinder.LocalIntersect(ray);
+            xs.Count.Should().Be(count);
         }
     }
 }

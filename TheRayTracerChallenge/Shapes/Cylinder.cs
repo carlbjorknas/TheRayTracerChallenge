@@ -1,12 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using TheRayTracerChallenge.Utils;
 
 namespace TheRayTracerChallenge.Shapes
 {
     class Cylinder : Shape
     {
+        public Cylinder()
+        {
+        }
+
+        public Cylinder(double min, double max)
+        {
+            Min = min;
+            Max = max;
+        }
+
+        public double Min { get; internal set; } = double.NegativeInfinity;
+        public double Max { get; internal set; } = double.PositiveInfinity;
+
         public override IntersectionCollection LocalIntersect(Ray localRay)
         {
             var a = Math.Pow(localRay.Direction.x, 2) + Math.Pow(localRay.Direction.z, 2);
@@ -33,9 +45,20 @@ namespace TheRayTracerChallenge.Shapes
             var t0 = (-b - Math.Sqrt(disc)) / (2 * a);
             var t1 = (-b + Math.Sqrt(disc)) / (2 * a);
 
-            return new IntersectionCollection(
-                new Intersection(t0, this),
-                new Intersection(t1, this));
+            if (t0 > t1)
+                Swapper.Swap(ref t0, ref t1);
+
+            var xs = new List<Intersection>();
+
+            var y0 = localRay.Origin.y + t0 * localRay.Direction.y;
+            if (Min < y0 && y0 < Max)
+                xs.Add(new Intersection(t0, this));
+
+            var y1 = localRay.Origin.y + t1 * localRay.Direction.y;
+            if (Min < y1 && y1 < Max)
+                xs.Add(new Intersection(t1, this));
+
+            return new IntersectionCollection(xs);
         }
 
         public override Tuple LocalNormalAt(Tuple localPoint)
