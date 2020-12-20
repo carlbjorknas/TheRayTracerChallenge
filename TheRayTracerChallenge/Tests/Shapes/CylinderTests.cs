@@ -44,5 +44,21 @@ namespace TheRayTracerChallenge.Tests.Shapes
             xs[0].T.Should().BeApproximately(t0, C.Epsilon);
             xs[1].T.Should().BeApproximately(t1, C.Epsilon);
         }
+
+        [Test]
+        public void Normal_vector_on_a_cylinder()
+        {
+            Normal_vector_on_a_cylinder(Tuple.Point(1, 0, 0), Tuple.Vector(1, 0, 0));
+            Normal_vector_on_a_cylinder(Tuple.Point(0, 5, -1), Tuple.Vector(0, 0, -1));
+            Normal_vector_on_a_cylinder(Tuple.Point(0, -2, 1), Tuple.Vector(0, 0, 1));
+            Normal_vector_on_a_cylinder(Tuple.Point(-1, 1, 0), Tuple.Vector(-1, 0, 0));
+        }
+
+        private void Normal_vector_on_a_cylinder(Tuple point, Tuple expectedNormal)
+        {
+            var cylinder = new Cylinder();
+            var normal = cylinder.LocalNormalAt(point);
+            normal.Should().Be(expectedNormal);
+        }
     }
 }

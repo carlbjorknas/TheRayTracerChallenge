@@ -40,7 +40,7 @@ namespace TheRayTracerChallenge.Shapes
 
         public override Tuple LocalNormalAt(Tuple localPoint)
         {
-            throw new NotImplementedException();
+            return Tuple.Vector(localPoint.x, 0, localPoint.z);
         }
     }
 }
