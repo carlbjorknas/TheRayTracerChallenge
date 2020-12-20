@@ -96,5 +96,31 @@ namespace TheRayTracerChallenge.Tests.Shapes
             var xs = cylinder.LocalIntersect(ray);
             xs.Count.Should().Be(count);
         }
+
+        [Test]
+        public void The_default_closed_value_for_a_cylinder()
+        {
+            var cylinder = new Cylinder();
+            cylinder.Closed.Should().BeFalse();
+        }
+
+        [Test]
+        public void Intersecting_the_caps_of_a_closed_cylinder()
+        {
+            Intersecting_the_caps_of_a_closed_cylinder(Tuple.Point(0, 3, 0), Tuple.Vector(0, -1, 0), 2);
+            Intersecting_the_caps_of_a_closed_cylinder(Tuple.Point(0, 3, -2), Tuple.Vector(0, -1, 2), 2);
+            Intersecting_the_caps_of_a_closed_cylinder(Tuple.Point(0, 4, -2), Tuple.Vector(0, -1, 1), 2); // Corner case
+            Intersecting_the_caps_of_a_closed_cylinder(Tuple.Point(0, 0, -2), Tuple.Vector(0, 1, 2), 2);
+            Intersecting_the_caps_of_a_closed_cylinder(Tuple.Point(0, -1, -2), Tuple.Vector(0, 1, 1), 2); // Corner case
+        }
+
+        private void Intersecting_the_caps_of_a_closed_cylinder(Tuple origin, Tuple direction, int count)
+        {
+            var cylinder = new Cylinder(1, 2, closed: true);
+            direction = direction.Normalize;
+            var ray = new Ray(origin, direction);
+            var xs = cylinder.LocalIntersect(ray);
+            xs.Count.Should().Be(count);
+        }
     }
 }
