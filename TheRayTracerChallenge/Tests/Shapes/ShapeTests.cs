@@ -91,5 +91,12 @@ namespace TheRayTracerChallenge.Tests.Shapes
 
             Assert.AreEqual(Tuple.Vector(0, 0.97014, -0.24254), normal);
         }
+
+        [Test]
+        public void A_shape_has_a_parent_attribute()
+        {
+            var shape = new TestShape();
+            Assert.IsNull(shape.Parent);
+        }
     }
 }

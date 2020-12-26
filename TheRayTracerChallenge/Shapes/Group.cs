@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using TheRayTracerChallenge.Tests.Shapes;
 
 namespace TheRayTracerChallenge.Shapes
 {
@@ -8,7 +10,10 @@ namespace TheRayTracerChallenge.Shapes
     {
         public override IntersectionCollection LocalIntersect(Ray localRay)
         {
-            throw new NotImplementedException();
+            var xs = Shapes
+                .SelectMany(shape => shape.Intersect(localRay).Intersections)
+                .OrderBy(intersection => intersection.T);
+            return new IntersectionCollection(xs);
         }
 
         public override Tuple LocalNormalAt(Tuple localPoint)
@@ -17,5 +22,11 @@ namespace TheRayTracerChallenge.Shapes
         }
 
         public List<Shape> Shapes { get; } = new List<Shape>();
+
+        internal void AddChild(Shape shape)
+        {
+            Shapes.Add(shape);
+            shape.Parent = this;
+        }
     }
 }

@@ -15,6 +15,8 @@ namespace TheRayTracerChallenge.Shapes
         public Transformation Transform { get; set; }
         public Material Material { get; set; }
 
+        public Group Parent { get; set; }
+
         public IntersectionCollection Intersect(Ray ray)
         {
             var localRay = ray.Transform(Transform.Inverse);
