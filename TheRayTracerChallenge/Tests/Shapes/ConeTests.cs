@@ -42,5 +42,22 @@ namespace TheRayTracerChallenge.Tests.Shapes
             xs.Count.Should().Be(1);
             xs[0].T.Should().BeApproximately(0.35355, C.Epsilon);
         }
+
+        [Test]
+        public void Intersecting_a_cones_end_caps()
+        {
+            Intersecting_a_cones_end_caps(Tuple.Point(0, 0, -5), Tuple.Vector(0, 1, 0), 0);
+            Intersecting_a_cones_end_caps(Tuple.Point(0, 0, -0.25), Tuple.Vector(0, 1, 1), 2);
+            Intersecting_a_cones_end_caps(Tuple.Point(0, 0, -0.25), Tuple.Vector(0, 1, 0), 4);
+        }
+
+        private void Intersecting_a_cones_end_caps(Tuple origin, Tuple direction, int count)
+        {
+            var cone = new Cone(-0.5, 0.5, true);
+            direction = direction.Normalize;
+            var ray = new Ray(origin, direction);
+            var xs = cone.LocalIntersect(ray);
+            xs.Count.Should().Be(count);
+        }
     }
 }

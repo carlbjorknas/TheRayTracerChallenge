@@ -6,11 +6,26 @@ namespace TheRayTracerChallenge.Shapes
 {
     class Cone : Shape
     {
+        public Cone() : this(double.NegativeInfinity, double.PositiveInfinity, false)
+        {
+        }
+
+        public Cone(double min, double max, bool closed)
+        {
+            Min = min;
+            Max = max;
+            Closed = closed;
+        }
+
+        public double Min { get; }
+        public double Max { get; }
+        public bool Closed { get; }
+
         public override IntersectionCollection LocalIntersect(Ray localRay)
         {
             var xs = new List<Intersection>();
             xs.AddRange(IntersectWalls(localRay));
-            //xs.AddRange(IntersectCaps(localRay));
+            xs.AddRange(IntersectCaps(localRay));
 
             return new IntersectionCollection(xs);
         }
@@ -51,13 +66,42 @@ namespace TheRayTracerChallenge.Shapes
             if (t0 > t1)
                 Swapper.Swap(ref t0, ref t1);
 
-            //var y0 = localRay.Origin.y + t0 * localRay.Direction.y;
-            //if (Min < y0 && y0 < Max)
+            var y0 = localRay.Origin.y + t0 * localRay.Direction.y;
+            if (Min < y0 && y0 < Max)
                 yield return new Intersection(t0, this);
 
-            //var y1 = localRay.Origin.y + t1 * localRay.Direction.y;
-            //if (Min < y1 && y1 < Max)
+            var y1 = localRay.Origin.y + t1 * localRay.Direction.y;
+            if (Min < y1 && y1 < Max)
                 yield return new Intersection(t1, this);
+        }
+
+        private IEnumerable<Intersection> IntersectCaps(Ray ray)
+        {
+            // Caps only matter if the cylinder is closed and might possibly be
+            // intersected by the ray.
+            if (!Closed || Math.Abs(ray.Direction.y) < C.Epsilon)
+                yield break;
+
+            // Check for an intersection with the lower end cap by intersecting
+            // the ray with the plane at y=Min
+            var t = (Min - ray.Origin.y) / ray.Direction.y;
+            if (CheckCap(ray, t))
+                yield return new Intersection(t, this);
+
+            // Check for an intersection with the upper end cap by intersecting
+            // the ray with the plane at y=Max
+            t = (Max - ray.Origin.y) / ray.Direction.y;
+            if (CheckCap(ray, t))
+                yield return new Intersection(t, this);
+        }
+
+        private bool CheckCap(Ray ray, double t)
+        {
+            var x = ray.Origin.x + t * ray.Direction.x;
+            var z = ray.Origin.z + t * ray.Direction.z;
+            var radius = Math.Abs(t * ray.Direction.y);
+
+            return Math.Pow(x, 2) + Math.Pow(z, 2) <= radius;
         }
 
         public override Tuple LocalNormalAt(Tuple localPoint)
