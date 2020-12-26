@@ -30,5 +30,17 @@ namespace TheRayTracerChallenge.Tests.Shapes
             xs[0].T.Should().BeApproximately(t0, C.Epsilon);
             xs[1].T.Should().BeApproximately(t1, C.Epsilon);
         }
+
+        [Test]
+        public void Intersecting_a_cone_with_a_ray_parallel_to_one_of_its_halves()
+        {
+            var cone = new Cone();
+            var direction = Tuple.Vector(0, 1, 1).Normalize;
+            var ray = new Ray(Tuple.Point(0, 0, -1), direction);
+            var xs = cone.LocalIntersect(ray);
+
+            xs.Count.Should().Be(1);
+            xs[0].T.Should().BeApproximately(0.35355, C.Epsilon);
+        }
     }
 }

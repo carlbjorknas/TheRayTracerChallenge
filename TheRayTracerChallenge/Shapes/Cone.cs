@@ -29,13 +29,14 @@ namespace TheRayTracerChallenge.Shapes
                 Math.Pow(localRay.Origin.y, 2) +
                 Math.Pow(localRay.Origin.z, 2);
 
-            if (a < C.Epsilon)
+            if (Math.Abs(a) < C.Epsilon)
             {
                 // Ray is parallell to one of the cones halves
-                if (b < C.Epsilon)
+                if (Math.Abs(b) < C.Epsilon)
                     yield break;
-                var t = -c / 2 * b;
+                var t = -c / (2 * b);
                 yield return new Intersection(t, this);
+                yield break;
             }
 
             var disc = Math.Pow(b, 2) - 4 * a * c;
