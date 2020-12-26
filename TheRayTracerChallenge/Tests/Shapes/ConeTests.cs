@@ -59,5 +59,20 @@ namespace TheRayTracerChallenge.Tests.Shapes
             var xs = cone.LocalIntersect(ray);
             xs.Count.Should().Be(count);
         }
+
+        [Test]
+        public void Computing_the_normal_vector_on_a_cone()
+        {
+            Computing_the_normal_vector_on_a_cone(Tuple.Point(0, 0, 0), Tuple.Vector(0, 0, 0));
+            Computing_the_normal_vector_on_a_cone(Tuple.Point(1, 1, 1), Tuple.Vector(1, -Math.Sqrt(2), 1));
+            Computing_the_normal_vector_on_a_cone(Tuple.Point(-1, -1, 0), Tuple.Vector(-1, 1, 0));
+        }
+
+        private void Computing_the_normal_vector_on_a_cone(Tuple point, Tuple expectedNormal)
+        {
+            var cone = new Cone();
+            var normal = cone.LocalNormalAt(point);
+            normal.Should().Be(expectedNormal);
+        }
     }
 }

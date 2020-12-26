@@ -106,7 +106,22 @@ namespace TheRayTracerChallenge.Shapes
 
         public override Tuple LocalNormalAt(Tuple localPoint)
         {
-            throw new NotImplementedException();
+            var distanceFromYAxis = Math.Pow(localPoint.x, 2) + Math.Pow(localPoint.z, 2);
+
+            var onEndCap = distanceFromYAxis < Math.Abs(localPoint.y);
+            if (onEndCap)
+            {
+                if (localPoint.y >= Max - C.Epsilon)
+                    return Tuple.Vector(0, 1, 0);
+                if (localPoint.y <= Min + C.Epsilon)
+                    return Tuple.Vector(0, -1, 0);
+            }
+
+            var y = Math.Sqrt(distanceFromYAxis);
+            if (localPoint.y > 0)
+                y = -y;
+
+            return Tuple.Vector(localPoint.x, y, localPoint.z);
         }
     }
 }
