@@ -27,11 +27,9 @@ namespace TheRayTracerChallenge.Shapes
 
         public Tuple NormalAt(Tuple point)
         {
-            var localPoint = Transform.Inverse.Transform(point);
+            var localPoint = WorldToObject(point);
             var localNormal = LocalNormalAt(localPoint);
-            var worldNormal = Transform.Inverse.Transpose.Transform(localNormal);
-            worldNormal.w = 0;
-            return worldNormal.Normalize;
+            return NormalToWorld(localNormal);
         }
 
         public abstract Tuple LocalNormalAt(Tuple localPoint);

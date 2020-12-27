@@ -144,5 +144,24 @@ namespace TheRayTracerChallenge.Tests.Shapes
 
             Assert.AreEqual(objectSpacePoint, Tuple.Vector(0.28571, 0.42857, -0.85714));
         }
+
+        [Test]
+        public void Finding_the_normal_on_a_child_object()
+        {
+            var outerGroup = new Group();
+            outerGroup.Transform = Transformation.RotationY(Math.PI / 2);
+
+            var innerGroup = new Group();
+            innerGroup.Transform = Transformation.Scaling(1, 2, 3);
+            outerGroup.AddChild(innerGroup);
+
+            var sphere = Sphere.UnitSphere();
+            sphere.Transform = Transformation.Translation(5, 0, 0);
+            innerGroup.AddChild(sphere);
+
+            var normal = sphere.NormalAt(Tuple.Point(1.7321, 1.1547, -5.5774));
+
+            Assert.AreEqual(normal, Tuple.Vector(0.28570, 0.42854, -0.85716));
+        }
     }
 }
