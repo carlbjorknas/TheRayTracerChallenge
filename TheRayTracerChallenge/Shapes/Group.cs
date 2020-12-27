@@ -12,8 +12,8 @@ namespace TheRayTracerChallenge.Shapes
 
         public override IntersectionCollection LocalIntersect(Ray localRay)
         {
-            //if (!Shapes.Any() || !HitsBoundingBox(localRay))
-            //    return new IntersectionCollection();
+            if (!Shapes.Any() || !HitsBoundingBox(localRay))
+                return new IntersectionCollection();
 
             var xs = Shapes
                 .SelectMany(shape => shape.Intersect(localRay).Intersections)
