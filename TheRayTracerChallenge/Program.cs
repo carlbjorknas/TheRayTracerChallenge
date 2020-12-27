@@ -792,8 +792,8 @@ namespace TheRayTracerChallenge
 
             var s5 = CreateSnowflake();
             s5.Transform = Transformation.Translation(-10, -20, 30)
-                .Chain(Transformation.RotationY(Math.PI / 5))
-                .Chain(Transformation.RotationX(-Math.PI / 4));
+                //.Chain(Transformation.RotationY(Math.PI / 5))
+                .Chain(Transformation.RotationX(Math.PI / 3));
 
             var world = new World();
             world.LightSource = new PointLight(Tuple.Point(-10, 10, -10), Color.White);
