@@ -45,5 +45,14 @@ namespace TheRayTracerChallenge.Tests.Shapes
             var xs = triangle.LocalIntersect(ray);
             xs.Count.Should().Be(0);
         }
+
+        [Test]
+        public void A_ray_misses_the_P1_to_P3_edge()
+        {
+            var triangle = new Triangle(Tuple.Point(0, 1, 0), Tuple.Point(-1, 0, 0), Tuple.Point(1, 0, 0));
+            var ray = new Ray(Tuple.Point(1, 1, -2), Tuple.Vector(0, 0, 1));
+            var xs = triangle.LocalIntersect(ray);
+            xs.Count.Should().Be(0);
+        }
     }
 }
