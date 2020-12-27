@@ -118,7 +118,31 @@ namespace TheRayTracerChallenge.Tests.Shapes
             innerGroup.AddChild(sphere);
 
             var objectSpacePoint = sphere.WorldToObject(Tuple.Point(-2, 0, -10));
+
             Assert.AreEqual(objectSpacePoint, Tuple.Point(0, 0, -1));
+        }
+
+        [Test]
+        // This sets up two nested groups like in the previous test. Again, each is given
+        // its own transformation, and then another new function, normal_to_world(shape, normal), 
+        // is used to transform a vector to world space.
+        public void Converting_a_normal_from_object_to_world_space()
+        {
+            var outerGroup = new Group();
+            outerGroup.Transform = Transformation.RotationY(Math.PI / 2);
+
+            var innerGroup = new Group();
+            innerGroup.Transform = Transformation.Scaling(1, 2, 3);
+            outerGroup.AddChild(innerGroup);
+
+            var sphere = Sphere.UnitSphere();
+            sphere.Transform = Transformation.Translation(5, 0, 0);
+            innerGroup.AddChild(sphere);
+
+            var vectorValue = Math.Sqrt(3) / 3;
+            var objectSpacePoint = sphere.NormalToWorld(Tuple.Vector(vectorValue, vectorValue, vectorValue));
+
+            Assert.AreEqual(objectSpacePoint, Tuple.Vector(0.28571, 0.42857, -0.85714));
         }
     }
 }

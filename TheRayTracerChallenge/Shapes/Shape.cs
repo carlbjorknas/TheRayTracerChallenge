@@ -43,5 +43,17 @@ namespace TheRayTracerChallenge.Shapes
 
             return Transform.Inverse.Transform(point);
         }
+
+        internal Tuple NormalToWorld(Tuple normal)
+        {
+            normal = Transform.Inverse.Transpose.Transform(normal);
+            normal.w = 0;
+            normal = normal.Normalize;
+
+            if (Parent != null)
+                normal = Parent.NormalToWorld(normal);
+
+            return normal;
+        }
     }
 }
