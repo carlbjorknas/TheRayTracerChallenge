@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using TheRayTracerChallenge.Shapes.Utils;
 using TheRayTracerChallenge.Utils;
 
 namespace TheRayTracerChallenge.Shapes
@@ -20,6 +21,15 @@ namespace TheRayTracerChallenge.Shapes
         public double Min { get; }
         public double Max { get; }
         public bool Closed { get; }
+
+        public override Bounds Bounds
+        {
+            get
+            {
+                var absMax = Math.Max(Math.Abs(Min), Math.Abs(Max));
+                return new Bounds(Tuple.Point(-absMax, Min, -absMax), Tuple.Point(absMax, Max, absMax));
+            }
+        }
 
         public override IntersectionCollection LocalIntersect(Ray localRay)
         {

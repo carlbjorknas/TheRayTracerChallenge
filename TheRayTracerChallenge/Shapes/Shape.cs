@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using TheRayTracerChallenge.Shapes.Utils;
 
 namespace TheRayTracerChallenge.Shapes
 {
@@ -22,6 +23,8 @@ namespace TheRayTracerChallenge.Shapes
             var localRay = ray.Transform(Transform.Inverse);
             return LocalIntersect(localRay);
         }
+
+        public abstract Bounds Bounds { get; }
 
         public abstract IntersectionCollection LocalIntersect(Ray localRay);
 

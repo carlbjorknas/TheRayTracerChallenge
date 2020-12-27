@@ -1,10 +1,13 @@
 ﻿using TheRayTracerChallenge.Shapes;
+using TheRayTracerChallenge.Shapes.Utils;
 
 namespace TheRayTracerChallenge.Tests.Shapes
 {
     class TestShape : Shape
     {
         public Ray LocalRay { get; private set; }
+
+        public override Bounds Bounds => throw new System.NotImplementedException();
 
         public override IntersectionCollection LocalIntersect(Ray localRay)
         {

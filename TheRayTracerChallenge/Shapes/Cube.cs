@@ -2,12 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TheRayTracerChallenge.Shapes.Utils;
 using TheRayTracerChallenge.Utils;
 
 namespace TheRayTracerChallenge.Shapes
 {
     class Cube : Shape
     {
+        public override Bounds Bounds
+            => new Bounds(Tuple.Point(-1, -1, -1), Tuple.Point(1, 1, 1));
+
         public override IntersectionCollection LocalIntersect(Ray localRay)
         {
             var (xtMin, xtMax) = CheckAxis(localRay.Origin.x, localRay.Direction.x);

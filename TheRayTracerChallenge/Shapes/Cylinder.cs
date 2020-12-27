@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using TheRayTracerChallenge.Shapes.Utils;
 using TheRayTracerChallenge.Utils;
 
 namespace TheRayTracerChallenge.Shapes
@@ -20,6 +21,9 @@ namespace TheRayTracerChallenge.Shapes
         public double Min { get; internal set; } = double.NegativeInfinity;
         public double Max { get; internal set; } = double.PositiveInfinity;
         public bool Closed { get; internal set; }
+
+        public override Bounds Bounds
+            => new Bounds(Tuple.Point(-1, Min, -1), Tuple.Point(1, Max, 1));
 
         public override IntersectionCollection LocalIntersect(Ray localRay)
         {

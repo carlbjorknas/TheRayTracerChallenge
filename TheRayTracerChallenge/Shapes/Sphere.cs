@@ -1,4 +1,5 @@
 ﻿using System;
+using TheRayTracerChallenge.Shapes.Utils;
 using TheRayTracerChallenge.Utils;
 
 namespace TheRayTracerChallenge.Shapes
@@ -16,12 +17,13 @@ namespace TheRayTracerChallenge.Shapes
             return s;
         }
 
-        Guid Id;
-        public Tuple Center;
+         public Tuple Center;
+
+        public override Bounds Bounds
+            => new Bounds(Tuple.Point(-1, -1, -1), Tuple.Point(1, 1, 1));
 
         public Sphere(Tuple center)
         {
-            Id = Guid.NewGuid();
             Center = center;            
         }
 
