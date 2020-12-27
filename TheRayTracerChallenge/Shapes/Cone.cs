@@ -10,7 +10,7 @@ namespace TheRayTracerChallenge.Shapes
         {
         }
 
-        public Cone(double min, double max, bool closed)
+        public Cone(double min, double max, bool closed = false)
         {
             Min = min;
             Max = max;
