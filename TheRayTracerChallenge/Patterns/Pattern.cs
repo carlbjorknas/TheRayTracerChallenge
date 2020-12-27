@@ -17,7 +17,7 @@ namespace TheRayTracerChallenge.Patterns
         public abstract Color ColorAt(Tuple point);
 
         public Color PatternColorAtShape(Shape shape, Tuple worldPoint)
-            => ColorAtShapePoint(shape.Transform.Inverse.Transform(worldPoint));
+            => ColorAtShapePoint(shape.WorldToObject(worldPoint));
         
         public Color ColorAtShapePoint(Tuple shapePoint)
             => ColorAt(Transform.Inverse.Transform(shapePoint));      

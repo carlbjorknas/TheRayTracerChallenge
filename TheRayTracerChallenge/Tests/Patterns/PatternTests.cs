@@ -57,5 +57,23 @@ namespace TheRayTracerChallenge.Tests.Patterns
 
             Assert.AreEqual(new Color(0.75, 0.5, 0.25), color);
         }
+
+        [Test]
+        public void Group_and_object_and_pattern_transformation()
+        {
+            var group = new Group();
+            group.Transform = Transformation.Translation(1, 0, 0);
+
+            var sphere = Sphere.UnitSphere();
+            sphere.Transform = Transformation.Scaling(2, 2, 2);
+            group.AddChild(sphere);
+
+            var pattern = new TestPattern();
+            pattern.Transform = Transformation.Translation(1, 0, 0);
+
+            var color = pattern.PatternColorAtShape(sphere, Tuple.Point(3, 0, 0));
+
+            Assert.AreEqual(new Color(0, 0, 0), color);
+        }
     }
 }

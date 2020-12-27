@@ -119,7 +119,7 @@ namespace TheRayTracerChallenge.Tests.Shapes
 
             var objectSpacePoint = sphere.WorldToObject(Tuple.Point(-2, 0, -10));
 
-            Assert.AreEqual(objectSpacePoint, Tuple.Point(0, 0, -1));
+            Assert.AreEqual(Tuple.Point(0, 0, -1), objectSpacePoint);
         }
 
         [Test]
@@ -142,7 +142,7 @@ namespace TheRayTracerChallenge.Tests.Shapes
             var vectorValue = Math.Sqrt(3) / 3;
             var objectSpacePoint = sphere.NormalToWorld(Tuple.Vector(vectorValue, vectorValue, vectorValue));
 
-            Assert.AreEqual(objectSpacePoint, Tuple.Vector(0.28571, 0.42857, -0.85714));
+            Assert.AreEqual(Tuple.Vector(0.28571, 0.42857, -0.85714), objectSpacePoint);
         }
 
         [Test]
@@ -161,7 +161,7 @@ namespace TheRayTracerChallenge.Tests.Shapes
 
             var normal = sphere.NormalAt(Tuple.Point(1.7321, 1.1547, -5.5774));
 
-            Assert.AreEqual(normal, Tuple.Vector(0.28570, 0.42854, -0.85716));
+            Assert.AreEqual(Tuple.Vector(0.28570, 0.42854, -0.85716), normal);
         }
     }
 }
