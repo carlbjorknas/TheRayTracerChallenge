@@ -35,5 +35,13 @@ namespace TheRayTracerChallenge.Shapes
         }
 
         public abstract Tuple LocalNormalAt(Tuple localPoint);
+
+        internal Tuple WorldToObject(Tuple point)
+        {
+            if (Parent != null)
+                point = Parent.WorldToObject(point);
+
+            return Transform.Inverse.Transform(point);
+        }
     }
 }

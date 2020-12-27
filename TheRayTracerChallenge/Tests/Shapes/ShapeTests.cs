@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using TheRayTracerChallenge.Shapes;
 
 namespace TheRayTracerChallenge.Tests.Shapes
 {
@@ -97,6 +98,27 @@ namespace TheRayTracerChallenge.Tests.Shapes
         {
             var shape = new TestShape();
             Assert.IsNull(shape.Parent);
+        }
+
+        [Test]
+        //This test constructs an outer group, which contains an inner group, which in
+        //turn contains a sphere.Each is given its own transformation before calling a new
+        //function, world_to_object(shape, point), to convert a world-space point to object space.
+        public void Converting_a_point_from_world_to_object_space()
+        {
+            var outerGroup = new Group();
+            outerGroup.Transform = Transformation.RotationY(Math.PI / 2);
+
+            var innerGroup = new Group();
+            innerGroup.Transform = Transformation.Scaling(2, 2, 2);
+            outerGroup.AddChild(innerGroup);
+
+            var sphere = Sphere.UnitSphere();
+            sphere.Transform = Transformation.Translation(5, 0, 0);
+            innerGroup.AddChild(sphere);
+
+            var objectSpacePoint = sphere.WorldToObject(Tuple.Point(-2, 0, -10));
+            Assert.AreEqual(objectSpacePoint, Tuple.Point(0, 0, -1));
         }
     }
 }
