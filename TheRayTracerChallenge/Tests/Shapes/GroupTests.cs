@@ -36,13 +36,12 @@ namespace TheRayTracerChallenge.Tests.Shapes
         }
 
         [Test]
+        //This test builds a group of three spheres and casts a ray at it. The
+        //spheres are arranged inside the group so that the ray will intersect two of the
+        //spheres but miss the third.The resulting collection of intersections should
+        //include those of the two spheres.
         public void Intersecting_a_ray_with_a_nonempty_group()
         {
-            //This test builds a group of three spheres and casts a ray at it. The
-            //spheres are arranged inside the group so that the ray will intersect two of the
-            //spheres but miss the third.The resulting collection of intersections should
-            //include those of the two spheres.
-
             // Arrange
             var group = new Group();
 
@@ -69,6 +68,27 @@ namespace TheRayTracerChallenge.Tests.Shapes
             xs[1].Object.Should().Be(s2);
             xs[2].Object.Should().Be(s1);
             xs[3].Object.Should().Be(s1);
+        }
+
+        [Test]
+        //This test creates a group and adds a single sphere to it.The new group is given
+        //one transformation, and the sphere is given a different transformation.A ray is
+        //then cast in such a way that it should strike the sphere, as long as the sphere
+        //is being transformed by both its own transformation and that of its parent.
+        public void Intersecting_a_transformed_group()
+        {
+            var group = new Group();
+            group.Transform = Transformation.Scaling(2, 2, 2);
+
+            var sphere = Sphere.UnitSphere();
+            sphere.Transform = Transformation.Translation(5, 0, 0);
+            group.AddChild(sphere);
+
+            var ray = new Ray(Tuple.Point(10, 0, -10), Tuple.Vector(0, 0, 1));
+
+            var xs = group.Intersect(ray);
+
+            xs.Count.Should().Be(2);
         }
     }
 }
