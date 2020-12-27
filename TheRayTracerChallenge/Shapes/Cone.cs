@@ -50,7 +50,9 @@ namespace TheRayTracerChallenge.Shapes
                 if (Math.Abs(b) < C.Epsilon)
                     yield break;
                 var t = -c / (2 * b);
-                yield return new Intersection(t, this);
+                var y = localRay.Origin.y + t * localRay.Direction.y;
+                if (Min < y && y < Max)
+                    yield return new Intersection(t, this);
                 yield break;
             }
 
