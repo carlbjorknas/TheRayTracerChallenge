@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
+using TheRayTracerChallenge.Utils;
 
 namespace TheRayTracerChallenge
 {
@@ -66,16 +68,27 @@ namespace TheRayTracerChallenge
 
         internal Canvas Render(World world)
         {
+            using var timer = new Timer();
             var image = new Canvas(HSize, VSize);
-            for (var y = 0; y < VSize; y++)
-            {
-                for (var x = 0; x < HSize; x++)
+            //for (var y = 0; y < VSize; y++)
+            //{
+            //    for (var x = 0; x < HSize; x++)
+            //    {
+            //        var ray = RayForPixel(x, y);
+            //        var color = world.ColorAt(ray);
+            //        image.WritePixel(x, y, color);
+            //    }
+            //}
+            Parallel.For(0, VSize,
+                y =>
                 {
-                    var ray = RayForPixel(x, y);
-                    var color = world.ColorAt(ray);
-                    image.WritePixel(x, y, color);
-                }
-            }
+                    for (var x = 0; x < HSize; x++)
+                    {
+                        var ray = RayForPixel(x, y);
+                        var color = world.ColorAt(ray);
+                        image.WritePixel(x, y, color);
+                    }
+                });
             return image;
         }
     }
