@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using TheRayTracerChallenge.Patterns;
 using TheRayTracerChallenge.Shapes;
 using TheRayTracerChallenge.Utils;
@@ -25,7 +26,8 @@ namespace TheRayTracerChallenge
             //BlendedPatternFloor();
             //PrintReflectionScene();
             //PrintReflectionAndRefractionScene();
-            PrintCubeTable();
+            //PrintCubeTable();
+            PrintSnowflakes();
         }
 
         private static void PrintAPixelToACanvas()
@@ -764,6 +766,78 @@ namespace TheRayTracerChallenge
                 leg.Transform = Transformation.Scaling(0.2, 3, 0.2);
                 leg.Material = tableMaterial;
                 return leg;
+            }
+        }
+
+        private static void PrintSnowflakes()
+        {
+            var snowflake = CreateSnowflake();
+            snowflake.Transform = Transformation.Scaling(0.3, 0.3, 0.3);
+
+            var world = new World();
+            world.LightSource = new PointLight(Tuple.Point(-10, 10, -10), Color.White);
+            world.Shapes.AddRange(new Shape[] {
+                snowflake
+            });
+
+            var camera = new Camera(400, 400, Math.PI / 3);
+            camera.Transform = Transformation.ViewTransform(
+                Tuple.Point(0, 0, -15),
+                Tuple.Point(0, 0, 0),
+                Tuple.Point(0, 1, 0));
+
+            var canvas = camera.Render(world);
+
+            SaveImage("scene_with_snowflakes.ppm", canvas.ToPpm());
+
+            Shape CreateSnowflake()
+            {
+                var rotationAngle = Math.PI / 3;
+
+                var group = new Group();
+
+                Enumerable
+                    .Range(0, 6)
+                    .Select(index => CreateSnowflakePart(index * rotationAngle))
+                    .ToList()
+                    .ForEach(part => group.AddChild(part));
+
+                return group;
+            }
+
+            Shape CreateSnowflakePart(double rotationAngle)
+            {
+                var group = new Group();
+                group.Transform = Transformation.RotationZ(rotationAngle);
+
+                var mainLeg = new Cylinder(0, 10);
+                group.AddChild(mainLeg);
+
+                var leftUpperLeg = new Cylinder(0, 4);
+                leftUpperLeg.Transform = Transformation.Translation(0, 8, 0)
+                    .Chain(Transformation.RotationZ(Math.PI / 4))
+                    .Chain(Transformation.Scaling(0.3, 1, 0.3));                    
+                group.AddChild(leftUpperLeg);
+
+                var leftLowerLeg = new Cylinder(0, 4);
+                leftLowerLeg.Transform = Transformation.Translation(0, 6, 0)
+                    .Chain(Transformation.RotationZ(Math.PI / 4))
+                    .Chain(Transformation.Scaling(0.3, 1, 0.3));
+                group.AddChild(leftLowerLeg);
+
+                var rightUpperLeg = new Cylinder(0, 4);
+                rightUpperLeg.Transform = Transformation.Translation(0, 8, 0)
+                    .Chain(Transformation.RotationZ(-Math.PI / 4))
+                    .Chain(Transformation.Scaling(0.3, 1, 0.3));
+                group.AddChild(rightUpperLeg);
+
+                var rightLowerLeg = new Cylinder(0, 4);
+                rightLowerLeg.Transform = Transformation.Translation(0, 6, 0)
+                    .Chain(Transformation.RotationZ(-Math.PI / 4))
+                    .Chain(Transformation.Scaling(0.3, 1, 0.3));
+                group.AddChild(rightLowerLeg);
+
+                return group;
             }
         }
 
