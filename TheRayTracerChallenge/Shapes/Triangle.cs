@@ -34,6 +34,12 @@ namespace TheRayTracerChallenge.Shapes
             if (Math.Abs(det) < C.Epsilon)
                 return new IntersectionCollection();
 
+            var f = 1 / det;
+            var p1_to_origin = localRay.Origin - P1;
+            var u = f * p1_to_origin.Dot(dirCrossE2);
+            if (u < 0 || u > 1)
+                return new IntersectionCollection();
+
             return new IntersectionCollection(new Intersection(1, this)); // Dummy to make sure the test works
         }
 
