@@ -35,12 +35,18 @@ namespace TheRayTracerChallenge.Shapes
                 return new IntersectionCollection();
 
             var f = 1 / det;
-            var p1_to_origin = localRay.Origin - P1;
-            var u = f * p1_to_origin.Dot(dirCrossE2);
+            var p1ToOrigin = localRay.Origin - P1;
+            var u = f * p1ToOrigin.Dot(dirCrossE2);
             if (u < 0 || u > 1)
                 return new IntersectionCollection();
 
-            return new IntersectionCollection(new Intersection(1, this)); // Dummy to make sure the test works
+            var originCrossE1 = p1ToOrigin.Cross(EdgeVec1);
+            var v = f * localRay.Direction.Dot(originCrossE1);
+            if (v < 0 || u + v > 1)
+                return new IntersectionCollection();
+
+            var t = f * EdgeVec2.Dot(originCrossE1);
+            return new IntersectionCollection(new Intersection(t, this));
         }
 
         public override Tuple LocalNormalAt(Tuple localPoint)
