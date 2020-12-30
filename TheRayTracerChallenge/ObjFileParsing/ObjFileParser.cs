@@ -2,6 +2,7 @@
 using System.Globalization;
 using TheRayTracerChallenge.Shapes;
 using System.Linq;
+using System.IO;
 
 namespace TheRayTracerChallenge.ObjFileParsing
 {
@@ -23,6 +24,12 @@ namespace TheRayTracerChallenge.ObjFileParsing
         public int NumberIgnoredLines { get; private set; }
 
         public Group DefaultGroup => _groups[""];
+
+        public static ObjFileParser ParseFromFile(string path)
+        {
+            var content = File.ReadAllText(path);
+            return Parse(content);
+        }
 
         public static ObjFileParser Parse(string content)
         {
@@ -49,6 +56,11 @@ namespace TheRayTracerChallenge.ObjFileParsing
                     case LineType.Polygon:
                         currentGroup.AddChilds(ParseTriangles(line));
                         break;
+                    case LineType.GroupName:                        
+                        currentGroup = new Group();
+                        var groupName = ParseGroupName(line);
+                        _groups.Add(groupName, currentGroup);
+                        break;
                     default:
                         NumberIgnoredLines++;
                         break;
@@ -60,6 +72,9 @@ namespace TheRayTracerChallenge.ObjFileParsing
         {
             if (line.StartsWith("v ") && line.Count(c => c == ' ') == 3)
                 return LineType.Vertice;
+
+            if (line.StartsWith("g "))
+                return LineType.GroupName;
 
             if (line.StartsWith("f "))
             {
@@ -94,6 +109,9 @@ namespace TheRayTracerChallenge.ObjFileParsing
             return new Triangle(vertices[0], vertices[1], vertices[2]);
         }
 
+        internal Group GetGroup(string name)
+            => _groups[name];
+        
         private List<Triangle> ParseTriangles(string line)
         {
             //For example: "f 1 2 3 4 5"
@@ -109,5 +127,8 @@ namespace TheRayTracerChallenge.ObjFileParsing
                 .Select(index => new Triangle(vertices[0], vertices[index], vertices[index + 1]))
                 .ToList();
         }
+
+        private string ParseGroupName(string line)
+            => line.Split(" ")[1];
     }
 }

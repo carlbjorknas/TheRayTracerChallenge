@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using TheRayTracerChallenge.ObjFileParsing;
 using TheRayTracerChallenge.Shapes;
@@ -93,6 +94,25 @@ f 1 2 3 4 5";
             triangle3.P1.Should().Be(result.Vertices[1]);
             triangle3.P2.Should().Be(result.Vertices[4]);
             triangle3.P3.Should().Be(result.Vertices[5]);
+        }
+
+        [Test]
+        public void Triangles_in_named_groups()
+        {
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "Tests", "ObjFileParsing", "triangles.obj");
+            var parser = ObjFileParser.ParseFromFile(path);
+
+            var group1 = parser.GetGroup("FirstGroup");
+            var triangle1 = (Triangle)group1.Shapes[0];
+            triangle1.P1.Should().Be(parser.Vertices[1]);
+            triangle1.P2.Should().Be(parser.Vertices[2]);
+            triangle1.P3.Should().Be(parser.Vertices[3]);
+
+            var group2 = parser.GetGroup("SecondGroup");
+            var triangle2 = (Triangle)group2.Shapes[0];
+            triangle2.P1.Should().Be(parser.Vertices[1]);
+            triangle2.P2.Should().Be(parser.Vertices[3]);
+            triangle2.P3.Should().Be(parser.Vertices[4]);
         }
     }
 }

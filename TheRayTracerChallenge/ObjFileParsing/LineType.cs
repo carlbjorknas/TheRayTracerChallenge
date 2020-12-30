@@ -9,6 +9,7 @@ namespace TheRayTracerChallenge.ObjFileParsing
         Unknown,
         Vertice,
         Triangle,
-        Polygon
+        Polygon,
+        GroupName
     }
 }
