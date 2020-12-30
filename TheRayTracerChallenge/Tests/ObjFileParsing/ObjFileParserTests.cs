@@ -63,5 +63,36 @@ f 1 3 4";
             triangle2.P2.Should().Be(result.Vertices[3]);
             triangle2.P3.Should().Be(result.Vertices[4]);
         }
+
+        [Test]
+        public void Triangulating_polygons()
+        {
+            var content =
+@"v -1 1 0
+v -1 0 0
+v 1 0 0
+v 1 1 0
+v 0 2 0
+
+f 1 2 3 4 5";
+            var result = ObjFileParser.Parse(content);
+
+            result.DefaultGroup.Shapes.Count.Should().Be(3);
+
+            var triangle1 = (Triangle)result.DefaultGroup.Shapes[0];
+            triangle1.P1.Should().Be(result.Vertices[1]);
+            triangle1.P2.Should().Be(result.Vertices[2]);
+            triangle1.P3.Should().Be(result.Vertices[3]);
+
+            var triangle2 = (Triangle)result.DefaultGroup.Shapes[1];
+            triangle2.P1.Should().Be(result.Vertices[1]);
+            triangle2.P2.Should().Be(result.Vertices[3]);
+            triangle2.P3.Should().Be(result.Vertices[4]);
+
+            var triangle3 = (Triangle)result.DefaultGroup.Shapes[2];
+            triangle3.P1.Should().Be(result.Vertices[1]);
+            triangle3.P2.Should().Be(result.Vertices[4]);
+            triangle3.P3.Should().Be(result.Vertices[5]);
+        }
     }
 }

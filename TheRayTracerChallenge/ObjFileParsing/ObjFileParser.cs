@@ -46,6 +46,9 @@ namespace TheRayTracerChallenge.ObjFileParsing
                     case LineType.Triangle:
                         currentGroup.AddChild(ParseTriangle(line));
                         break;
+                    case LineType.Polygon:
+                        currentGroup.AddChilds(ParseTriangles(line));
+                        break;
                     default:
                         NumberIgnoredLines++;
                         break;
@@ -58,37 +61,53 @@ namespace TheRayTracerChallenge.ObjFileParsing
             if (line.StartsWith("v ") && line.Count(c => c == ' ') == 3)
                 return LineType.Vertice;
 
-            if (line.StartsWith("f ") && line.Count(c => c == ' ') == 3)
-                return LineType.Triangle;
-
-            return LineType.Unknown;
-        }
-
-        private Triangle ParseTriangle(string line)
-        {
-            //For example: "f 1 2 3"
-            var parts = line.Split(" ");
-            return new Triangle(
-                GetVertice(parts[1]), 
-                GetVertice(parts[2]), 
-                GetVertice(parts[3]));
-
-            Tuple GetVertice(string verticeIndexStr)
+            if (line.StartsWith("f "))
             {
-                var verticeIndex = int.Parse(verticeIndexStr);
-                return Vertices[verticeIndex];
+                var numberSpaces = line.Count(c => c == ' ');
+                if (numberSpaces == 3)
+                    return LineType.Triangle;
+                else if (numberSpaces > 3)
+                    return LineType.Polygon;
             }
+                
+            return LineType.Unknown;
         }
 
         public static Tuple ParseVertice(string line)
         {
             // For example: "v -1.0000 0.5000 0.0000"
-            var parts = line.Split(" ");
-            return Tuple.Point(
-                double.Parse(parts[1], CultureInfo.InvariantCulture),
-                double.Parse(parts[2], CultureInfo.InvariantCulture),
-                double.Parse(parts[3], CultureInfo.InvariantCulture));
+            var points = line.Split(" ")
+                .Skip(1) // The "v"
+                .Select(doubleStr => double.Parse(doubleStr, CultureInfo.InvariantCulture))
+                .ToList();
+            return Tuple.Point(points[0], points[1], points[2]);
+        }
 
+        private Triangle ParseTriangle(string line)
+        {
+            //For example: "f 1 2 3"
+            var vertices = line.Split(" ")
+                .Skip(1) // The "f"
+                .Select(indexStr => int.Parse(indexStr))
+                .Select(index => Vertices[index])
+                .ToList();
+            return new Triangle(vertices[0], vertices[1], vertices[2]);
+        }
+
+        private List<Triangle> ParseTriangles(string line)
+        {
+            //For example: "f 1 2 3 4 5"
+            var vertices = line.Split(" ")
+                .Skip(1) // The "f"
+                .Select(indexStr => int.Parse(indexStr))
+                .Select(index => Vertices[index])
+                .ToList();
+
+            // Assume convex polygons only -> can use "fan triangulation"
+            return Enumerable
+                .Range(1, vertices.Count - 2)
+                .Select(index => new Triangle(vertices[0], vertices[index], vertices[index + 1]))
+                .ToList();
         }
     }
 }

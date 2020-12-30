@@ -8,6 +8,7 @@ namespace TheRayTracerChallenge.ObjFileParsing
     {
         Unknown,
         Vertice,
-        Triangle
+        Triangle,
+        Polygon
     }
 }

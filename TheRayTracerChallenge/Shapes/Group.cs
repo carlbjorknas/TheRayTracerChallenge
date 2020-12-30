@@ -96,5 +96,10 @@ namespace TheRayTracerChallenge.Shapes
             Shapes.Add(shape);
             shape.Parent = this;
         }
+
+        internal void AddChilds(IEnumerable<Shape> shapes)
+        {
+            shapes.ToList().ForEach(AddChild);
+        }
     }
 }
