@@ -10,6 +10,15 @@ namespace TheRayTracerChallenge.Shapes
     {
         private Bounds _bounds;
 
+        public Group()
+        {
+        }
+
+        public Group(IEnumerable<Shape> children)
+        {
+            AddChilds(children);
+        }
+
         public override IntersectionCollection LocalIntersect(Ray localRay)
         {
             if (!Shapes.Any() || !HitsBoundingBox(localRay))

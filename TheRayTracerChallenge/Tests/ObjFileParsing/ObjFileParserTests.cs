@@ -12,6 +12,14 @@ namespace TheRayTracerChallenge.Tests.ObjFileParsing
     [TestFixture]
     public class ObjFileParserTests
     {
+        public string _objFilesDir { get; private set; }
+
+        [SetUp]
+        public void Init()
+        {
+            _objFilesDir = Path.Combine(Directory.GetCurrentDirectory(), "Tests", "ObjFileParsing");
+        }
+
         [Test]
         public void Ignoring_unrecognized_lines()
         {
@@ -99,7 +107,7 @@ f 1 2 3 4 5";
         [Test]
         public void Triangles_in_named_groups()
         {
-            var path = Path.Combine(Directory.GetCurrentDirectory(), "Tests", "ObjFileParsing", "triangles.obj");
+            var path =  Path.Combine(_objFilesDir, "triangles.obj");
             var parser = ObjFileParser.ParseFromFile(path);
 
             var group1 = parser.GetGroup("FirstGroup");
@@ -113,6 +121,17 @@ f 1 2 3 4 5";
             triangle2.P1.Should().Be(parser.Vertices[1]);
             triangle2.P2.Should().Be(parser.Vertices[3]);
             triangle2.P3.Should().Be(parser.Vertices[4]);
+        }
+
+        [Test]
+        public void Converting_an_OBJ_file_to_a_group()
+        {
+            var path = Path.Combine(_objFilesDir, "triangles.obj");
+            var parser = ObjFileParser.ParseFromFile(path);
+
+            var bundlingGroup = parser.BundlingGroup;
+            bundlingGroup.Shapes.Should().Contain(parser.GetGroup("FirstGroup"));
+            bundlingGroup.Shapes.Should().Contain(parser.GetGroup("SecondGroup"));
         }
     }
 }

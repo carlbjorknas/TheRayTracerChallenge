@@ -25,6 +25,9 @@ namespace TheRayTracerChallenge.ObjFileParsing
 
         public Group DefaultGroup => _groups[""];
 
+        public Group BundlingGroup
+            => _groups.Count == 1 ? DefaultGroup : new Group(_groups.Values);
+
         public static ObjFileParser ParseFromFile(string path)
         {
             var content = File.ReadAllText(path);
