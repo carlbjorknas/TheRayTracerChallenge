@@ -1,69 +1,94 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
-using System.Text;
-using Regex = System.Text.RegularExpressions;
 using TheRayTracerChallenge.Shapes;
+using System.Linq;
 
 namespace TheRayTracerChallenge.ObjFileParsing
 {
     class ObjFileParser
     {
-        public static ParseResult Parse(string content)
-        {
-            var numberIgnoredLines = 0;
-            var vertices = new List<Tuple>();
-            vertices.Add(Tuple.Point(0, 0, 0)); // Dummy point to get 1-indexed array.
-            var group = new Group();
+        private Dictionary<string, Group> _groups = new Dictionary<string, Group>();
 
+        public ObjFileParser()
+        {
+            // Dummy point to get 1-indexed array.
+            Vertices.Add(Tuple.Point(0, 0, 0));
+
+            // Add the default group
+            _groups.Add("", new Group());
+        }
+
+        public List<Tuple> Vertices { get; } = new List<Tuple>();
+
+        public int NumberIgnoredLines { get; private set; }
+
+        public Group DefaultGroup => _groups[""];
+
+        public static ObjFileParser Parse(string content)
+        {
+            var parser = new ObjFileParser();
+            parser.InternalParse(content);
+            return parser;
+        }
+
+        public void InternalParse(string content)
+        {
+            var currentGroup = _groups[""];
             var lines = content.Split("\r\n");
-            foreach(var line in lines)
+            foreach (var line in lines)
             {
-                if (TryParseVertice(line, out var vertice))
-                    vertices.Add(vertice);
-                else if (TryParseTriangle(line, vertices, out var triangle))
-                    group.AddChild(triangle);
-                else
-                    numberIgnoredLines++;
+                var lineType = GetLineType(line);
+                switch(lineType)
+                {
+                    case LineType.Vertice:
+                        Vertices.Add(ParseVertice(line));
+                        break;
+                    case LineType.Triangle:
+                        currentGroup.AddChild(ParseTriangle(line));
+                        break;
+                    default:
+                        NumberIgnoredLines++;
+                        break;
+                };
             }
-
-            return new ParseResult(numberIgnoredLines, vertices.ToArray(), group);
         }
 
-        private static bool TryParseTriangle(string line, List<Tuple> vertices, out Triangle triangle)
+        private LineType GetLineType(string line)
         {
-            var match = Regex.Regex.Match(line, "^f ([0-9]+) ([0-9]+) ([0-9]+)$");
-            if (match.Success)
-            {
-                triangle = new Triangle(GetVertice(1), GetVertice(2), GetVertice(3));
-                return true;
-            }
+            if (line.StartsWith("v ") && line.Count(c => c == ' ') == 3)
+                return LineType.Vertice;
 
-            triangle = null;
-            return false;
+            if (line.StartsWith("f ") && line.Count(c => c == ' ') == 3)
+                return LineType.Triangle;
 
-            Tuple GetVertice(int groupIndex)
+            return LineType.Unknown;
+        }
+
+        private Triangle ParseTriangle(string line)
+        {
+            //For example: "f 1 2 3"
+            var parts = line.Split(" ");
+            return new Triangle(
+                GetVertice(parts[1]), 
+                GetVertice(parts[2]), 
+                GetVertice(parts[3]));
+
+            Tuple GetVertice(string verticeIndexStr)
             {
-                var verticeIndexStr = match.Groups[groupIndex].Value;
                 var verticeIndex = int.Parse(verticeIndexStr);
-                return vertices[verticeIndex];
+                return Vertices[verticeIndex];
             }
         }
 
-        public static bool TryParseVertice(string line, out Tuple vertice)
+        public static Tuple ParseVertice(string line)
         {
-            var match = Regex.Regex.Match(line, "^v ([0-9\\.\\-]+) ([0-9\\.\\-]+) ([0-9\\.\\-]+)$");
-            if (match.Success)
-            {
-                vertice = Tuple.Point(
-                    double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture),
-                    double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture),
-                    double.Parse(match.Groups[3].Value, CultureInfo.InvariantCulture));
-                return true;
-            }
+            // For example: "v -1.0000 0.5000 0.0000"
+            var parts = line.Split(" ");
+            return Tuple.Point(
+                double.Parse(parts[1], CultureInfo.InvariantCulture),
+                double.Parse(parts[2], CultureInfo.InvariantCulture),
+                double.Parse(parts[3], CultureInfo.InvariantCulture));
 
-            vertice = Tuple.Point(0, 0, 0); // Dummy
-            return false;
         }
     }
 }
