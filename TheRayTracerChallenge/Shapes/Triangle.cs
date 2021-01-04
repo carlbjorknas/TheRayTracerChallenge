@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using TheRayTracerChallenge.Shapes.Utils;
 using TheRayTracerChallenge.Utils;
@@ -25,7 +26,16 @@ namespace TheRayTracerChallenge.Shapes
         public Tuple EdgeVec2 { get; }
         public Tuple Normal { get; }
 
-        public override Bounds Bounds => throw new NotImplementedException();
+        public override Bounds Bounds
+            => new Bounds(
+                Tuple.Point(
+                    new[] { P1.x, P2.x, P3.x }.Min(),
+                    new[] { P1.y, P2.y, P3.y }.Min(),
+                    new[] { P1.z, P2.z, P3.z }.Min()),
+                Tuple.Point(
+                    new[] { P1.x, P2.x, P3.x }.Max(),
+                    new[] { P1.y, P2.y, P3.y }.Max(),
+                    new[] { P1.z, P2.z, P3.z }.Max()));
 
         public override IntersectionCollection LocalIntersect(Ray localRay)
         {
