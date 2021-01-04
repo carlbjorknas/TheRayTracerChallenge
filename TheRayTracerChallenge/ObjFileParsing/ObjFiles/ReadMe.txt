@@ -1,0 +1,1 @@
+﻿cow-nonormals.obj comes from https://groups.csail.mit.edu/graphics/classes/6.837/F03/models/ where you also can find other models.
