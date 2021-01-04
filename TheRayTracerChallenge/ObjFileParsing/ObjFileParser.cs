@@ -26,7 +26,9 @@ namespace TheRayTracerChallenge.ObjFileParsing
         public Group DefaultGroup => _groups[""];
 
         public Group BundlingGroup
-            => _groups.Count == 1 ? DefaultGroup : new Group(_groups.Values);
+            => _groups.Count == 1 
+            ? DefaultGroup 
+            : new Group(_groups.Values.Where(group => group.Shapes.Any())); // Remove empty groups, if any.
 
         public static ObjFileParser ParseFromFile(string path)
         {
@@ -41,10 +43,10 @@ namespace TheRayTracerChallenge.ObjFileParsing
             return parser;
         }
 
-        public void InternalParse(string content)
+        private void InternalParse(string content)
         {
             var currentGroup = _groups[""];
-            var lines = content.Split("\r\n");
+            var lines = content.Replace("\r\n", "\n").Split("\n");
             foreach (var line in lines)
             {
                 var lineType = GetLineType(line);
@@ -91,7 +93,7 @@ namespace TheRayTracerChallenge.ObjFileParsing
             return LineType.Unknown;
         }
 
-        public static Tuple ParseVertice(string line)
+        private static Tuple ParseVertice(string line)
         {
             // For example: "v -1.0000 0.5000 0.0000"
             var points = line.Split(" ")
