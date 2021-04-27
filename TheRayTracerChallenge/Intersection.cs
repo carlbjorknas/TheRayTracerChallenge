@@ -36,7 +36,7 @@ namespace TheRayTracerChallenge
             c.Object = Object;
             c.Point = ray.Position(T);
             c.EyeVector = -ray.Direction;            
-            c.NormalVector = Object.NormalAt(c.Point);
+            c.NormalVector = Object.NormalAt(c.Point, this);
 
             if (c.NormalVector.Dot(c.EyeVector) < 0)
             {

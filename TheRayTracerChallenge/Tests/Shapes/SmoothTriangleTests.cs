@@ -60,5 +60,15 @@ namespace TheRayTracerChallenge.Tests.Shapes
             var n = _tri.NormalAt(Tuple.Point(0, 0, 0), i);
             n.Should().Be(Tuple.Vector(-0.5547, 0.83205, 0));
         }
+
+        [Test]
+        public void Preparing_the_normal_on_a_smooth_triangle()
+        {
+            var i = new Intersection(1, _tri, 0.45, 0.25);
+            var ray = new Ray(Tuple.Point(-0.2, 0.3, -2), Tuple.Vector(0, 0, 1));
+            var xs = new IntersectionCollection(i);
+            var comps = i.PrepareComputations(ray, xs);
+            comps.NormalVector.Should().Be(Tuple.Vector(-0.5547, 0.83205, 0));
+        }
     }
 }
