@@ -28,14 +28,14 @@ namespace TheRayTracerChallenge.Shapes
 
         public abstract IntersectionCollection LocalIntersect(Ray localRay);
 
-        public Tuple NormalAt(Tuple point)
+        public Tuple NormalAt(Tuple point, Intersection? i = null)
         {
             var localPoint = WorldToObject(point);
-            var localNormal = LocalNormalAt(localPoint);
+            var localNormal = LocalNormalAt(localPoint, i);
             return NormalToWorld(localNormal);
         }
 
-        public abstract Tuple LocalNormalAt(Tuple localPoint);
+        public abstract Tuple LocalNormalAt(Tuple localPoint, Intersection? i = null);
 
         internal Tuple WorldToObject(Tuple point)
         {

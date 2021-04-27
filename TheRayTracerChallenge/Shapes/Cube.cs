@@ -52,7 +52,7 @@ namespace TheRayTracerChallenge.Shapes
             return (tMin, tMax);
         }
 
-        public override Tuple LocalNormalAt(Tuple localPoint)
+        public override Tuple LocalNormalAt(Tuple localPoint, Intersection? i = null)
         {
             var max = new[] { Math.Abs(localPoint.x), Math.Abs(localPoint.y), Math.Abs(localPoint.z) }.Max();
 

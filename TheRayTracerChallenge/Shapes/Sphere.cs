@@ -50,7 +50,7 @@ namespace TheRayTracerChallenge.Shapes
             return new IntersectionCollection(i1, i2);
         }
 
-        public override Tuple LocalNormalAt(Tuple localPoint)
+        public override Tuple LocalNormalAt(Tuple localPoint, Intersection? i = null)
             => localPoint - Center;
 
         public override bool Equals(object obj)

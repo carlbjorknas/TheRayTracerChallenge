@@ -38,6 +38,9 @@ namespace TheRayTracerChallenge.Shapes
                     new[] { P1.z, P2.z, P3.z }.Max()));
 
         public override IntersectionCollection LocalIntersect(Ray localRay)
+            => LocalIntersect(localRay, (t, _, __) => new Intersection(t, this));
+
+        protected IntersectionCollection LocalIntersect(Ray localRay, Func<double, double, double, Intersection> newIntersection)
         {
             var dirCrossE2 = localRay.Direction.Cross(EdgeVec2);
             var det = EdgeVec1.Dot(dirCrossE2);
@@ -56,10 +59,10 @@ namespace TheRayTracerChallenge.Shapes
                 return new IntersectionCollection();
 
             var t = f * EdgeVec2.Dot(originCrossE1);
-            return new IntersectionCollection(new Intersection(t, this));
+            return new IntersectionCollection(newIntersection(t, u, v));
         }
 
-        public override Tuple LocalNormalAt(Tuple localPoint)
+        public override Tuple LocalNormalAt(Tuple localPoint, Intersection? i = null)
         {
             return Normal;
         }

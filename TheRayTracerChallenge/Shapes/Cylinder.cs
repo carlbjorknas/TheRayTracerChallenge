@@ -100,7 +100,7 @@ namespace TheRayTracerChallenge.Shapes
             return Math.Pow(x, 2) + Math.Pow(z, 2) <= 1;
         }
 
-        public override Tuple LocalNormalAt(Tuple localPoint)
+        public override Tuple LocalNormalAt(Tuple localPoint, Intersection? i = null)
         {
             var distanceFromYAxis = Math.Pow(localPoint.x, 2) + Math.Pow(localPoint.z, 2);
 

@@ -13,10 +13,21 @@ namespace TheRayTracerChallenge
         {
             T = t;
             Object = o;
+            U = 0;
+            V = 0;
+        }
+
+        public Intersection(double t, Shape o, double u, double v) : this(t, o)
+        {
+            U = u;
+            V = v;
         }
 
         public readonly double T;
         public readonly Shape Object;
+
+        public double U { get; }
+        public double V { get; }
 
         public Computations PrepareComputations(Ray ray, IntersectionCollection xs = null)
         {

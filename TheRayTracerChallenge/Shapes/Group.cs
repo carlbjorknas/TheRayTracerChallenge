@@ -69,7 +69,7 @@ namespace TheRayTracerChallenge.Shapes
             return (tMin, tMax);
         }
 
-        public override Tuple LocalNormalAt(Tuple localPoint)
+        public override Tuple LocalNormalAt(Tuple localPoint, Intersection? i = null)
         {
             throw new NotImplementedException();
         }

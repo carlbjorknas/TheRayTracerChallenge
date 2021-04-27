@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using MathNet.Numerics;
+using NUnit.Framework;
 using System;
 using TheRayTracerChallenge.Shapes;
 using TheRayTracerChallenge.Utils;
@@ -255,6 +256,15 @@ namespace TheRayTracerChallenge.Tests
             var reflectance = comps.Schlick();
 
             Assert.AreEqual(0.48873, reflectance, C.Epsilon);
+        }
+
+        [Test]
+        public void An_intersection_can_encapsulate_u_and_v()
+        {
+            var triangle = new Triangle(Tuple.Point(0, 1, 0), Tuple.Point(-1, 0, 0), Tuple.Point(1, 0, 0));
+            var i = new Intersection(3.5, triangle, 0.2, 0.4);
+            Assert.AreEqual(0.2, i.U);
+            Assert.AreEqual(0.4, i.V);
         }
     }
 }
