@@ -133,5 +133,54 @@ f 1 2 3 4 5";
             bundlingGroup.Shapes.Should().Contain(parser.GetGroup("FirstGroup"));
             bundlingGroup.Shapes.Should().Contain(parser.GetGroup("SecondGroup"));
         }
+
+        [Test]
+        public void Vertex_normal_records()
+        {
+            var content =
+@"vn 0 0 1
+vn 0.707 0 -0.707
+vn 1 2 3";
+            var parser = ObjFileParser.Parse(content);
+
+            parser.Normals[1].Should().Be(Tuple.Vector(0, 0, 1));
+            parser.Normals[2].Should().Be(Tuple.Vector(0.707, 0, -0.707));
+            parser.Normals[3].Should().Be(Tuple.Vector(1, 2, 3));
+        }
+
+        [Test]
+        public void FacesWithNormals()
+        {
+            var content =
+@"v 0 1 0
+v -1 0 0
+v 1 0 0
+
+vn -1 0 0
+vn 1 0 0
+vn 0 1 0
+
+f 1//3 2//1 3//2
+f 1/0/3 2/102/1 3/14/2";
+
+            var parser = ObjFileParser.Parse(content);
+            var g = parser.DefaultGroup;
+            var t1 = (SmoothTriangle) g.Shapes[0];
+            var t2 = (SmoothTriangle) g.Shapes[1];
+
+            t1.P1.Should().Be(parser.Vertices[1]);
+            t1.P2.Should().Be(parser.Vertices[2]);
+            t1.P3.Should().Be(parser.Vertices[3]);
+            t1.N1.Should().Be(parser.Normals[3]);
+            t1.N2.Should().Be(parser.Normals[1]);
+            t1.N3.Should().Be(parser.Normals[2]);
+
+            t2.P1.Should().Be(parser.Vertices[1]);
+            t2.P2.Should().Be(parser.Vertices[2]);
+            t2.P3.Should().Be(parser.Vertices[3]);
+            t2.N1.Should().Be(parser.Normals[3]);
+            t2.N2.Should().Be(parser.Normals[1]);
+            t2.N3.Should().Be(parser.Normals[2]);
+        }
     }
 }

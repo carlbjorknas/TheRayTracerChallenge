@@ -3,6 +3,7 @@ using System.Globalization;
 using TheRayTracerChallenge.Shapes;
 using System.Linq;
 using System.IO;
+using TheRayTracerChallenge.Tests.ObjFileParsing;
 
 namespace TheRayTracerChallenge.ObjFileParsing
 {
@@ -12,14 +13,16 @@ namespace TheRayTracerChallenge.ObjFileParsing
 
         public ObjFileParser()
         {
-            // Dummy point to get 1-indexed array.
+            // Dummies to get 1-indexed arrays.
             Vertices.Add(Tuple.Point(0, 0, 0));
+            Normals.Add(Tuple.Vector(0, 0, 0));
 
             // Add the default group
             _groups.Add("", new Group());
         }
 
         public List<Tuple> Vertices { get; } = new List<Tuple>();
+        public List<Tuple> Normals { get; } = new List<Tuple>();
 
         public int NumberIgnoredLines { get; private set; }
 
@@ -58,6 +61,9 @@ namespace TheRayTracerChallenge.ObjFileParsing
                     case LineType.Triangle:
                         currentGroup.AddChild(ParseTriangle(line));
                         break;
+                    case LineType.SmoothTriangle:
+                        currentGroup.AddChild(ParseSmoothTriangle(line));
+                        break;
                     case LineType.Polygon:
                         currentGroup.AddChilds(ParseTriangles(line));
                         break;
@@ -65,6 +71,9 @@ namespace TheRayTracerChallenge.ObjFileParsing
                         currentGroup = new Group();
                         var groupName = ParseGroupName(line);
                         _groups.Add(groupName, currentGroup);
+                        break;
+                    case LineType.VertexNormal:
+                        Normals.Add(ParseVertexNormal(line));
                         break;
                     default:
                         NumberIgnoredLines++;
@@ -85,10 +94,13 @@ namespace TheRayTracerChallenge.ObjFileParsing
             {
                 var numberSpaces = line.Count(c => c == ' ');
                 if (numberSpaces == 3)
-                    return LineType.Triangle;
+                    return line.Contains("/") ? LineType.SmoothTriangle : LineType.Triangle;
                 else if (numberSpaces > 3)
                     return LineType.Polygon;
             }
+
+            if (line.StartsWith("vn "))
+                return LineType.VertexNormal;
                 
             return LineType.Unknown;
         }
@@ -114,6 +126,25 @@ namespace TheRayTracerChallenge.ObjFileParsing
             return new Triangle(vertices[0], vertices[1], vertices[2]);
         }
 
+        private Shape ParseSmoothTriangle(string line)
+        {
+            // For example "f 1/0/3 2/102/1 3/14/2"
+            var verticeInfos = line.Split(" ")
+                .Skip(1) // The "f"
+                .Select(viInfo =>
+                {
+                    var indices = viInfo.Split("/");
+                    return new { 
+                        Vertex = Vertices[int.Parse(indices[0])],
+                        Normal = Normals[int.Parse(indices[2])]
+                    };
+                })
+                .ToList();
+            return new SmoothTriangle(
+                verticeInfos[0].Vertex, verticeInfos[1].Vertex, verticeInfos[2].Vertex, 
+                verticeInfos[0].Normal, verticeInfos[1].Normal, verticeInfos[2].Normal);
+        }
+
         internal Group GetGroup(string name)
             => _groups[name];
         
@@ -135,5 +166,14 @@ namespace TheRayTracerChallenge.ObjFileParsing
 
         private string ParseGroupName(string line)
             => line.Split(" ")[1];
+
+        private Tuple ParseVertexNormal(string line)
+        {
+            var values = line.Split(" ")
+                .Skip(1) // The "vn"
+                .Select(doubleStr => double.Parse(doubleStr, CultureInfo.InvariantCulture))
+                .ToList();
+            return Tuple.Vector(values[0], values[1], values[2]);
+        }
     }
 }
