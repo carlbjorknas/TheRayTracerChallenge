@@ -11,9 +11,6 @@ namespace TheRayTracerChallenge.Scenes
         {
         }
 
-        protected override int CameraHSize => 400;
-        protected override int CameraVSize => 400;
-        protected override double CameraFieldOfView => Math.PI / 3;
         protected override Tuple CameraFromPoint => Tuple.Point(0, 0, -7);
         protected override Tuple CameraToPoint => Tuple.Point(0.5, 0, 0);
 

@@ -30,11 +30,11 @@ namespace TheRayTracerChallenge.Scenes
         }
 
         protected abstract void CreateScenery();
-        protected abstract int CameraHSize { get; }
-        protected abstract int CameraVSize { get; }
-        protected abstract double CameraFieldOfView { get; }
-        protected abstract Tuple CameraFromPoint { get; }
-        protected abstract Tuple CameraToPoint { get; }
+        protected virtual int CameraHSize => 400;
+        protected virtual int CameraVSize => 400;
+        protected virtual double CameraFieldOfView => Math.PI / 3;
+        protected virtual Tuple CameraFromPoint => Tuple.Point(0, 0, 0);
+        protected virtual Tuple CameraToPoint => Tuple.Point(0, 0, 1);
         protected virtual Tuple CameraUp { get; } = Tuple.Point(0, 1, 0);
 
         protected void AddShapesToWorld(params Shape[] shapes)

@@ -12,6 +12,7 @@ namespace TheRayTracerChallenge.ObjFileParsing
         Polygon,
         GroupName,
         VertexNormal,
-        SmoothTriangle
+        SmoothTriangle,
+        SmoothPolygon
     }
 }

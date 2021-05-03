@@ -42,5 +42,10 @@ namespace TheRayTracerChallenge.Shapes.Utils
 
             return new Bounds(Tuple.Point(minX, minY, minZ), Tuple.Point(maxX, maxY, maxZ));
         }
+
+        public override string ToString()
+        {
+            return $"Min: {Min.x}, {Min.y}, {Min.z} Max: {Max.x}, {Max.y}, {Max.z}";
+        }
     }
 }

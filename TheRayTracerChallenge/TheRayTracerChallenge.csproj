@@ -20,6 +20,9 @@
     <None Update="ObjFileParsing\ObjFiles\cow-nonormals.obj">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="ObjFileParsing\ObjFiles\lowpolytree.obj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Tests\ObjFileParsing\triangles.obj">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

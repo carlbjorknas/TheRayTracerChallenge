@@ -4,6 +4,7 @@ using TheRayTracerChallenge.Shapes;
 using System.Linq;
 using System.IO;
 using TheRayTracerChallenge.Tests.ObjFileParsing;
+using System;
 
 namespace TheRayTracerChallenge.ObjFileParsing
 {
@@ -43,6 +44,7 @@ namespace TheRayTracerChallenge.ObjFileParsing
         {
             var parser = new ObjFileParser();
             parser.InternalParse(content);
+            Console.WriteLine($"Bundling group bounds {parser.BundlingGroup.Bounds}");
             return parser;
         }
 
@@ -67,6 +69,9 @@ namespace TheRayTracerChallenge.ObjFileParsing
                     case LineType.Polygon:
                         currentGroup.AddChilds(ParseTriangles(line));
                         break;
+                    case LineType.SmoothPolygon:
+                        currentGroup.AddChilds(ParseSmoothTriangles(line));
+                        break;
                     case LineType.GroupName:                        
                         currentGroup = new Group();
                         var groupName = ParseGroupName(line);
@@ -84,7 +89,7 @@ namespace TheRayTracerChallenge.ObjFileParsing
 
         private LineType GetLineType(string line)
         {
-            if (line.StartsWith("v ") && line.Count(c => c == ' ') == 3)
+            if (line.StartsWith("v "))
                 return LineType.Vertice;
 
             if (line.StartsWith("g "))
@@ -96,7 +101,7 @@ namespace TheRayTracerChallenge.ObjFileParsing
                 if (numberSpaces == 3)
                     return line.Contains("/") ? LineType.SmoothTriangle : LineType.Triangle;
                 else if (numberSpaces > 3)
-                    return LineType.Polygon;
+                    return line.Contains("/") ? LineType.SmoothPolygon : LineType.Polygon;
             }
 
             if (line.StartsWith("vn "))
@@ -108,7 +113,8 @@ namespace TheRayTracerChallenge.ObjFileParsing
         private static Tuple ParseVertice(string line)
         {
             // For example: "v -1.0000 0.5000 0.0000"
-            var points = line.Split(" ")
+            // Can begin with a v followed by two spaces "v  "
+            var points = line.Split(" ", System.StringSplitOptions.RemoveEmptyEntries)
                 .Skip(1) // The "v"
                 .Select(doubleStr => double.Parse(doubleStr, CultureInfo.InvariantCulture))
                 .ToList();
@@ -161,6 +167,31 @@ namespace TheRayTracerChallenge.ObjFileParsing
             return Enumerable
                 .Range(1, vertices.Count - 2)
                 .Select(index => new Triangle(vertices[0], vertices[index], vertices[index + 1]))
+                .ToList();
+        }
+
+        private IEnumerable<Shape> ParseSmoothTriangles(string line)
+        {
+            //For example "f 75/75/75 110/110/110 108/108/108 73/73/73"
+            var verticeInfos = line.Split(" ", System.StringSplitOptions.RemoveEmptyEntries)
+                .Skip(1) // The "f"
+                .Select(viInfo =>
+                {
+                    var indices = viInfo.Split("/");
+                    return new
+                    {
+                        Vertex = Vertices[int.Parse(indices[0])],
+                        Normal = Normals[int.Parse(indices[2])]
+                    };
+                })
+                .ToList();
+
+            // Assume convex polygons only -> can use "fan triangulation"
+            return Enumerable
+                .Range(1, verticeInfos.Count - 2)
+                .Select(index => new SmoothTriangle(
+                    verticeInfos[0].Vertex, verticeInfos[index].Vertex, verticeInfos[index+1].Vertex,
+                    verticeInfos[0].Normal, verticeInfos[index].Normal, verticeInfos[index+1].Normal))
                 .ToList();
         }
 

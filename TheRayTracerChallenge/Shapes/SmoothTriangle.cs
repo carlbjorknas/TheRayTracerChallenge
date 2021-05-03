@@ -18,8 +18,6 @@ namespace TheRayTracerChallenge.Shapes
         public Tuple N2 { get; }
         public Tuple N3 { get; }
 
-        public override Bounds Bounds => throw new NotImplementedException();
-
         public override IntersectionCollection LocalIntersect(Ray localRay)
             => LocalIntersect(localRay, (t, u, v) => new Intersection(t, this, u, v));
 
