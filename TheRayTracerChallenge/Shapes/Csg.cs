@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NUnit.Framework.Constraints;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using TheRayTracerChallenge.Shapes.Utils;
@@ -10,13 +11,13 @@ namespace TheRayTracerChallenge.Shapes
     /// </summary>
     class Csg : Shape
     {
-        public Operation Operation { get; }
+        public CsgOperation Operation { get; }
         public Shape Left { get; }
         public Shape Right { get; }
 
         public override Bounds Bounds => throw new NotImplementedException();
 
-        public Csg(Operation operation, Shape left, Shape right)
+        public Csg(CsgOperation operation, Shape left, Shape right)
         {
             Operation = operation;
 
@@ -25,6 +26,18 @@ namespace TheRayTracerChallenge.Shapes
 
             Right = right;
             right.Parent = this;
+        }
+
+        internal static bool IntersectionAllowed(CsgOperation op, CsgOperand hitShape, bool insideLeft, bool insideRight)
+        {
+            if (op == CsgOperation.Union)
+            {
+                return
+                    (hitShape == CsgOperand.Left && !insideRight) ||
+                    (hitShape == CsgOperand.Right && !insideLeft);
+            }
+
+            return false;
         }
 
         public override IntersectionCollection LocalIntersect(Ray localRay)
@@ -38,10 +51,16 @@ namespace TheRayTracerChallenge.Shapes
         }
     }
 
-    enum Operation
+    public enum CsgOperation
     {
         Union,
         Intersection,
         Difference
+    }
+
+    public enum CsgOperand
+    {
+        Left,
+        Right
     }
 }
