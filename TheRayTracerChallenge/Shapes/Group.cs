@@ -82,18 +82,26 @@ namespace TheRayTracerChallenge.Shapes
             {
                 if (_bounds == null)
                 {
-                    var groupSpaceBounds = Shapes
-                        .Select(s => s.Bounds.Transform(s.Transform))
-                        .ToList();
+                    if (Shapes.Any())
+                    {
 
-                    var minX = groupSpaceBounds.Min(b => b.Min.x);
-                    var minY = groupSpaceBounds.Min(b => b.Min.y);
-                    var minZ = groupSpaceBounds.Min(b => b.Min.z);
-                    var maxX = groupSpaceBounds.Max(b => b.Max.x);
-                    var maxY = groupSpaceBounds.Max(b => b.Max.y);
-                    var maxZ = groupSpaceBounds.Max(b => b.Max.z);
+                        var groupSpaceBounds = Shapes
+                            .Select(s => s.Bounds.Transform(s.Transform))
+                            .ToList();
 
-                    _bounds = new Bounds(Tuple.Point(minX, minY, minZ), Tuple.Point(maxX, maxY, maxZ));
+                        var minX = groupSpaceBounds.Min(b => b.Min.x);
+                        var minY = groupSpaceBounds.Min(b => b.Min.y);
+                        var minZ = groupSpaceBounds.Min(b => b.Min.z);
+                        var maxX = groupSpaceBounds.Max(b => b.Max.x);
+                        var maxY = groupSpaceBounds.Max(b => b.Max.y);
+                        var maxZ = groupSpaceBounds.Max(b => b.Max.z);
+
+                        _bounds = new Bounds(Tuple.Point(minX, minY, minZ), Tuple.Point(maxX, maxY, maxZ));
+                    }
+                    else
+                    {
+                        _bounds = new Bounds(Tuple.Point(0, 0, 0), Tuple.Point(0, 0, 0));
+                    }
                 }
 
                 return _bounds;
