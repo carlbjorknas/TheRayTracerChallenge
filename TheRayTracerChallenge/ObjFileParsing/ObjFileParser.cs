@@ -3,7 +3,6 @@ using System.Globalization;
 using TheRayTracerChallenge.Shapes;
 using System.Linq;
 using System.IO;
-using TheRayTracerChallenge.Tests.ObjFileParsing;
 using System;
 
 namespace TheRayTracerChallenge.ObjFileParsing
