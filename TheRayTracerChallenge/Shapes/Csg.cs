@@ -30,14 +30,17 @@ namespace TheRayTracerChallenge.Shapes
 
         internal static bool IntersectionAllowed(CsgOperation op, CsgOperand hitShape, bool insideLeft, bool insideRight)
         {
-            if (op == CsgOperation.Union)
+            return op switch
             {
-                return
+                CsgOperation.Union =>
                     (hitShape == CsgOperand.Left && !insideRight) ||
-                    (hitShape == CsgOperand.Right && !insideLeft);
-            }
+                    (hitShape == CsgOperand.Right && !insideLeft),
+                CsgOperation.Intersection =>
+                    (hitShape == CsgOperand.Left && insideRight) ||
+                    (hitShape == CsgOperand.Right && insideLeft),
+                _ => false
 
-            return false;
+            };            
         }
 
         public override IntersectionCollection LocalIntersect(Ray localRay)
