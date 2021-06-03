@@ -48,7 +48,10 @@ namespace TheRayTracerChallenge.Shapes
 
         public override IntersectionCollection LocalIntersect(Ray localRay)
         {
-            throw new NotImplementedException();
+            var leftXs = Left.Intersect(localRay);
+            var rightXs = Right.Intersect(localRay);
+            var xs = IntersectionCollection.CreateFromCollections(leftXs, rightXs);
+            return FilterIntersections(xs);
         }
 
         public override Tuple LocalNormalAt(Tuple localPoint, Intersection? i = null)

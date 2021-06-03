@@ -69,5 +69,14 @@ namespace TheRayTracerChallenge.Tests.Shapes
             result[0].Should().Be(xs[index1]);
             result[1].Should().Be(xs[index2]);
         }
+
+        [Test]
+        public void A_ray_misses_a_CSG_object()
+        {
+            var csg = new Csg(CsgOperation.Union, Sphere.UnitSphere(), new Cube());
+            var ray = new Ray(Tuple.Point(0, 2, -5), Tuple.Vector(0, 0, 1));
+            var xs = csg.LocalIntersect(ray);
+            xs.Intersections.Should().BeEmpty();
+        }
     }
 }

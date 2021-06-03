@@ -15,6 +15,11 @@ namespace TheRayTracerChallenge
             return new IntersectionCollection(intersections.Select(x => new Intersection(x.T, x.shape)).ToArray());
         }
 
+        public static IntersectionCollection CreateFromCollections(params IntersectionCollection[] xs)
+        {
+            return new IntersectionCollection(xs.SelectMany(x => x.Intersections).ToArray());
+        }
+
         public IntersectionCollection(params Intersection[] intersections)
         {
             Intersections = intersections
