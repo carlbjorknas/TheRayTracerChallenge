@@ -78,5 +78,23 @@ namespace TheRayTracerChallenge.Tests.Shapes
             var xs = csg.LocalIntersect(ray);
             xs.Intersections.Should().BeEmpty();
         }
+
+        [Test]
+        public void A_ray_hits_a_CSG_object()
+        {
+            var s1 = Sphere.UnitSphere();
+            var s2 = Sphere.UnitSphere();
+            s2.Transform = Transformation.Translation(0, 0, 0.5);
+
+            var csg = new Csg(CsgOperation.Union, s1, s2);
+            var ray = new Ray(Tuple.Point(0, 0, -5), Tuple.Vector(0, 0, 1));
+            var xs = csg.LocalIntersect(ray);
+
+            xs.Intersections.Should().HaveCount(2);
+            xs[0].T.Should().Be(4);
+            xs[0].Object.Should().Be(s1);
+            xs[1].T.Should().Be(6.5);
+            xs[1].Object.Should().Be(s2);
+        }
     }
 }

@@ -30,6 +30,11 @@ namespace TheRayTracerChallenge.Shapes
             return new IntersectionCollection(xs);
         }
 
+        public override bool Contains(Shape other)
+        {
+            return Shapes.Any(x => x.Contains(other));
+        }
+
         private bool HitsBoundingBox(Ray localRay)
         {
             var bounds = Bounds;

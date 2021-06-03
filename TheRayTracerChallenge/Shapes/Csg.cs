@@ -82,6 +82,11 @@ namespace TheRayTracerChallenge.Shapes
 
             return new IntersectionCollection(filteredXs);
         }
+
+        public override bool Contains(Shape other)
+        {
+            return Left.Contains(other) || Right.Contains(other);
+        }
     }
 
     public enum CsgOperation
