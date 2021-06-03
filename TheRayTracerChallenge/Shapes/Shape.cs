@@ -56,5 +56,7 @@ namespace TheRayTracerChallenge.Shapes
 
             return normal;
         }
+
+        public virtual bool Contains(Shape other) => this == other;
     }
 }

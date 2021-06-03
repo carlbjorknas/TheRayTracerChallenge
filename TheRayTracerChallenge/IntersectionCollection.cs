@@ -2,12 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TheRayTracerChallenge.Shapes;
 
 namespace TheRayTracerChallenge
 {
     internal class IntersectionCollection
     {
         public Intersection[] Intersections;
+
+        public static IntersectionCollection Create(params (double T, Shape shape)[] intersections)
+        {
+            return new IntersectionCollection(intersections.Select(x => new Intersection(x.T, x.shape)).ToArray());
+        }
 
         public IntersectionCollection(params Intersection[] intersections)
         {

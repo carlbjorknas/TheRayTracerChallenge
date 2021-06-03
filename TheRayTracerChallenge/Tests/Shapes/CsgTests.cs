@@ -54,5 +54,20 @@ namespace TheRayTracerChallenge.Tests.Shapes
             var result = Csg.IntersectionAllowed(op, hitShape, insideLeft, insideRight);
             result.Should().Be(expectedResult);
         }
+
+        [TestCase(CsgOperation.Union, 0, 3)]
+        [TestCase(CsgOperation.Intersection, 1, 2)]
+        [TestCase(CsgOperation.Difference, 0, 1)]
+        public void Filtering_a_list_of_intersections(CsgOperation operation, int index1, int index2)
+        {
+            var s1 = Sphere.UnitSphere();
+            var s2 = new Cube();
+            var csg = new Csg(operation, s1, s2);
+            var xs = IntersectionCollection.Create((1, s1), (2, s2), (3, s1), (4, s2));
+            var result = csg.FilterIntersections(xs);
+            result.Intersections.Should().HaveCount(2);
+            result[0].Should().Be(xs[index1]);
+            result[1].Should().Be(xs[index2]);
+        }
     }
 }

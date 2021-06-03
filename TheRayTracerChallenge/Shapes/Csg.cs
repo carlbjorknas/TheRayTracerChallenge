@@ -55,6 +55,30 @@ namespace TheRayTracerChallenge.Shapes
         {
             throw new NotImplementedException();
         }
+
+        internal IntersectionCollection FilterIntersections(IntersectionCollection xs)
+        {
+            var inLeft = false;
+            var inRight = false;
+            var filteredXs = new List<Intersection>();
+
+            foreach(var intersection in xs.Intersections)
+            {
+                var hitShape = Left.Contains(intersection.Object) ? CsgOperand.Left : CsgOperand.Right;
+
+                if (IntersectionAllowed(Operation, hitShape, inLeft, inRight))
+                {
+                    filteredXs.Add(intersection);
+                }
+
+                if (hitShape == CsgOperand.Left)
+                    inLeft = !inLeft;
+                else
+                    inRight = !inRight;
+            }
+
+            return new IntersectionCollection(filteredXs);
+        }
     }
 
     public enum CsgOperation
