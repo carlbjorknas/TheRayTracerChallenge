@@ -38,6 +38,9 @@ namespace TheRayTracerChallenge.Shapes
                 CsgOperation.Intersection =>
                     (hitShape == CsgOperand.Left && insideRight) ||
                     (hitShape == CsgOperand.Right && insideLeft),
+                CsgOperation.Difference =>
+                    (hitShape == CsgOperand.Left && !insideRight) ||
+                    (hitShape == CsgOperand.Right && insideLeft),
                 _ => false
 
             };            

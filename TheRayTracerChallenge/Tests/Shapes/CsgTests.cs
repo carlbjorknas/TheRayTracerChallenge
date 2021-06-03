@@ -40,6 +40,14 @@ namespace TheRayTracerChallenge.Tests.Shapes
         [TestCase(CsgOperation.Intersection, CsgOperand.Right, true, false, true)]
         [TestCase(CsgOperation.Intersection, CsgOperand.Right, false, true, false)]
         [TestCase(CsgOperation.Intersection, CsgOperand.Right, false, false, false)]
+        [TestCase(CsgOperation.Difference, CsgOperand.Left, true, true, false)]
+        [TestCase(CsgOperation.Difference, CsgOperand.Left, true, false, true)]
+        [TestCase(CsgOperation.Difference, CsgOperand.Left, false, true, false)]
+        [TestCase(CsgOperation.Difference, CsgOperand.Left, false, false, true)]
+        [TestCase(CsgOperation.Difference, CsgOperand.Right, true, true, true)]
+        [TestCase(CsgOperation.Difference, CsgOperand.Right, true, false, true)]
+        [TestCase(CsgOperation.Difference, CsgOperand.Right, false, true, false)]
+        [TestCase(CsgOperation.Difference, CsgOperand.Right, false, false, false)]
         public void Evaluating_the_rule_for_a_CSG_operation(
             CsgOperation op, CsgOperand hitShape, bool insideLeft, bool insideRight, bool expectedResult)
         {
