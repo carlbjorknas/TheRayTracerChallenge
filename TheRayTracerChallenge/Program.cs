@@ -30,7 +30,8 @@ namespace TheRayTracerChallenge
             //PrintCubeTable();
             //new SnowflakeScene("scene_with_snowflakes").Render();
             //new CowFromObjFileScene("scene_with_cow_from_obj_file").Render();
-            new TreeFromObjFileScene("scene_with_tree_from_obj_file").Render();
+            //new TreeFromObjFileScene("scene_with_tree_from_obj_file").Render();
+            new CarlInCsgScene().Render();
         }
 
         private static void PrintAPixelToACanvas()
